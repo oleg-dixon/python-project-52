@@ -1,9 +1,20 @@
 {% extends "base.html" %}
 
-{% block title %}Менеджер задач{% endblock %}
+{% block title %}Главная - Менеджер задач Hexlet{% endblock %}
 
 {% block content %}
-    <h1>Менеджер задач</h1>
-    <p>Менеджер задач</p>
-    <p>{{ tags|join:', ' }}</p>
+<div class="d-flex align-items-center justify-content-center" style="min-height: 70vh;">
+    <div class="card" style="max-width: 800px; width: 100%;">
+        <div class="card-body p-5 bg-light text-center">
+            <div class="display-4 mb-4 fw-bold">
+                <i class="bi bi-list-check"></i> Менеджер задач
+            </div>
+            <p class="lead mx-auto fw-medium" style="max-width: 600px;">
+                Этот менеджер задач позволяет вам устанавливать задачи, назначать исполнителей и изменять их статусы.
+                Для работы с системой требуется регистрация и аутентификация.
+            </p>
+            <hr class="my-4">
+        </div>
+    </div>
+</div>
 {% endblock %}
