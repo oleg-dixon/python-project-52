@@ -12,8 +12,3 @@ class IndexView(TemplateView):
         return context
 
 
-# def about(request):
-#     return render(
-#         request,
-#         'about.html',
-#     )

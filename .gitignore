@@ -7,7 +7,13 @@ dist/
 .pytest_cache/
 .ruff_cache
 .env
+.env.local
+.env.production
 TODO.md
 py_log.log
 .python-version
 TODO.md
+*.sqlite3
+db.sqlite3
+*.db
+*.sqlite

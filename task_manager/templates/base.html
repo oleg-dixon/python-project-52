@@ -2,7 +2,7 @@
 <html lang="ru-ru">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{% block title %}Менеджер задач Hexlet{% endblock %}</title>
+    <title>{% block title %}Менеджер задач{% endblock %}</title>
     <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
@@ -19,7 +19,7 @@
       <div class="collapse navbar-collapse" id="navbarToggleExternalContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/users/">
+            <a class="nav-link" href="{% url 'users:index' %}">
               <i class="bi bi-people"></i> Пользователи
             </a>
           </li>
@@ -27,17 +27,17 @@
           {% if user.is_authenticated %}
           <!-- Эти пункты показываются только авторизованным пользователям -->
           <li class="nav-item">
-            <a class="nav-link" href="/statuses/">
+            <a class="nav-link" href="{% url 'statuses' %}">
               <i class="bi bi-circle-half"></i> Статусы
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/labels/">
+            <a class="nav-link" href="{% url 'labels' %}">
               <i class="bi bi-tag"></i> Метки
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/tasks/">
+            <a class="nav-link" href="{% url 'tasks' %}">
               <i class="bi bi-card-checklist"></i> Задачи
             </a>
           </li>
@@ -52,7 +52,7 @@
             </span>
           </li>
           <li class="nav-item">
-            <form action="{% url 'logout' %}" method="post" class="d-inline">
+            <form action="{% url 'users:logout' %}" method="post" class="d-inline">
               {% csrf_token %}
               <button type="submit" class="nav-link btn btn-link" style="border: none; background: none; cursor: pointer;">
                 <i class="bi bi-box-arrow-right"></i> Выход
@@ -62,12 +62,12 @@
           {% else %}
           <!-- Для неавторизованных пользователей - Вход и Регистрация -->
           <li class="nav-item">
-            <a class="nav-link" href="/login/">
+            <a class="nav-link" href="{% url 'users:login' %}">
               <i class="bi bi-box-arrow-in-right"></i> Вход
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/users/create/">
+            <a class="nav-link" href="{% url 'users:create' %}">
               <i class="bi bi-person-plus"></i> Регистрация
             </a>
           </li>
@@ -87,7 +87,7 @@
     
     <footer class="border-top py-3 text-center">
       <div>
-        <a href="https://github.com/oleg-dixon/"
+        <a href="https://github.com/oleg-dixon/python-project-52.git"
            target="_blank" 
            rel="noopener noreferrer"
            class="text-decoration-none link-primary link-underline-opacity-0 link-underline-opacity-75-hover">

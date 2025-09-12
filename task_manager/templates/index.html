@@ -3,7 +3,7 @@
 {% block title %}Главная - Менеджер задач Hexlet{% endblock %}
 
 {% block content %}
-<div class="d-flex align-items-center justify-content-center" style="min-height: 70vh;">
+<div class="d-flex align-items-center justify-content-center" style="min-height: 50vh;">
     <div class="card" style="max-width: 800px; width: 100%;">
         <div class="card-body p-5 bg-light text-center">
             <div class="display-4 mb-4 fw-bold">
@@ -14,6 +14,66 @@
                 Для работы с системой требуется регистрация и аутентификация.
             </p>
             <hr class="my-4">
+            
+            {% if user.is_authenticated %}
+            <div class="mt-4">
+                <p class="text-success mb-3">
+                    <i class="bi bi-check-circle-fill"></i> Рады снова видеть вас, {{ user.username }}!
+                </p>
+                <div class="d-grid gap-2 d-md-flex justify-content-center">
+                    <a href="{% url 'tasks' %}" class="btn btn-primary btn-lg me-md-2">
+                        <i class="bi bi-card-checklist"></i> Перейти к задачам
+                    </a>
+                    <a href="{% url 'statuses' %}" class="btn btn-outline-primary btn-lg">
+                        <i class="bi bi-circle-half"></i> Статусы
+                    </a>
+                </div>
+            </div>
+            {% else %}
+            <div class="mt-4">
+                <p class="mb-3">Начните работу прямо сейчас</p>
+                <div class="d-grid gap-2 d-md-flex justify-content-center">
+                    <a href="{% url 'users:login' %}" class="btn btn-primary btn-lg me-md-2">
+                        <i class="bi bi-box-arrow-in-right"></i> Войти
+                    </a>
+                    <a href="{% url 'users:create' %}" class="btn btn-outline-primary btn-lg">
+                        <i class="bi bi-person-plus"></i> Зарегистрироваться
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <i class="bi bi-card-checklist display-4 text-primary"></i>
+                    <h5 class="card-title mt-3">Управление задачами</h5>
+                    <p class="card-text">Создавайте, редактируйте и отслеживайте статус выполнения задач</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <i class="bi bi-tag display-4 text-success"></i>
+                    <h5 class="card-title mt-3">Метки и статусы</h5>
+                    <p class="card-text">Организуйте задачи с помощью меток и отслеживайте их статус</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <i class="bi bi-people display-4 text-info"></i>
+                    <h5 class="card-title mt-3">Работа в команде</h5>
+                    <p class="card-text">Назначайте задачи другим пользователям и работайте вместе</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
