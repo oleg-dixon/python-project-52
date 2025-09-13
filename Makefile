@@ -11,3 +11,9 @@ render-start:
 
 dev:
 	uv run manage.py runserver
+
+migrate:
+	uv run manage.py migrate
+
+collectstatic:
+	uv run manage.py collectstatic --noinput
