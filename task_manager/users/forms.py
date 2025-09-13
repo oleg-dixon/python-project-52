@@ -1,6 +1,7 @@
 from django import forms
+from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
-from .models import Users
+from .models import User
 from .validators import username_validator
 
 
@@ -34,20 +35,21 @@ class BaseUserForm(forms.ModelForm):
             'class': 'form-control',
             'placeholder': 'Введите имя пользователя'
         }),
-        help_text='Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_.'
+        help_text='Обязательное поле. '
+                ' Не более 150 символов. Только буквы, цифры и символы @/./+/-/_.'
     )
 
     class Meta:
-        model = Users
+        model = User
         fields = ['first_name', 'last_name', 'username']
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
         if hasattr(self, 'instance') and self.instance.pk:
-            if Users.objects.filter(username=username).exclude(pk=self.instance.pk).exists():
+            if User.objects.filter(username=username).exclude(pk=self.instance.pk).exists():
                 raise ValidationError('Пользователь с таким именем уже существует.')
         else:
-            if Users.objects.filter(username=username).exists():
+            if User.objects.filter(username=username).exists():
                 raise ValidationError('Пользователь с таким именем уже существует.')
         return username
 
@@ -96,40 +98,43 @@ class UserCreateForm(BaseUserForm):
     
 
 class UserUpdateForm(BaseUserForm):
-    password = forms.CharField(
+    password = ReadOnlyPasswordHashField(
+        label="Пароль",
+        help_text=(
+            "Пароли хранятся в зашифрованном виде. "
+            "Чтобы изменить пароль, используйте поле ниже."
+        ),
+    )
+
+    new_password = forms.CharField(
         required=False,
         min_length=3,
         label='Новый пароль',
-        widget=forms.PasswordInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Введите новый пароль (если нужно изменить)'
-        }),
-        help_text='Оставьте пустым, если не хотите менять пароль. Минимум 3 символа.'
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control', 'placeholder': 'Введите новый пароль'}
+        ),
+        help_text='Оставьте пустым, если не хотите менять пароль.',
     )
-    
-    password_confirm = forms.CharField(
+
+    new_password_confirm = forms.CharField(
         required=False,
         label='Подтверждение нового пароля',
-        widget=forms.PasswordInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Подтвердите новый пароль'
-        }),
-        help_text='Для подтверждения введите, пожалуйста, новый пароль ещё раз.'
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control', 'placeholder': 'Подтвердите новый пароль'}
+        ),
     )
 
     def clean(self):
         cleaned_data = super().clean()
-        password = cleaned_data.get("password")
-        password_confirm = cleaned_data.get("password_confirm")
-        
+        password = cleaned_data.get("new_password")
+        password_confirm = cleaned_data.get("new_password_confirm")
         if password and password != password_confirm:
-            raise ValidationError("Пароли не совпадают")
-        
+            raise ValidationError("Новый пароль и подтверждение не совпадают")
         return cleaned_data
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        password = self.cleaned_data.get("password")
+        password = self.cleaned_data.get("new_password")
         if password:
             user.set_password(password)
         if commit:

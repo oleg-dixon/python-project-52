@@ -18,7 +18,7 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(username, password, **extra_fields)
 
-class Users(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(
         max_length=150,
         unique=True,
@@ -59,5 +59,5 @@ class Users(AbstractBaseUser, PermissionsMixin):
     
     class Meta:
         db_table = 'users'
-        verbose_name = 'user'
-        verbose_name_plural = 'users'
+        verbose_name = 'пользователь'
+        verbose_name_plural = 'пользователи'

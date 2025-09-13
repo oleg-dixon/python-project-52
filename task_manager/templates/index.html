@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Главная - Менеджер задач Hexlet{% endblock %}
+{% block title %}Главная | Менеджер задач{% endblock %}
 
 {% block content %}
 <div class="d-flex align-items-center justify-content-center" style="min-height: 50vh;">
@@ -21,17 +21,17 @@
                     <i class="bi bi-check-circle-fill"></i> Рады снова видеть вас, {{ user.username }}!
                 </p>
                 <div class="d-grid gap-2 d-md-flex justify-content-center">
-                    <a href="{% url 'tasks' %}" class="btn btn-primary btn-lg me-md-2">
+                    <a href="{% url 'tasks:index' %}" class="btn btn-primary btn-lg me-md-2">
                         <i class="bi bi-card-checklist"></i> Перейти к задачам
                     </a>
-                    <a href="{% url 'statuses' %}" class="btn btn-outline-primary btn-lg">
+                    <a href="{% url 'statuses:index' %}" class="btn btn-outline-primary btn-lg">
                         <i class="bi bi-circle-half"></i> Статусы
                     </a>
                 </div>
             </div>
             {% else %}
             <div class="mt-4">
-                <p class="mb-3">Начните работу прямо сейчас</p>
+                <p class="mb-3">Начните работу прямо сейчас!</p>
                 <div class="d-grid gap-2 d-md-flex justify-content-center">
                     <a href="{% url 'users:login' %}" class="btn btn-primary btn-lg me-md-2">
                         <i class="bi bi-box-arrow-in-right"></i> Войти

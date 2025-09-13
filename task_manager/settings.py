@@ -49,7 +49,7 @@ LOGIN_REDIRECT_URL = 'root'
 
 LOGIN_URL = 'login'
 
-AUTH_USER_MODEL = 'users.Users'
+AUTH_USER_MODEL = 'users.User'
 
 TIME_ZONE = 'Europe/Moscow'
 
@@ -67,6 +67,9 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'task_manager',
     'task_manager.users',
+    'task_manager.statuses',
+    'task_manager.tags',
+    'task_manager.tasks',
 ]
 
 MIDDLEWARE = [

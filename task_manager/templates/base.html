@@ -27,17 +27,17 @@
           {% if user.is_authenticated %}
           <!-- Эти пункты показываются только авторизованным пользователям -->
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'statuses' %}">
+            <a class="nav-link" href="{% url 'statuses:index' %}">
               <i class="bi bi-circle-half"></i> Статусы
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'labels' %}">
+            <a class="nav-link" href="{% url 'tags:index' %}">
               <i class="bi bi-tag"></i> Метки
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'tasks' %}">
+            <a class="nav-link" href="{% url 'tasks:index' %}">
               <i class="bi bi-card-checklist"></i> Задачи
             </a>
           </li>
