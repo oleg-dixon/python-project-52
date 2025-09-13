@@ -22,22 +22,22 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(
         max_length=150,
         unique=True,
+        verbose_name='Имя пользователя',
         validators=[username_validator],
         error_messages={
-            'unique': ("Пользователь с таким именем уже существует."),
+            'unique': "Пользователь с таким именем уже существует.",
         },
     )
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=150)
-    password = models.CharField(max_length=128)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    first_name = models.CharField(max_length=30, verbose_name='Имя')
+    last_name = models.CharField(max_length=150, verbose_name='Фамилия')
+    password = models.CharField(max_length=128, verbose_name='Пароль')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
     
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-    
-    USERNAME_FIELD = 'username'
+    is_active = models.BooleanField(default=True, verbose_name='Активен')
+    is_staff = models.BooleanField(default=False, verbose_name='Сотрудник')
 
+    USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['first_name', 'last_name']
     
     objects = UserManager()
@@ -49,7 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         return check_password(raw_password, self.password)
     
     def __str__(self):
-        return f'{self.username}'
+        return self.username
     
     def get_local_created_at(self):
         return localtime(self.created_at)

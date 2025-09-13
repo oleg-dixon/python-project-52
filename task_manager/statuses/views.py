@@ -3,7 +3,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
 from .models import Status
 from .forms import StatusForm
-
+from task_manager.mixins import StatusPermissionMixin
 
 class StatusListView(ListView):
     model = Status
@@ -20,16 +20,16 @@ class StatusCreateView(SuccessMessageMixin, CreateView):
     success_message = 'Статус успешно создан'
 
 
-class StatusUpdateView(SuccessMessageMixin, UpdateView):
+class StatusUpdateView(StatusPermissionMixin, UpdateView):
     model = Status
     form_class = StatusForm
     template_name = 'statuses/update.html'
     success_url = reverse_lazy('statuses:index')
-    success_message = 'Статус успешно изменён'
+    success_message = 'Статус успешно изменен'
 
 
-class StatusDeleteView(SuccessMessageMixin, DeleteView):
+class StatusDeleteView(StatusPermissionMixin, DeleteView):
     model = Status
     template_name = 'statuses/delete.html'
     success_url = reverse_lazy('statuses:index')
-    success_message = 'Статус успешно удалён'
+    success_message = 'Статус успешно удален'

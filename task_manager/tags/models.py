@@ -3,9 +3,19 @@ from django.utils.timezone import localtime
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=200, unique=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    name = models.CharField(
+        max_length=200,
+        unique=True,
+        verbose_name='Название метки'
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Дата создания'
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name='Дата обновления'
+    )
 
     def __str__(self):
         return self.name
@@ -20,4 +30,3 @@ class Tag(models.Model):
         db_table = 'tags'
         verbose_name = 'метка'
         verbose_name_plural = 'метки'
- 

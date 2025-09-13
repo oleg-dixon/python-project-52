@@ -3,7 +3,11 @@ from django.utils.timezone import localtime
 
 
 class Status(models.Model):
-    name = models.CharField(max_length=200, unique=True)
+    name = models.CharField(
+        max_length=200,
+        unique=True,
+        verbose_name='Название статуса'
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

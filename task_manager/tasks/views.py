@@ -27,7 +27,7 @@ class TaskCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         return super().form_valid(form)
 
 
-class TaskUpdateView(TaskPermissionMixin, SuccessMessageMixin, UpdateView):
+class TaskUpdateView(TaskPermissionMixin, UpdateView):
     model = Task
     form_class = TaskForm
     template_name = 'tasks/update.html'
@@ -35,7 +35,7 @@ class TaskUpdateView(TaskPermissionMixin, SuccessMessageMixin, UpdateView):
     success_message = 'Задача успешно изменена'
 
 
-class TaskDeleteView(TaskPermissionMixin, SuccessMessageMixin, DeleteView):
+class TaskDeleteView(TaskPermissionMixin, DeleteView):
     model = Task
     template_name = 'tasks/delete.html'
     success_url = reverse_lazy('tasks:index')

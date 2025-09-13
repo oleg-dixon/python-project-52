@@ -21,9 +21,15 @@
                     <h5>Информация о задаче:</h5>
                     <ul class="list-unstyled">
                         <li><strong>Название:</strong> {{ object.name }}</li>
-                        <li><strong>Статус:</strong> {{ object.status }}</li>
+                        <li><strong>Статус:</strong> {{ object.status|default:"-" }}</li>
                         <li><strong>Автор:</strong> {{ object.author.username }}</li>
-                        <li><strong>Исполнитель:</strong> {{ object.executor.username if object.executor else "-" }}</li>
+                        <li><strong>Исполнитель:</strong>
+                            {% if object.executor %}
+                                {{ object.executor.username }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </li>
                         <li><strong>Теги:</strong>
                             {% for tag in object.tags.all %}
                                 <span class="badge bg-secondary">{{ tag.name }}</span>
@@ -43,7 +49,7 @@
                         <button type="submit" class="btn btn-danger me-md-2">
                             <i class="bi bi-trash"></i> Да, удалить
                         </button>
-                        <a href="{% url 'tasks' %}" class="btn btn-outline-secondary">
+                        <a href="{% url 'tasks:index' %}" class="btn btn-outline-secondary">
                             <i class="bi bi-arrow-left"></i> Отмена
                         </a>
                     </div>

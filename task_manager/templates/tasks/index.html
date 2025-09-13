@@ -25,7 +25,13 @@
         <tr>
             <td>{{ task.id }}</td>
             <td>{{ task.name }}</td>
-            <td>{{ task.status }}</td>
+            <td>
+                {% if task.status %}
+                    {{ task.status }}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
             <td>{{ task.author.username }}</td>
             <td>
                 {% if task.executor %}

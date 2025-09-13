@@ -3,6 +3,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
 from .models import Tag
 from .forms import TagForm
+from task_manager.mixins import TagPermissionMixin
 
 
 class TagListView(ListView):
@@ -20,7 +21,7 @@ class TagCreateView(SuccessMessageMixin, CreateView):
     success_message = 'Метка успешно создана'
 
 
-class TagUpdateView(SuccessMessageMixin, UpdateView):
+class TagUpdateView(TagPermissionMixin, UpdateView):
     model = Tag
     form_class = TagForm
     template_name = 'tags/update.html'
@@ -28,7 +29,7 @@ class TagUpdateView(SuccessMessageMixin, UpdateView):
     success_message = 'Метка успешно изменена'
 
 
-class TagDeleteView(SuccessMessageMixin, DeleteView):
+class TagDeleteView(TagPermissionMixin, DeleteView):
     model = Tag
     template_name = 'tags/delete.html'
     success_url = reverse_lazy('tags:index')
