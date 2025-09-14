@@ -1,0 +1,56 @@
+[
+{
+  "model": "statuses.status",
+  "pk": 3,
+  "fields": {
+    "name": "Готово",
+    "created_at": "2025-09-13T11:13:50.609Z",
+    "updated_at": "2025-09-13T11:13:50.609Z"
+  }
+},
+{
+  "model": "statuses.status",
+  "pk": 6,
+  "fields": {
+    "name": "123",
+    "created_at": "2025-09-14T10:07:21.167Z",
+    "updated_at": "2025-09-14T10:07:21.167Z"
+  }
+},
+{
+  "model": "statuses.status",
+  "pk": 7,
+  "fields": {
+    "name": "frfr",
+    "created_at": "2025-09-14T10:07:25.105Z",
+    "updated_at": "2025-09-14T10:07:25.105Z"
+  }
+},
+{
+  "model": "statuses.status",
+  "pk": 8,
+  "fields": {
+    "name": "vvv",
+    "created_at": "2025-09-14T10:07:29.102Z",
+    "updated_at": "2025-09-14T10:07:29.102Z"
+  }
+},
+{
+  "model": "statuses.status",
+  "pk": 9,
+  "fields": {
+    "name": "vsdsd",
+    "created_at": "2025-09-14T10:07:32.066Z",
+    "updated_at": "2025-09-14T10:07:32.066Z"
+  }
+},
+{
+  "model": "statuses.status",
+  "pk": 10,
+  "fields": {
+    "name": "В работе",
+    "created_at": "2025-09-14T10:09:12.652Z",
+    "updated_at": "2025-09-14T10:09:12.652Z"
+  }
+}
+]

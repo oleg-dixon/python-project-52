@@ -1,0 +1,92 @@
+[
+{
+  "model": "users.user",
+  "pk": 1,
+  "fields": {
+    "last_login": "2025-09-14T10:07:11.755Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "Oleg",
+    "last_name": "Dixon",
+    "password": "pbkdf2_sha256$1000000$osxDgJzMbJEL3fdqbxr3CP$sYSk7fQB9aQuHkTJsqmM/v93ipgo8XmUFgRq7vV6Gsg=",
+    "created_at": "2025-09-13T10:22:21.521Z",
+    "updated_at": "2025-09-13T10:22:21.521Z",
+    "is_active": true,
+    "is_staff": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 2,
+  "fields": {
+    "last_login": "2025-09-13T10:58:49.591Z",
+    "is_superuser": false,
+    "username": "Papa",
+    "first_name": "Папа",
+    "last_name": "Дюкарев",
+    "password": "pbkdf2_sha256$1000000$wcCGNOIAi3ug1cDZxj078X$ZkJMMSXqMMrSWTnMria0j9gN+R7Ikgu9llu62i8nxV4=",
+    "created_at": "2025-09-13T10:58:40.317Z",
+    "updated_at": "2025-09-14T10:10:46.145Z",
+    "is_active": true,
+    "is_staff": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 3,
+  "fields": {
+    "last_login": "2025-09-14T09:45:21.030Z",
+    "is_superuser": false,
+    "username": "Maria",
+    "first_name": "Мария",
+    "last_name": "Дюкарева",
+    "password": "pbkdf2_sha256$1000000$KVri2kGcT6l1fUapxr8kwE$O8KDZNBsr38wqOyIYYIYXTgUHrw/wKfpA1j2mqexrns=",
+    "created_at": "2025-09-14T09:44:58.949Z",
+    "updated_at": "2025-09-14T10:10:33.758Z",
+    "is_active": true,
+    "is_staff": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 4,
+  "fields": {
+    "last_login": null,
+    "is_superuser": false,
+    "username": "Diana",
+    "first_name": "Диана",
+    "last_name": "Дюкарева",
+    "password": "pbkdf2_sha256$1000000$Z5kvmjOVyxyMrkLbun5996$EjrUG4Ue8qMR0AXxYIfgDsBvhFItM9VISykaWYqJuCg=",
+    "created_at": "2025-09-14T10:09:50.775Z",
+    "updated_at": "2025-09-14T10:09:50.775Z",
+    "is_active": true,
+    "is_staff": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 5,
+  "fields": {
+    "last_login": null,
+    "is_superuser": false,
+    "username": "Sofia",
+    "first_name": "София",
+    "last_name": "Дюкарева",
+    "password": "pbkdf2_sha256$1000000$hwhB2sanWDT7zOPEeOVn7F$9N+VaBr9PypzocDjsCoKoetjUWpwoZhvD4Gxhu2wzA8=",
+    "created_at": "2025-09-14T10:10:15.965Z",
+    "updated_at": "2025-09-14T10:10:15.965Z",
+    "is_active": true,
+    "is_staff": false,
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]
