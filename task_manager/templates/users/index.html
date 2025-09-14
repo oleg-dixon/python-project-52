@@ -26,8 +26,8 @@
                     <td>{{ local_created|date:"d.m.Y H:i" }}</td>
                 {% endwith %}
                 <td class="text-end">
-                    <a href="#" class="btn btn-primary btn-sm">Изменить</a>
-                    <a href="#" class="btn btn-danger btn-sm">Удалить</a>
+                    <a href="{% url 'users:update' user.id %}" class="btn btn-primary btn-sm">Изменить</a>
+                    <a href="{% url 'users:delete' user.id %}" class="btn btn-danger btn-sm">Удалить</a>
                 </td>
             </tr>
             {% empty %}

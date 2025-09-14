@@ -9,7 +9,12 @@ from django.contrib.messages.views import SuccessMessageMixin
 from task_manager.mixins import UserPermissionMixin
 from .models import User
 from .forms import UserCreateForm, UserUpdateForm
+from django.contrib.auth.views import LoginView
+from .forms import CustomLoginForm
 
+
+class CustomLoginView(LoginView):
+    authentication_form = CustomLoginForm
 
 
 class IndexView(ListView):

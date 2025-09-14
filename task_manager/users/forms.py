@@ -1,8 +1,25 @@
 from django import forms
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationForm
 from django.core.exceptions import ValidationError
 from .models import User
 from .validators import username_validator
+
+
+class CustomLoginForm(AuthenticationForm):
+    username = forms.CharField(
+        label="Имя пользователя",
+        widget=forms.TextInput(attrs={
+            "class": "form-control",
+            "placeholder": "Введите имя пользователя"
+        })
+    )
+    password = forms.CharField(
+        label="Пароль",
+        widget=forms.PasswordInput(attrs={
+            "class": "form-control",
+            "placeholder": "Введите пароль"
+        })
+    )
 
 
 class BaseUserForm(forms.ModelForm):
@@ -42,16 +59,6 @@ class BaseUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username']
-
-    def clean_username(self):
-        username = self.cleaned_data.get('username')
-        if hasattr(self, 'instance') and self.instance.pk:
-            if User.objects.filter(username=username).exclude(pk=self.instance.pk).exists():
-                raise ValidationError('Пользователь с таким именем уже существует.')
-        else:
-            if User.objects.filter(username=username).exists():
-                raise ValidationError('Пользователь с таким именем уже существует.')
-        return username
 
 
 class UserCreateForm(BaseUserForm):
@@ -98,13 +105,6 @@ class UserCreateForm(BaseUserForm):
     
 
 class UserUpdateForm(BaseUserForm):
-    password = ReadOnlyPasswordHashField(
-        label="Пароль",
-        help_text=(
-            "Пароли хранятся в зашифрованном виде. "
-            "Чтобы изменить пароль, используйте поле ниже."
-        ),
-    )
 
     new_password = forms.CharField(
         required=False,

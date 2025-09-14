@@ -5,6 +5,7 @@ from task_manager.users.views import (
     UserCreateView,
     UserUpdateView,
     UserDeleteView,
+    CustomLoginView,
 )
 
 app_name = 'users'
@@ -12,7 +13,7 @@ app_name = 'users'
 urlpatterns = [
     path("", IndexView.as_view(), name='index'),
     path('create/', UserCreateView.as_view(), name='create'),
-    path('login/', auth_views.LoginView.as_view(
+    path('login/', CustomLoginView.as_view(
         template_name='login.html',
         redirect_authenticated_user=True
     ), name='login'),

@@ -11,4 +11,3 @@ make install
 make migrate
 
 # Сборка статики для продакшн
-make collectstatic
