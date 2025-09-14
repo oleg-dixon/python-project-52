@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.timezone import localtime
+from django.conf import settings
 
 
 class Status(models.Model):
@@ -7,6 +8,14 @@ class Status(models.Model):
         max_length=200,
         unique=True,
         verbose_name='Название статуса'
+    )
+    creator = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='created_statuses',
+        verbose_name='Создатель'
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -4,7 +4,10 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Task
 from .forms import TaskForm
-from task_manager.mixins import TaskPermissionMixin
+from task_manager.mixins import (
+    TaskUpdatePermissionMixin,
+    TaskDeletePermissionMixin
+)
 
 
 class TaskListView(ListView):
@@ -27,7 +30,7 @@ class TaskCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         return super().form_valid(form)
 
 
-class TaskUpdateView(TaskPermissionMixin, UpdateView):
+class TaskUpdateView(TaskUpdatePermissionMixin, UpdateView):
     model = Task
     form_class = TaskForm
     template_name = 'tasks/update.html'
@@ -35,7 +38,7 @@ class TaskUpdateView(TaskPermissionMixin, UpdateView):
     success_message = 'Задача успешно изменена'
 
 
-class TaskDeleteView(TaskPermissionMixin, DeleteView):
+class TaskDeleteView(TaskDeletePermissionMixin, DeleteView):
     model = Task
     template_name = 'tasks/delete.html'
     success_url = reverse_lazy('tasks:index')

@@ -19,6 +19,10 @@ class StatusCreateView(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('statuses:index')
     success_message = 'Статус успешно создан'
 
+    def form_valid(self, form):
+        form.instance.creator = self.request.user
+        return super().form_valid(form)
+
 
 class StatusUpdateView(StatusPermissionMixin, UpdateView):
     model = Status

@@ -18,7 +18,24 @@ class UserPermissionMixin(LoginRequiredMixin, UserPassesTestMixin):
         return redirect('users:index')
 
 
-class TaskPermissionMixin(LoginRequiredMixin, UserPassesTestMixin):
+class TaskUpdatePermissionMixin(LoginRequiredMixin, UserPassesTestMixin):
+    login_url = reverse_lazy('users:login')
+
+    def test_func(self):
+        if self.request.user.is_superuser:
+            return True
+        task = self.get_object()
+        return (
+            self.request.user == task.author
+            or self.request.user == task.executor
+        )
+
+    def handle_no_permission(self):
+        messages.error(self.request, 'У вас нет прав для изменения этой задачи.')
+        return redirect('tasks:index')
+    
+
+class TaskDeletePermissionMixin(LoginRequiredMixin, UserPassesTestMixin):
     login_url = reverse_lazy('users:login')
 
     def test_func(self):
@@ -28,7 +45,7 @@ class TaskPermissionMixin(LoginRequiredMixin, UserPassesTestMixin):
         return self.request.user == task.author
 
     def handle_no_permission(self):
-        messages.error(self.request, 'У вас нет прав для изменения этой задачи.')
+        messages.error(self.request, 'У вас нет прав для удаления этой задачи.')
         return redirect('tasks:index')
 
 
@@ -39,7 +56,7 @@ class StatusPermissionMixin(LoginRequiredMixin, UserPassesTestMixin):
         if self.request.user.is_superuser:
             return True
         status = self.get_object()
-        return False
+        return status.creator == self.request.user
 
     def handle_no_permission(self):
         messages.error(self.request, 'У вас нет прав для изменения этого статуса.')
@@ -52,7 +69,8 @@ class TagPermissionMixin(LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         if self.request.user.is_superuser:
             return True
-        return False  #
+        tag = self.get_object()
+        return tag.creator == self.request.user
 
     def handle_no_permission(self):
         messages.error(self.request, 'У вас нет прав для изменения этой метки.')

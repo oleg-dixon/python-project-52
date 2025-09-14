@@ -20,6 +20,10 @@ class TagCreateView(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('tags:index')
     success_message = 'Метка успешно создана'
 
+    def form_valid(self, form):
+        form.instance.creator = self.request.user
+        return super().form_valid(form)
+
 
 class TagUpdateView(TagPermissionMixin, UpdateView):
     model = Tag
