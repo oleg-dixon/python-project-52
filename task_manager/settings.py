@@ -51,10 +51,6 @@ LOGIN_URL = 'login'
 
 AUTH_USER_MODEL = 'users.User'
 
-TIME_ZONE = 'Europe/Moscow'
-
-USE_TZ = True
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -135,9 +131,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
