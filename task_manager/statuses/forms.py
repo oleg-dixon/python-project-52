@@ -19,5 +19,5 @@ class StatusForm(forms.ModelForm):
         if self.instance.pk:
             qs = qs.exclude(pk=self.instance.pk)
         if qs.exists():
-            raise forms.ValidationError("Статус с таким именем уже существует")
+            raise forms.ValidationError("Статус с таким названием уже существует.")
         return name

@@ -9,47 +9,44 @@ class UsersTest(TestCase):
     fixtures = ["users.json"]
 
     def setUp(self):
-        """Настройка пользователей для тестов"""
-        # Пользователь из фикстуры
+        """Настройка пользователей для тестов."""
         self.user = User.objects.get(pk=1)
         self.client.force_login(self.user)
 
-        # Дополнительные пользователи для новых тестов
+        # Дополнительные пользователи для тестов обновления/удаления
         self.user1 = User.objects.create(
-            username='Alice_test', 
-            password='password123'
+            username="Alice_test",
+            password="password123"
         )
         self.user2 = User.objects.create(
-            username='Oleg_test',
-            password='password123'
+            username="Oleg_test",
+            password="password123"
         )
 
     # ----- 1. Тесты обновления пользователя -----
     def test_update_name_and_lastname(self):
-        """Проверка успешного обновления имени и фамилии"""
-        update_url = reverse('users:update', kwargs={'pk': 1})
+        """Проверка успешного обновления имени и фамилии."""
+        update_url = reverse("users:update", kwargs={"pk": self.user.pk})
         response = self.client.post(
             update_url,
             data={
                 "first_name": "Bob",
                 "last_name": "Smith",
-                "username": "admin",
+                "username": self.user.username,
                 "new_password": "",
-                "new_password_confirm": ""
+                "new_password_confirm": "",
             },
-            follow=True
+            follow=True,
         )
-        user = User.objects.get(pk=1)
-        self.assertEqual(user.first_name, "Bob")
-        self.assertEqual(user.last_name, "Smith")
-
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.first_name, "Bob")
+        self.assertEqual(self.user.last_name, "Smith")
         self.assertContains(response, "<td>Bob Smith</td>", html=True)
         self.assertNotContains(response, "<td>Oleg Dixon</td>", html=True)
 
-    
     def test_update_username_unique_validation(self):
-        """Нельзя установить существующее имя пользователя"""
-        update_url = reverse('users:update', kwargs={'pk': 1})
+        """Нельзя установить существующее имя пользователя."""
+        update_url = reverse("users:update", kwargs={"pk": self.user.pk})
         response = self.client.post(
             update_url,
             data={
@@ -57,19 +54,17 @@ class UsersTest(TestCase):
                 "last_name": "Dixon",
                 "username": "Maria",
                 "new_password": "",
-                "new_password_confirm": ""
-            }
+                "new_password_confirm": "",
+            },
         )
-        form = response.context['form']
+        form = response.context["form"]
         self.assertFormError(
-            form, 
-            'username',
-            'Пользователь с таким именем уже существует.'
+            form, "username", "Пользователь с таким именем уже существует."
         )
 
     def test_update_username_empty(self):
-        """Нельзя оставить пустое имя пользователя при обновлении"""
-        update_url = reverse('users:update', kwargs={'pk': 1})
+        """Нельзя оставить пустое имя пользователя при обновлении."""
+        update_url = reverse("users:update", kwargs={"pk": self.user.pk})
         response = self.client.post(
             update_url,
             data={
@@ -77,57 +72,49 @@ class UsersTest(TestCase):
                 "last_name": "Dixon",
                 "username": "",
                 "new_password": "",
-                "new_password_confirm": ""
-            }
+                "new_password_confirm": "",
+            },
         )
-        form = response.context['form']
-        self.assertFormError(
-            form,
-            'username',
-            'Обязательное поле.'
-        )
+        form = response.context["form"]
+        self.assertFormError(form, "username", "Обязательное поле.")
 
     def test_update_password_success(self):
-        """Проверка успешного изменения пароля"""
-        update_url = reverse('users:update', kwargs={'pk': 1})
-        response = self.client.post(
+        """Успешная смена пароля пользователя."""
+        update_url = reverse("users:update", kwargs={"pk": self.user.pk})
+        self.client.post(
             update_url,
             data={
                 "first_name": "Oleg",
                 "last_name": "Dixon",
-                "username": "admin",
+                "username": self.user.username,
                 "new_password": "new_pass123",
-                "new_password_confirm": "new_pass123"
+                "new_password_confirm": "new_pass123",
             },
-            follow=True
+            follow=True,
         )
-        user = User.objects.get(pk=1)
-        self.assertTrue(user.check_password("new_pass123"))
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password("new_pass123"))
 
     def test_update_password_mismatch(self):
-        """Ошибка при несоответствии нового пароля и подтверждения"""
-        update_url = reverse('users:update', kwargs={'pk': 1})
+        """Ошибка при несоответствии нового пароля и подтверждения."""
+        update_url = reverse("users:update", kwargs={"pk": self.user.pk})
         response = self.client.post(
             update_url,
             data={
                 "first_name": "Oleg",
                 "last_name": "Dixon",
-                "username": "admin",
+                "username": self.user.username,
                 "new_password": "new_pass123",
-                "new_password_confirm": "different_pass"
-            }
+                "new_password_confirm": "different_pass",
+            },
         )
-        form = response.context['form']
-        self.assertFormError(
-            form, 
-            None,
-            "Новый пароль и подтверждение не совпадают"
-        )
+        form = response.context["form"]
+        self.assertFormError(form, None, "Новый пароль и подтверждение не совпадают")
 
-    # # ----- 2. Тесты создания пользователя -----
+    # ----- 2. Тесты создания пользователя -----
     def test_create_user_success(self):
-        """Создание нового пользователя через форму"""
-        create_url = reverse('users:create')
+        """Создание нового пользователя через форму."""
+        create_url = reverse("users:create")
         response = self.client.post(
             create_url,
             data={
@@ -135,20 +122,19 @@ class UsersTest(TestCase):
                 "last_name": "Brown",
                 "username": "alice",
                 "password": "alice123",
-                "password_confirm": "alice123"
+                "password_confirm": "alice123",
             },
-            follow=True
+            follow=True,
         )
         user = User.objects.get(username="alice")
         self.assertEqual(user.first_name, "Alice")
         self.assertEqual(user.last_name, "Brown")
         self.assertTrue(user.check_password("alice123"))
-        response = self.client.get(reverse('users:index'))
-        self.assertContains(response, "Alice Brown")
+        self.assertContains(response, "Пользователь успешно зарегистрирован")
 
     def test_create_user_password_mismatch(self):
-        """Ошибка при несовпадении пароля и подтверждения"""
-        create_url = reverse('users:create')
+        """Ошибка при несовпадении пароля и подтверждения."""
+        create_url = reverse("users:create")
         response = self.client.post(
             create_url,
             data={
@@ -156,19 +142,15 @@ class UsersTest(TestCase):
                 "last_name": "Green",
                 "username": "charlie",
                 "password": "pass123",
-                "password_confirm": "pass456"
-            }
+                "password_confirm": "pass456",
+            },
         )
-        form = response.context['form']
-        self.assertFormError(
-            form,
-            None,
-            "Пароли не совпадают"
-        )
+        form = response.context["form"]
+        self.assertFormError(form, None, "Пароли не совпадают")
 
     def test_create_user_username_empty(self):
-        """Ошибка при создании пользователя с пустым username"""
-        create_url = reverse('users:create')
+        """Ошибка при создании пользователя с пустым username."""
+        create_url = reverse("users:create")
         response = self.client.post(
             create_url,
             data={
@@ -176,91 +158,70 @@ class UsersTest(TestCase):
                 "last_name": "Lee",
                 "username": "",
                 "password": "pass123",
-                "password_confirm": "pass123"
-            }
+                "password_confirm": "pass123",
+            },
         )
-        form = response.context['form']
-        self.assertFormError(
-            form,
-            'username',
-            'Обязательное поле.'
-        )
+        form = response.context["form"]
+        self.assertFormError(form, "username", "Обязательное поле.")
 
     def test_create_user_username_exists(self):
-        """Ошибка при создании пользователя с существующим username"""
-        create_url = reverse('users:create')
+        """Ошибка при создании пользователя с существующим username."""
+        create_url = reverse("users:create")
         response = self.client.post(
             create_url,
             data={
                 "first_name": "Eve",
                 "last_name": "Black",
-                "username": "admin",
+                "username": self.user.username,
                 "password": "pass123",
-                "password_confirm": "pass123"
-            }
+                "password_confirm": "pass123",
+            },
         )
-        form = response.context['form']
-        self.assertFormError(
-            form,
-            'username',
-            'Пользователь с таким именем уже существует.'
-        )
+        form = response.context["form"]
+        self.assertFormError(form, "username", "Пользователь с таким именем уже существует.")
 
-    # # ----- 3. Тесты новых пользователей -----
+    # ----- 3. Тесты отправки пустой формы -----
     def test_user_creation_form_error(self):
-        """Отправка пустой формы при создании пользователя"""
-        response = self.client.post(reverse('users:create'), {}, follow=True)
-        form = response.context['form']
-        self.assertFormError(
-            form,
-            'username',
-            'Обязательное поле.'
-        )
-        self.assertFormError(
-            form,
-            'password',
-            'Обязательное поле.'
-        )
+        """Отправка пустой формы при создании пользователя."""
+        response = self.client.post(reverse("users:create"), {}, follow=True)
+        form = response.context["form"]
+        self.assertFormError(form, "username", "Обязательное поле.")
+        self.assertFormError(form, "password", "Обязательное поле.")
 
     def test_user_creation_success(self):
-        """Успешное создание нового пользователя"""
+        """Успешное создание нового пользователя."""
         data = {
             "first_name": "Boby",
             "last_name": "Firston",
-            'username': 'Bob',
-            'password': 'password123',
-            'password_confirm': 'password123',
+            "username": "Bob",
+            "password": "password123",
+            "password_confirm": "password123",
         }
-        response = self.client.post(reverse('users:create'), data, follow=True)
-
-    
+        response = self.client.post(reverse("users:create"), data, follow=True)
         self.assertTrue(User.objects.filter(username="Bob").exists())
         self.assertContains(response, "Пользователь успешно зарегистрирован")
 
-    # # ----- 4. Тесты обновления и удаления нового пользователя -----
+    # ----- 4. Тесты обновления и удаления новых пользователей -----
     def test_user_update(self):
-        """Обновление username существующего пользователя"""
+        """Обновление username существующего пользователя."""
         data = {
             "first_name": "Alisha",
             "last_name": "Perkinton",
-            'username': 'AliceUpdated',
-            'password': 'pswd555',
-            'password_confirm': 'pswd555',
+            "username": "AliceUpdated",
+            "new_password": "",
+            "new_password_confirm": "",
         }
         response = self.client.post(
-            reverse('users:update', args=[self.user1.id]),
-            data,
-            follow=True
+            reverse("users:update", args=[self.user1.id]), data, follow=True
         )
         self.user1.refresh_from_db()
-        self.assertEqual(self.user1.username, 'AliceUpdated')
-        self.assertContains(response, 'Пользователь успешно изменен')
+        self.assertEqual(self.user1.username, "AliceUpdated")
+        self.assertContains(response, "Пользователь успешно изменен")
 
     def test_user_delete(self):
-        """Удаление существующего пользователя"""
+        """Удаление существующего пользователя."""
         response = self.client.post(
-            reverse('users:delete', args=[self.user2.id]),
-            follow=True
+            reverse("users:delete", args=[self.user2.id]), follow=True
         )
-        self.assertContains(response, 'Пользователь успешно удален')
+        self.assertContains(response, "Пользователь успешно удален")
         self.assertFalse(User.objects.filter(id=self.user2.id).exists())
