@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %}
+{% if action == 'delete' %}Удаление задачи{% elif action == 'update' %}Изменение задачи{% else %}Создание задачи{% endif %} | Менеджер задач
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">
+        {% if action == 'delete' %}Удаление задачи{% elif action == 'update' %}Изменение задачи{% else %}Создание задачи{% endif %}
+    </h1>
+
+    {% if action == 'delete' %}
+    <!-- Удаление -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-danger text-white">
+            <h4 class="card-title mb-0 text-center">
+                <i class="bi bi-exclamation-triangle"></i> Внимание!
+            </h4>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-warning" role="alert">
+                <h5 class="alert-heading">Внимание!</h5>
+                <p>Вы собираетесь удалить задачу. Это действие невозможно отменить.</p>
+            </div>
+
+            <div class="task-info mb-4 p-3 bg-light rounded">
+                <h5>Информация о задаче:</h5>
+                <ul class="list-unstyled">
+                    <li><strong>Название:</strong> {{ object.name }}</li>
+                    <li><strong>Статус:</strong> {{ object.status|default:"-" }}</li>
+                    <li><strong>Автор:</strong> {{ object.author.username }}</li>
+                    <li><strong>Исполнитель:</strong>
+                        {% if object.executor %}{{ object.executor.username }}{% else %}-{% endif %}
+                    </li>
+                    <li><strong>Теги:</strong>
+                        {% for tag in object.tags.all %}
+                            <span class="badge bg-secondary">{{ tag.name }}</span>
+                        {% empty %}-{% endfor %}
+                    </li>
+                    <li><strong>Дата создания:</strong> {{ object.get_local_created_at|date:"d.m.Y H:i" }}</li>
+                    <li><strong>Дата обновления:</strong> {{ object.get_local_updated_at|date:"d.m.Y H:i" }}</li>
+                </ul>
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                    <button type="submit" class="btn btn-danger me-md-2">
+                        <i class="bi bi-trash"></i> Да, удалить
+                    </button>
+                    <a href="{% url 'tasks:index' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> Отмена
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% else %}
+    <!-- Создание / Изменение -->
+    <form method="post" class="card p-4" novalidate>
+        {% csrf_token %}
+
+        {% bootstrap_form form show_labels=True show_errors=True %}
+
+        <div class="d-grid gap-2 mt-3">
+            <button type="submit" class="btn btn-primary btn-lg">
+                {% if action == 'update' %}Сохранить изменения{% else %}Создать{% endif %}
+            </button>
+            <a href="{% url 'tasks:index' %}" class="btn btn-outline-secondary btn-lg">Отмена</a>
+        </div>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

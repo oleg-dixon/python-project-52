@@ -20,7 +20,7 @@ class TaskListView(ListView):
 class TaskCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Task
     form_class = TaskForm
-    template_name = 'tasks/create.html'
+    template_name = 'tasks/task_form.html'
     success_url = reverse_lazy('tasks:index')
     success_message = 'Задача успешно создана'
     login_url = reverse_lazy('users:login')
@@ -28,18 +28,33 @@ class TaskCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'create'
+        return context
 
 
 class TaskUpdateView(TaskUpdatePermissionMixin, UpdateView):
     model = Task
     form_class = TaskForm
-    template_name = 'tasks/update.html'
+    template_name = 'tasks/task_form.html'
     success_url = reverse_lazy('tasks:index')
     success_message = 'Задача успешно изменена'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'update'
+        return context
 
 
 class TaskDeleteView(TaskDeletePermissionMixin, DeleteView):
     model = Task
-    template_name = 'tasks/delete.html'
+    template_name = 'tasks/task_form.html'
     success_url = reverse_lazy('tasks:index')
     success_message = 'Задача успешно удалена'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'delete'
+        return context

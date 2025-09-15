@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %}
+{% if action == 'delete' %}Удаление пользователя{% elif action == 'update' %}Изменение пользователя{% else %}Создание пользователя{% endif %} | Менеджер задач
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h1 class="text-center mb-4">
+                {% if action == 'delete' %}Удаление пользователя{% elif action == 'update' %}Изменение пользователя{% else %}Создание пользователя{% endif %}
+            </h1>
+
+            {% if action == 'delete' %}
+            <!-- Удаление -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="card-title mb-0 text-center">
+                        <i class="bi bi-exclamation-triangle"></i> Внимание!
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning" role="alert">
+                        <h5 class="alert-heading">Внимание!</h5>
+                        <p class="mb-0">Вы собираетесь удалить пользователя. Это действие невозможно отменить.</p>
+                    </div>
+
+                    <div class="user-info mb-4 p-3 bg-light rounded">
+                        <h5>Информация о пользователе:</h5>
+                        <ul class="list-unstyled">
+                            <li><strong>Имя пользователя:</strong> {{ user.username }}</li>
+                            <li><strong>Полное имя:</strong> {{ user.first_name }} {{ user.last_name }}</li>
+                            <li><strong>Дата регистрации:</strong> {{ user.get_local_created_at|date:"d.m.Y H:i" }}</li>
+                        </ul>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                            <button type="submit" class="btn btn-danger me-md-2">
+                                <i class="bi bi-trash"></i> Да, удалить
+                            </button>
+                            <a href="{% url 'users:index' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Отмена
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% else %}
+            <!-- Создание / Изменение -->
+            <form method="post" class="card p-4" novalidate>
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="mb-3">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% for error in field.errors %}
+                            <div class="invalid-feedback d-block">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        {% if action == 'update' %}Изменить{% else %}Зарегистрировать{% endif %}
+                    </button>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

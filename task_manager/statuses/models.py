@@ -9,14 +9,6 @@ class Status(models.Model):
         unique=True,
         verbose_name='Название статуса'
     )
-    creator = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='created_statuses',
-        verbose_name='Создатель'
-    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

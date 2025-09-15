@@ -14,7 +14,7 @@ class UserPermissionMixin(LoginRequiredMixin, UserPassesTestMixin):
         return self.request.user == user
 
     def handle_no_permission(self):
-        messages.error(self.request, 'У вас нет прав для изменения этого пользователя.')
+        messages.error(self.request, 'У вас нет прав для изменения другого пользователя.')
         return redirect('users:index')
 
 
@@ -49,18 +49,18 @@ class TaskDeletePermissionMixin(LoginRequiredMixin, UserPassesTestMixin):
         return redirect('tasks:index')
 
 
-class StatusPermissionMixin(LoginRequiredMixin, UserPassesTestMixin):
+class StatusPermissionMixin(LoginRequiredMixin):
     login_url = reverse_lazy('users:login')
 
-    def test_func(self):
-        if self.request.user.is_superuser:
-            return True
+    def dispatch(self, request, *args, **kwargs):
         status = self.get_object()
-        return status.creator == self.request.user
 
-    def handle_no_permission(self):
-        messages.error(self.request, 'У вас нет прав для изменения этого статуса.')
-        return redirect('statuses:index')
+        if request.method.lower() == 'post' and self.__class__.__name__ == 'StatusDeleteView':
+            if status.tasks.exists():
+                messages.error(request, 'Невозможно удалить статус, потому что он используется')
+                return redirect('statuses:index')
+
+        return super().dispatch(request, *args, **kwargs)
 
 
 class TagPermissionMixin(LoginRequiredMixin, UserPassesTestMixin):
@@ -70,7 +70,7 @@ class TagPermissionMixin(LoginRequiredMixin, UserPassesTestMixin):
         if self.request.user.is_superuser:
             return True
         tag = self.get_object()
-        return tag.creator == self.request.user
+        return tag
 
     def handle_no_permission(self):
         messages.error(self.request, 'У вас нет прав для изменения этой метки.')

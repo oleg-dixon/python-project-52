@@ -84,7 +84,7 @@ class UsersTest(TestCase):
         self.assertFormError(
             form,
             'username',
-            'This field is required.'
+            'Обязательное поле.'
         )
 
     def test_update_password_success(self):
@@ -183,7 +183,7 @@ class UsersTest(TestCase):
         self.assertFormError(
             form,
             'username',
-            'This field is required.'
+            'Обязательное поле.'
         )
 
     def test_create_user_username_exists(self):
@@ -214,12 +214,12 @@ class UsersTest(TestCase):
         self.assertFormError(
             form,
             'username',
-            'This field is required.'
+            'Обязательное поле.'
         )
         self.assertFormError(
             form,
             'password',
-            'This field is required.'
+            'Обязательное поле.'
         )
 
     def test_user_creation_success(self):

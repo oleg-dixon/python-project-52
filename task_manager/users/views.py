@@ -27,22 +27,37 @@ class IndexView(ListView):
 class UserCreateView(SuccessMessageMixin, CreateView):
     model = User
     form_class = UserCreateForm
-    template_name = 'users/create.html'
+    template_name = 'users/user_form.html'
     success_url = reverse_lazy('users:login')
     success_message = 'Пользователь успешно зарегистрирован'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'create'
+        return context
     
 
 class UserUpdateView(UserPermissionMixin, SuccessMessageMixin, UpdateView):
     model = User
     form_class = UserUpdateForm
-    template_name = 'users/update.html'
+    template_name = 'users/user_form.html'
     success_url = reverse_lazy('users:index')
     success_message = 'Пользователь успешно изменен'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'update'
+        return context
 
 
 class UserDeleteView(UserPermissionMixin, SuccessMessageMixin, DeleteView):
     model = User
-    template_name = 'users/delete.html'
+    template_name = 'users/user_form.html'
     context_object_name = 'user'
     success_url = reverse_lazy('users:index')
     success_message = 'Пользователь успешно удален'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'delete'
+        return context

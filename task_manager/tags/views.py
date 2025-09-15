@@ -16,25 +16,36 @@ class TagListView(ListView):
 class TagCreateView(SuccessMessageMixin, CreateView):
     model = Tag
     form_class = TagForm
-    template_name = 'tags/create.html'
+    template_name = 'tags/tag_form.html'
     success_url = reverse_lazy('tags:index')
     success_message = 'Метка успешно создана'
 
-    def form_valid(self, form):
-        form.instance.creator = self.request.user
-        return super().form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'create'
+        return context
 
 
 class TagUpdateView(TagPermissionMixin, UpdateView):
     model = Tag
     form_class = TagForm
-    template_name = 'tags/update.html'
+    template_name = 'tags/tag_form.html'
     success_url = reverse_lazy('tags:index')
     success_message = 'Метка успешно изменена'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'update'
+        return context
 
 
 class TagDeleteView(TagPermissionMixin, DeleteView):
     model = Tag
-    template_name = 'tags/delete.html'
+    template_name = 'tags/tag_form.html'
     success_url = reverse_lazy('tags:index')
     success_message = 'Метка успешно удалена'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['action'] = 'delete'
+        return context
