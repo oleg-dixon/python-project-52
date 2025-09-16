@@ -90,10 +90,10 @@ class TaskPermissionMixin(LoginRequiredMixin):
     def dispatch(self, request, *args, **kwargs):
         task = self.get_object()
         if request.method.lower() in ['post', 'put', 'patch', 'delete']:
-            if request.user != task.author and request.user != task.executor:
+            if request.user != task.author:
                 messages.error(
                     request,
-                    'У вас нет прав для изменения или удаления этой задачи.'
+                    'У вас нет прав для удаления этой задачи.'
                 )
                 return redirect('tasks:index')
         return super().dispatch(request, *args, **kwargs)
