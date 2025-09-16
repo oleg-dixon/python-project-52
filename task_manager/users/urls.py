@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from task_manager.users.views import (
-    IndexView,
+    UserListView,
     UserCreateView,
     UserUpdateView,
     UserDeleteView,
@@ -11,7 +11,7 @@ from task_manager.users.views import (
 app_name = 'users'
 
 urlpatterns = [
-    path("", IndexView.as_view(), name='index'),
+    path("", UserListView.as_view(), name='index'),
     path('create/', UserCreateView.as_view(), name='create'),
     path('login/', CustomLoginView.as_view(
         template_name='login.html',

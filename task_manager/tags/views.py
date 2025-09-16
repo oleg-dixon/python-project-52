@@ -3,7 +3,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
 from .models import Tag
 from .forms import TagForm
-from task_manager.mixins import TagPermissionMixin
+from task_manager.mixins import TagPermissionMixin, DeleteProtectMixin, ContextActionMixin
 
 
 class TagListView(ListView):
@@ -13,39 +13,29 @@ class TagListView(ListView):
     ordering = ['id']
 
 
-class TagCreateView(SuccessMessageMixin, CreateView):
+class TagCreateView(SuccessMessageMixin, ContextActionMixin, CreateView):
     model = Tag
     form_class = TagForm
     template_name = 'tags/tag_form.html'
     success_url = reverse_lazy('tags:index')
     success_message = 'Метка успешно создана'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['action'] = 'create'
-        return context
+    action = 'create'
 
 
-class TagUpdateView(TagPermissionMixin, UpdateView):
+class TagUpdateView(TagPermissionMixin, SuccessMessageMixin, ContextActionMixin, UpdateView):
     model = Tag
     form_class = TagForm
     template_name = 'tags/tag_form.html'
     success_url = reverse_lazy('tags:index')
     success_message = 'Метка успешно изменена'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['action'] = 'update'
-        return context
+    action = 'update'
 
 
-class TagDeleteView(TagPermissionMixin, DeleteView):
+class TagDeleteView(TagPermissionMixin, DeleteProtectMixin, SuccessMessageMixin, ContextActionMixin, DeleteView):
     model = Tag
     template_name = 'tags/tag_form.html'
     success_url = reverse_lazy('tags:index')
     success_message = 'Метка успешно удалена'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['action'] = 'delete'
-        return context
+    redirect_url = reverse_lazy('tags:index')
+    protected_related_names = ['tasks']
+    action = 'delete'
