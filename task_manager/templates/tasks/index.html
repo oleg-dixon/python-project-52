@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load tz %}
 
 {% block title %}Задачи | Менеджер задач{% endblock %}
 
@@ -7,6 +6,34 @@
 <h1 class="my-4">Задачи</h1>
 
 <a href="{% url 'tasks:create' %}" class="btn btn-primary mb-3">Создать задачу</a>
+
+<div class="card mb-3">
+  <div class="card-body bg-light">
+    <form class="form-inline" method="get">
+      <div class="mb-3 me-2">
+        <label class="form-label" for="id_status">Статус</label>
+        {{ filter_form.status }}
+      </div>
+      <div class="mb-3 me-2">
+        <label class="form-label" for="id_executor">Исполнитель</label>
+        {{ filter_form.executor }}
+      </div>
+      <div class="mb-3 me-2">
+        <label class="form-label" for="id_author">Автор</label>
+        {{ filter_form.author }}
+      </div>
+      <div class="mb-3 me-2">
+        <label class="form-label" for="id_tags">Метки</label>
+        {{ filter_form.tags }}
+      </div>
+      <div class="mb-3 form-check me-2">
+        {{ filter_form.self_tasks }}
+        <label class="form-check-label" for="id_self_tasks">Только свои задачи</label>
+      </div>
+      <input class="btn btn-primary mb-1" type="submit" value="Показать">
+    </form>
+  </div>
+</div>
 
 <table class="table table-striped">
     <thead>
@@ -25,21 +52,9 @@
         <tr>
             <td>{{ task.id }}</td>
             <td>{{ task.name }}</td>
-            <td>
-                {% if task.status %}
-                    {{ task.status }}
-                {% else %}
-                    -
-                {% endif %}
-            </td>
+            <td>{{ task.status|default:"-" }}</td>
             <td>{{ task.author.username }}</td>
-            <td>
-                {% if task.executor %}
-                    {{ task.executor.username }}
-                {% else %}
-                    -
-                {% endif %}
-            </td>
+            <td>{{ task.executor.username|default:"-" }}</td>
             <td>
                 {% if task.tags.exists %}
                     {% for tag in task.tags.all %}
