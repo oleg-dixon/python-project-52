@@ -18,5 +18,8 @@ migrate:
 tests:
 	uv run manage.py test
 
-# collectstatic:
-# 	uv run manage.py collectstatic --noinput
+rmcache:
+	find . -name "__pycache__" -exec rm -rf {} +
+
+collectstatic:
+	uv run manage.py collectstatic --noinput
