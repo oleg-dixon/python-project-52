@@ -7,7 +7,7 @@ My [Task Manager](https://python-project-52-ya5h.onrender.com) this is a task ma
 ### Task management
 Create, edit, and track task completion status.
 
-### Tags and statuses
+### Labels and statuses
 Organize tasks using labels and track their status.
 
 ### Teamwork
@@ -56,14 +56,14 @@ make migrate
 make collectstatic
 ```
 
-### Start development application
-```
-make dev
-```
-
 ### Start tests
 ```
 make tests
+```
+
+### Start development application
+```
+make dev
 ```
 
 ### Database error
