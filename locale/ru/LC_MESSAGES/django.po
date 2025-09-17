@@ -5,461 +5,461 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: TaskManager 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-09-17 10:13+0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: English <en@li.org>\n"
-"Language: en\n"
+"PO-Revision-Date: 2025-09-17 11:00+0300\n"
+"Last-Translator: Oleg Dixon <youremail@example.com>\n"
+"Language-Team: Russian <ru@li.org>\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "Невозможно удалить объект, потому что он используется"
-msgstr "Cannot delete object because it is in use"
+msgstr "Невозможно удалить объект, потому что он используется"
 
 msgid "У вас нет прав для изменения этого пользователя."
-msgstr "You do not have permission to change this user."
+msgstr "У вас нет прав для изменения этого пользователя."
 
 msgid "У вас нет прав для удаления этого пользователя."
-msgstr "You do not have permission to delete this user."
+msgstr "У вас нет прав для удаления этого пользователя."
 
 msgid "Невозможно удалить пользователя, потому что он используется в задачах."
-msgstr "Cannot delete user because they are assigned to tasks."
+msgstr "Невозможно удалить пользователя, потому что он используется в задачах."
 
 msgid "У вас нет прав для удаления этой задачи."
-msgstr "You do not have permission to delete this task."
+msgstr "У вас нет прав для удаления этой задачи."
 
 msgid "Невозможно удалить статус, потому что он используется в задаче."
-msgstr "Cannot delete status because it is used in a task."
+msgstr "Невозможно удалить статус, потому что он используется в задаче."
 
 msgid "Невозможно удалить метку, потому что она используется в задаче."
-msgstr "Cannot delete tag because it is used in a task"
+msgstr "Невозможно удалить метку, потому что она используется в задаче."
 
 msgid "English"
-msgstr "English"
+msgstr "Английский"
 
 msgid "Русский"
-msgstr "Russian"
+msgstr "Русский"
 
 msgid "Название статуса"
-msgstr "Status name"
+msgstr "Название статуса"
 
 msgid "Введите название статуса"
-msgstr "Enter status name"
+msgstr "Введите название статуса"
 
 msgid "Статус с таким названием уже существует."
-msgstr "A status with this name already exists."
+msgstr "Статус с таким названием уже существует."
 
 msgid "статус"
-msgstr "status"
+msgstr "статус"
 
 msgid "статусы"
-msgstr "statuses"
+msgstr "статусы"
 
 msgid "Статус успешно создан"
-msgstr "Status successfully created"
+msgstr "Статус успешно создан"
 
 msgid "Статус успешно изменен"
-msgstr "Status successfully updated"
+msgstr "Статус успешно изменен"
 
 msgid "Статус успешно удален"
-msgstr "Status successfully deleted"
+msgstr "Статус успешно удален"
 
 msgid "Название метки"
-msgstr "Tag name"
+msgstr "Название метки"
 
 msgid "Введите название метки"
-msgstr "Enter tag name"
+msgstr "Введите название метки"
 
 msgid "Метка с таким названием уже существует"
-msgstr "A tag with this name already exists"
+msgstr "Метка с таким названием уже существует"
 
 msgid "Дата создания"
-msgstr "Created at"
+msgstr "Дата создания"
 
 msgid "Дата обновления"
-msgstr "Updated at"
+msgstr "Дата обновления"
 
 msgid "метка"
-msgstr "tag"
+msgstr "метка"
 
 msgid "метки"
-msgstr "tags"
+msgstr "метки"
 
 msgid "Метка успешно создана"
-msgstr "Tag successfully created"
+msgstr "Метка успешно создана"
 
 msgid "Метка успешно изменена"
-msgstr "Tag successfully updated"
+msgstr "Метка успешно изменена"
 
 msgid "Метка успешно удалена"
-msgstr "Tag successfully deleted"
+msgstr "Метка успешно удалена"
 
 msgid "Название задачи"
-msgstr "Task name"
+msgstr "Название задачи"
 
 msgid "Введите название задачи"
-msgstr "Enter task name"
+msgstr "Введите название задачи"
 
 msgid "Описание"
-msgstr "Description"
+msgstr "Описание"
 
 msgid "Введите описание задачи"
-msgstr "Enter task description"
+msgstr "Введите описание задачи"
 
 msgid "Статус"
-msgstr "Status"
+msgstr "Статус"
 
 msgid "Исполнитель"
-msgstr "Executor"
+msgstr "Исполнитель"
 
 msgid "Метки"
-msgstr "Tags"
+msgstr "Метки"
 
 msgid "Автор"
-msgstr "Author"
+msgstr "Автор"
 
 msgid "Только мои задачи"
-msgstr "Only my tasks"
+msgstr "Только мои задачи"
 
 msgid "задача"
-msgstr "task"
+msgstr "задача"
 
 msgid "задачи"
-msgstr "tasks"
+msgstr "задачи"
 
 msgid "Задача успешно создана"
-msgstr "Task successfully created"
+msgstr "Задача успешно создана"
 
 msgid "Задача успешно изменена"
-msgstr "Task successfully updated"
+msgstr "Задача успешно изменена"
 
 msgid "Задача успешно удалена"
-msgstr "Task successfully deleted"
+msgstr "Задача успешно удалена"
 
 msgid "Менеджер задач"
-msgstr "Task Manager"
+msgstr "Менеджер задач"
 
 msgid "Пользователи"
-msgstr "Users"
+msgstr "Пользователи"
 
 msgid "Статусы"
-msgstr "Statuses"
+msgstr "Статусы"
 
 msgid "Задачи"
-msgstr "Tasks"
+msgstr "Задачи"
 
 msgid "Привет"
-msgstr "Hello"
+msgstr "Привет"
 
 msgid "Выход"
-msgstr "Logout"
+msgstr "Выход"
 
 msgid "Вход"
-msgstr "Login"
+msgstr "Вход"
 
 msgid "Регистрация"
-msgstr "Sign up"
+msgstr "Регистрация"
 
 msgid "Закрыть"
-msgstr "Close"
+msgstr "Закрыть"
 
 msgid "Developed by Oleg Dixon"
-msgstr "Developed by Oleg Dixon"
+msgstr "Разработано Oleg Dixon"
 
 msgid "Главная"
-msgstr "Home"
+msgstr "Главная"
 
 msgid "Этот менеджер задач позволяет вам устанавливать задачи, назначать исполнителей и изменять их статусы. Для работы с системой требуется регистрация и аутентификация."
-msgstr "This task manager allows you to create tasks, assign executors, and update their status. Registration and login are required."
+msgstr "Этот менеджер задач позволяет создавать задачи, назначать исполнителей и изменять их статусы. Для работы требуется регистрация и авторизация."
 
 msgid "Рады снова видеть вас, %(user.username)s!"
-msgstr "Welcome back, %(user.username)s!"
+msgstr "Рады снова видеть вас, %(user.username)s!"
 
 msgid "Перейти к задачам"
-msgstr "Go to tasks"
+msgstr "Перейти к задачам"
 
 msgid "Начните работу прямо сейчас!"
-msgstr "Get started right now!"
+msgstr "Начните работу прямо сейчас!"
 
 msgid "Войти"
-msgstr "Log in"
+msgstr "Войти"
 
 msgid "Зарегистрироваться"
-msgstr "Register"
+msgstr "Зарегистрироваться"
 
 msgid "Управление задачами"
-msgstr "Task management"
+msgstr "Управление задачами"
 
 msgid "Создавайте, редактируйте и отслеживайте статус выполнения задач"
-msgstr "Create, edit, and track task progress"
+msgstr "Создавайте, редактируйте и отслеживайте статус выполнения задач"
 
 msgid "Метки и статусы"
-msgstr "Tags and statuses"
+msgstr "Метки и статусы"
 
 msgid "Организуйте задачи с помощью меток и отслеживайте их статус"
-msgstr "Organize tasks using tags and monitor their status"
+msgstr "Организуйте задачи с помощью меток и отслеживайте их статус"
 
 msgid "Работа в команде"
-msgstr "Teamwork"
+msgstr "Работа в команде"
 
 msgid "Назначайте задачи другим пользователям и работайте вместе"
-msgstr "Assign tasks to other users and collaborate"
+msgstr "Назначайте задачи другим пользователям и работайте вместе"
 
 msgid "Нет аккаунта?"
-msgstr "Don't have an account?"
+msgstr "Нет аккаунта?"
 
 msgid "Зарегистрируйтесь!"
-msgstr "Sign up!"
+msgstr "Зарегистрируйтесь!"
 
 msgid "Создать статус"
-msgstr "Create status"
+msgstr "Создать статус"
 
 msgid "ID"
 msgstr "ID"
 
 msgid "Название"
-msgstr "Name"
+msgstr "Название"
 
 msgid "Действия"
-msgstr "Actions"
+msgstr "Действия"
 
 msgid "Изменить"
-msgstr "Edit"
+msgstr "Изменить"
 
 msgid "Удалить"
-msgstr "Delete"
+msgstr "Удалить"
 
 msgid "Статусы не найдены"
-msgstr "No statuses found"
+msgstr "Статусы не найдены"
 
 msgid "Удаление статуса"
-msgstr "Delete status"
+msgstr "Удаление статуса"
 
 msgid "Изменить статус"
-msgstr "Edit status"
+msgstr "Изменить статус"
 
 msgid "Внимание!"
-msgstr "Warning!"
+msgstr "Внимание!"
 
 msgid "Вы собираетесь удалить статус. Это действие невозможно отменить."
-msgstr "You are about to delete the status. This action cannot be undone."
+msgstr "Вы собираетесь удалить статус. Это действие невозможно отменить."
 
 msgid "Название статуса:"
-msgstr "Status name:"
+msgstr "Название статуса:"
 
 msgid "Да, удалить"
-msgstr "Yes, delete"
+msgstr "Да, удалить"
 
 msgid "Отмена"
-msgstr "Cancel"
+msgstr "Отмена"
 
 msgid "Сохранить"
-msgstr "Save"
+msgstr "Сохранить"
 
 msgid "Создать"
-msgstr "Create"
+msgstr "Создать"
 
 msgid "Создать метку"
-msgstr "Create tag"
+msgstr "Создать метку"
 
 msgid "Метки не найдены"
-msgstr "No tags found"
+msgstr "Метки не найдены"
 
 msgid "Удаление метки"
-msgstr "Delete tag"
+msgstr "Удаление метки"
 
 msgid "Изменить метку"
-msgstr "Edit tag"
+msgstr "Изменить метку"
 
 msgid "Вы собираетесь удалить метку. Это действие невозможно отменить."
-msgstr "You are about to delete the tag. This action cannot be undone."
+msgstr "Вы собираетесь удалить метку. Это действие невозможно отменить."
 
 msgid "Название метки:"
-msgstr "Tag name:"
+msgstr "Название метки:"
 
 msgid "Создать задачу"
-msgstr "Create task"
+msgstr "Создать задачу"
 
 msgid "Показать"
-msgstr "Show"
+msgstr "Показать"
 
 msgid "Задачи не найдены"
-msgstr "No tasks found"
+msgstr "Задачи не найдены"
 
 msgid "Удаление задачи"
-msgstr "Delete task"
+msgstr "Удаление задачи"
 
 msgid "Изменение задачи"
-msgstr "Edit task"
+msgstr "Изменение задачи"
 
 msgid "Создание задачи"
-msgstr "Create task"
+msgstr "Создание задачи"
 
 msgid "Вы собираетесь удалить задачу. Это действие невозможно отменить."
-msgstr "You are about to delete the task. This action cannot be undone."
+msgstr "Вы собираетесь удалить задачу. Это действие невозможно отменить."
 
 msgid "Информация о задаче:"
-msgstr "Task information:"
+msgstr "Информация о задаче:"
 
 msgid "Название:"
-msgstr "Name:"
+msgstr "Название:"
 
 msgid "Статус:"
-msgstr "Status:"
+msgstr "Статус:"
 
 msgid "Автор:"
-msgstr "Author:"
+msgstr "Автор:"
 
 msgid "Исполнитель:"
-msgstr "Executor:"
+msgstr "Исполнитель:"
 
 msgid "Теги:"
-msgstr "Tags:"
+msgstr "Теги:"
 
 msgid "Дата создания:"
-msgstr "Created at:"
+msgstr "Дата создания:"
 
 msgid "Дата обновления:"
-msgstr "Updated at:"
+msgstr "Дата обновления:"
 
 msgid "Сохранить изменения"
-msgstr "Save changes"
+msgstr "Сохранить изменения"
 
 msgid "Имя пользователя"
-msgstr "Username"
+msgstr "Имя пользователя"
 
 msgid "Полное имя"
-msgstr "Full name"
+msgstr "Полное имя"
 
 msgid "Пользователи не найдены"
-msgstr "No users found"
+msgstr "Пользователи не найдены"
 
 msgid "Удаление пользователя"
-msgstr "Delete user"
+msgstr "Удаление пользователя"
 
 msgid "Изменение пользователя"
-msgstr "Edit user"
+msgstr "Изменение пользователя"
 
 msgid "Создание пользователя"
-msgstr "Create user"
+msgstr "Создание пользователя"
 
 msgid "Вы собираетесь удалить пользователя. Это действие невозможно отменить."
-msgstr "You are about to delete the user. This action cannot be undone."
+msgstr "Вы собираетесь удалить пользователя. Это действие невозможно отменить."
 
 msgid "Информация о пользователе:"
-msgstr "User information:"
+msgstr "Информация о пользователе:"
 
 msgid "Имя пользователя:"
-msgstr "Username:"
+msgstr "Имя пользователя:"
 
 msgid "Полное имя:"
-msgstr "Full name:"
+msgstr "Полное имя:"
 
 msgid "Дата регистрации:"
-msgstr "Registered at:"
+msgstr "Дата регистрации:"
 
 msgid "Зарегистрировать"
-msgstr "Register"
+msgstr "Зарегистрировать"
 
 msgid "Personal info"
-msgstr "Personal info"
+msgstr "Личная информация"
 
 msgid "Permissions"
-msgstr "Permissions"
+msgstr "Права"
 
 msgid "Important dates"
-msgstr "Important dates"
+msgstr "Важные даты"
 
 msgid "Введите имя пользователя"
-msgstr "Enter username"
+msgstr "Введите имя пользователя"
 
 msgid "Пароль"
-msgstr "Password"
+msgstr "Пароль"
 
 msgid "Введите пароль"
-msgstr "Enter password"
+msgstr "Введите пароль"
 
 msgid "Имя"
-msgstr "First name"
+msgstr "Имя"
 
 msgid "Введите имя"
-msgstr "Enter first name"
+msgstr "Введите имя"
 
 msgid "Фамилия"
-msgstr "Last name"
+msgstr "Фамилия"
 
 msgid "Введите фамилию"
-msgstr "Enter last name"
+msgstr "Введите фамилию"
 
 msgid "Обязательное поле.  Не более 150 символов. Только буквы, цифры и символы @/./+/-/_."
-msgstr "Required field. Max 150 characters. Only letters, digits and @/./+/-/_ symbols."
+msgstr "Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_."
 
 msgid "Ваш пароль должен содержать как минимум 3 символа."
-msgstr "Your password must be at least 3 characters long."
+msgstr "Ваш пароль должен содержать как минимум 3 символа."
 
 msgid "Подтверждение пароля"
-msgstr "Password confirmation"
+msgstr "Подтверждение пароля"
 
 msgid "Подтвердите пароль"
-msgstr "Confirm password"
+msgstr "Подтвердите пароль"
 
 msgid "Для подтверждения введите, пожалуйста, пароль ещё раз."
-msgstr "Please enter the password again for confirmation."
+msgstr "Для подтверждения введите пароль ещё раз."
 
 msgid "Пароли не совпадают"
-msgstr "Passwords do not match"
+msgstr "Пароли не совпадают"
 
 msgid "Новый пароль"
-msgstr "New password"
+msgstr "Новый пароль"
 
 msgid "Введите новый пароль"
-msgstr "Enter new password"
+msgstr "Введите новый пароль"
 
 msgid "Оставьте пустым, если не хотите менять пароль."
-msgstr "Leave blank if you don't want to change the password."
+msgstr "Оставьте пустым, если не хотите менять пароль."
 
 msgid "Подтверждение нового пароля"
-msgstr "New password confirmation"
+msgstr "Подтверждение нового пароля"
 
 msgid "Подтвердите новый пароль"
-msgstr "Confirm new password"
+msgstr "Подтвердите новый пароль"
 
 msgid "Новый пароль и подтверждение не совпадают"
-msgstr "New password and confirmation do not match"
+msgstr "Новый пароль и подтверждение не совпадают"
 
 msgid "В поле \"Имя пользователя\" должно быть задано"
-msgstr "The 'Username' field must be set"
+msgstr "В поле \"Имя пользователя\" должно быть задано"
 
 msgid "Пользователь с таким именем уже существует."
-msgstr "A user with this username already exists."
+msgstr "Пользователь с таким именем уже существует."
 
 msgid "Активен"
-msgstr "Active"
+msgstr "Активен"
 
 msgid "Сотрудник"
-msgstr "Staff"
+msgstr "Сотрудник"
 
 msgid "пользователь"
-msgstr "user"
+msgstr "пользователь"
 
 msgid "пользователи"
-msgstr "users"
+msgstr "пользователи"
 
 msgid "Только буквы, цифры и символы @/./+/-/_."
-msgstr "Only letters, digits, and @/./+/-/_ symbols are allowed."
+msgstr "Только буквы, цифры и символы @/./+/-/_."
 
 msgid "Пользователь успешно зарегистрирован"
-msgstr "User successfully registered"
+msgstr "Пользователь успешно зарегистрирован"
 
 msgid "Пользователь успешно изменен"
-msgstr "User successfully updated"
+msgstr "Пользователь успешно изменен"
 
 msgid "Пользователь успешно удален"
-msgstr "User successfully deleted"
+msgstr "Пользователь успешно удален"
 
 msgid "Невозможно удалить пользователя, потому что он используется"
-msgstr "Cannot delete user because it is in use"
+msgstr "Невозможно удалить пользователя, потому что он используется"

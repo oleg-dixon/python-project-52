@@ -62,8 +62,8 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    "django.middleware.locale.LocaleMiddleware",
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -129,10 +129,9 @@ LOCALE_PATHS = [
 # ------------------------------------------------------------------
 STATIC_URL = '/static/'
 
-# Папка, куда collectstatic будет собирать все статики
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Дополнительные директории со статикой (твои CSS/JS)
+# Дополнительные директории со статикой
 # STATICFILES_DIRS = [
 #     BASE_DIR / 'static',
 # ]

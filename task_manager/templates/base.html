@@ -1,6 +1,7 @@
 {% load i18n %}
 <!DOCTYPE html>
-<html lang="ru-ru">
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}{% trans "Менеджер задач" %}{% endblock %}</title>
@@ -50,14 +51,22 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
               <li>
-                <form action="{% url 'set_language' %}" method="post" class="d-none" id="languageForm">
+                <form action="{% url 'set_language' %}" method="post" class="m-0 p-0">
                   {% csrf_token %}
-                  <input name="next" type="hidden" value="{{ request.get_full_path }}">
-                  <input name="language" type="hidden" id="selectedLanguage">
+                  <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                  <button type="submit" name="language" value="ru" class="dropdown-item {% if LANGUAGE_CODE == 'ru' %}active{% endif %}">
+                    {% trans "Русский" %}
+                  </button>
                 </form>
-                
-                <a class="dropdown-item" href="#" onclick="setLanguage('ru')">{% trans "Русский" %}</a>
-                <a class="dropdown-item" href="#" onclick="setLanguage('en')">{% trans "English" %}</a>
+              </li>
+              <li>
+                <form action="{% url 'set_language' %}" method="post" class="m-0 p-0">
+                  {% csrf_token %}
+                  <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                  <button type="submit" name="language" value="en" class="dropdown-item {% if LANGUAGE_CODE == 'en' %}active{% endif %}">
+                    {% trans "English" %}
+                  </button>
+                </form>
               </li>
             </ul>
           </li>
@@ -130,12 +139,5 @@
         </a>
       </div>
     </footer>
-
-    <script>
-      function setLanguage(language) {
-        document.getElementById('selectedLanguage').value = language;
-        document.getElementById('languageForm').submit();
-      }
-    </script>
   </body>
 </html>
