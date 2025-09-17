@@ -10,58 +10,57 @@ from django.utils.translation import gettext_lazy as _
 from task_manager.mixins import (
     ContextActionMixin,
     DeleteProtectMixin,
-    TagPermissionMixin,
+    LabelPermissionMixin,
 )
 
-from .forms import TagForm
-from .models import Tag
+from .forms import LabelForm
+from .models import Label
 
 
-class TagListView(ListView):
-    model = Tag
-    template_name = 'tags/index.html'
-    context_object_name = 'tags'
+class LabelListView(ListView):
+    model = Label
+    template_name = 'labels/index.html'
+    context_object_name = 'labels'
     ordering = ['id']
 
 
-class TagCreateView(
+class LabelCreateView(
     SuccessMessageMixin,
     ContextActionMixin,
     CreateView
 ):
-    model = Tag
-    form_class = TagForm
-    template_name = 'tags/tag_form.html'
-    success_url = reverse_lazy('tags:index')
+    model = Label
+    form_class = LabelForm
+    template_name = 'labels/label_form.html'
+    success_url = reverse_lazy('labels:index')
     success_message = _('Метка успешно создана')
     action = 'create'
 
 
-class TagUpdateView(
-    TagPermissionMixin,
+class LabelUpdateView(
     SuccessMessageMixin,
     ContextActionMixin,
     UpdateView
 ):
-    model = Tag
-    form_class = TagForm
-    template_name = 'tags/tag_form.html'
-    success_url = reverse_lazy('tags:index')
+    model = Label
+    form_class = LabelForm
+    template_name = 'labels/label_form.html'
+    success_url = reverse_lazy('labels:index')
     success_message = _('Метка успешно изменена')
     action = 'update'
 
 
-class TagDeleteView(
-    TagPermissionMixin,
+class LabelDeleteView(
+    LabelPermissionMixin,
     DeleteProtectMixin,
     SuccessMessageMixin,
     ContextActionMixin,
     DeleteView
 ):
-    model = Tag
-    template_name = 'tags/tag_form.html'
-    success_url = reverse_lazy('tags:index')
+    model = Label
+    template_name = 'labels/label_form.html'
+    success_url = reverse_lazy('labels:index')
     success_message = _('Метка успешно удалена')
-    redirect_url = reverse_lazy('tags:index')
+    redirect_url = reverse_lazy('labels:index')
     protected_related_names = ['tasks']
     action = 'delete'

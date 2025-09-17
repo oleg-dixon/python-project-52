@@ -33,8 +33,8 @@ class Task(models.Model):
         null=True,
         verbose_name=_('Исполнитель')
     )
-    tags = models.ManyToManyField(
-        'tags.Tag',
+    labels = models.ManyToManyField(
+        'labels.Label',
         blank=True,
         related_name='tasks',
         verbose_name=_('Метки')

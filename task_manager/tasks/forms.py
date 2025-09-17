@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 
 from task_manager.statuses.models import Status
-from task_manager.tags.models import Tag
+from task_manager.labels.models import Label
 from task_manager.users.models import User
 from django.utils.translation import gettext_lazy as _
 
@@ -50,8 +50,8 @@ class TaskForm(forms.ModelForm):
         widget=forms.Select(attrs={'class': 'form-control'})
     )
 
-    tags = forms.ModelMultipleChoiceField(
-        queryset=Tag.objects.all(),
+    labels = forms.ModelMultipleChoiceField(
+        queryset=Label.objects.all(),
         required=False,
         label=_('Метки'),
         widget=forms.SelectMultiple(attrs={'class': 'form-control'})
@@ -59,7 +59,7 @@ class TaskForm(forms.ModelForm):
 
     class Meta:
         model = Task
-        fields = ['name', 'description', 'status', 'executor', 'tags']
+        fields = ['name', 'description', 'status', 'executor', 'labels']
 
 
 class TaskFilterForm(forms.Form):
@@ -81,8 +81,8 @@ class TaskFilterForm(forms.Form):
         label=_('Автор'),
         widget=forms.Select(attrs={'class': 'form-select'})
     )
-    tags = forms.ModelMultipleChoiceField(
-        queryset=Tag.objects.all(),
+    labels = forms.ModelMultipleChoiceField(
+        queryset=Label.objects.all(),
         required=False,
         label=_('Метки'),
         widget=forms.SelectMultiple(attrs={'class': 'form-select'})

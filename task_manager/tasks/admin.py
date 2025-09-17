@@ -10,6 +10,6 @@ class TaskAdmin(admin.ModelAdmin):
     )
     list_display_links = ('id', 'name')
     search_fields = ('name', 'description', 'author__username', 'executor__username')
-    list_filter = ('status', 'tags', 'author', 'executor')
+    list_filter = ('status', 'labels', 'author', 'executor')
     ordering = ('id',)
-    filter_horizontal = ('tags',)
+    filter_horizontal = ('labels',)

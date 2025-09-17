@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from task_manager.statuses.models import Status
-from task_manager.tags.models import Tag
+from task_manager.labels.models import Label
 from task_manager.mixins import LanguageMixin
 
 from .models import Task
@@ -18,14 +18,14 @@ class AuthTestCase(TestCase):
 
 
 class TasksTest(LanguageMixin, AuthTestCase):
-    fixtures = ["tags.json", "users.json", "statuses.json", "tasks.json"]
+    fixtures = ["labels.json", "users.json", "statuses.json", "tasks.json"]
 
     # ----- 1. Тест создания задачи -----
     def test_create_task(self):
         status = Status.objects.first()
         author = get_user_model().objects.get(pk=2)
         executor = get_user_model().objects.get(pk=2)
-        tag = Tag.objects.first()
+        label = Label.objects.first()
 
         response = self.client.post(
             reverse('tasks:create'),
@@ -35,7 +35,7 @@ class TasksTest(LanguageMixin, AuthTestCase):
                 "author": author.pk,
                 "status": status.pk,
                 "executor": executor.pk,
-                "tags": [tag.pk],
+                "labels": [label.pk],
             },
             follow=True
         )
@@ -44,7 +44,7 @@ class TasksTest(LanguageMixin, AuthTestCase):
         self.assertEqual(task.author, author)
         self.assertEqual(task.executor, executor)
         self.assertEqual(task.status, status)
-        self.assertIn(tag, task.tags.all())
+        self.assertIn(label, task.labels.all())
         self.assertContains(response, "Новая задача")
         self.assertContains(response, "Задача успешно создана")
 
@@ -54,7 +54,7 @@ class TasksTest(LanguageMixin, AuthTestCase):
         status = Status.objects.get(pk=1)
         author = get_user_model().objects.get(pk=2)
         executor = get_user_model().objects.get(pk=2)
-        tag = Tag.objects.first()
+        label = Label.objects.first()
 
         response = self.client.post(
             reverse('tasks:update', kwargs={'pk': task.pk}),
@@ -64,7 +64,7 @@ class TasksTest(LanguageMixin, AuthTestCase):
                 "author": author.pk,
                 "status": status.pk,
                 "executor": executor.pk,
-                "tags": [tag.pk],
+                "labels": [label.pk],
             },
             follow=True
         )
@@ -72,7 +72,7 @@ class TasksTest(LanguageMixin, AuthTestCase):
         task.refresh_from_db()
         self.assertEqual(task.name, "Убери посуду")
         self.assertEqual(task.status, status)
-        self.assertIn(tag, task.tags.all())
+        self.assertIn(label, task.labels.all())
         self.assertContains(response, "<td>Убери посуду</td>", html=True)
 
     # ----- 3. Тест удаления задачи -----
@@ -109,11 +109,11 @@ class TasksTest(LanguageMixin, AuthTestCase):
         self.assertTrue(all(task.author == author for task in tasks))
 
     # ----- 7. Тест фильтрации по тегам -----
-    def test_task_filter_by_tags(self):
-        tag = Tag.objects.get(pk=8)
-        response = self.client.get(reverse('tasks:index'), data={"tags": [tag.pk]})
+    def test_task_filter_by_labels(self):
+        label = Label.objects.get(pk=8)
+        response = self.client.get(reverse('tasks:index'), data={"labels": [label.pk]})
         tasks = response.context['tasks']
-        self.assertTrue(all(tag in task.tags.all() for task in tasks))
+        self.assertTrue(all(label in task.labels.all() for task in tasks))
 
     # ----- 8. Тест фильтрации своих задач -----
     def test_task_filter_self_tasks(self):
@@ -172,7 +172,7 @@ class TasksTest(LanguageMixin, AuthTestCase):
                 "description": "",
                 "status": "",
                 "executor": "",
-                "tags": [],
+                "labels": [],
             },
             follow=True
         )

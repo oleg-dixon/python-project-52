@@ -121,7 +121,7 @@ class StatusPermissionMixin(LoginRequiredMixin):
         return super().dispatch(request, *args, **kwargs)
 
 
-class TagPermissionMixin(LoginRequiredMixin):
+class LabelPermissionMixin(LoginRequiredMixin):
     """
     Миксин для проверки прав на удаление метки.
     Все залогиненные пользователи могут создавать и редактировать метки.
@@ -130,14 +130,14 @@ class TagPermissionMixin(LoginRequiredMixin):
     login_url = reverse_lazy('users:login')
 
     def dispatch(self, request, *args, **kwargs):
-        tag = self.get_object()
+        label = self.get_object()
         if request.method.lower() == 'post':
-            if hasattr(tag, 'tasks') and tag.tasks.exists():
+            if hasattr(label, 'tasks') and label.tasks.exists():
                 messages.error(
                     request,
                     _('Невозможно удалить метку, потому что она используется в задаче.')
                 )
-                return redirect('tags:index')
+                return redirect('labels:index')
         return super().dispatch(request, *args, **kwargs)
 
 

@@ -26,8 +26,8 @@
         {{ filter_form.author }}
       </div>
       <div class="mb-3 me-2">
-        <label class="form-label" for="id_tags">{% trans "Метки" %}</label>
-        {{ filter_form.tags }}
+        <label class="form-label" for="id_labels">{% trans "Метки" %}</label>
+        {{ filter_form.labels }}
       </div>
       <div class="mb-3 form-check me-2">
         {{ filter_form.self_tasks }}
@@ -59,8 +59,8 @@
             <td>{{ task.author.username }}</td>
             <td>{{ task.executor.username|default:"-" }}</td>
             <td>
-                {% for tag in task.tags.all %}
-                    <span class="badge bg-secondary">{{ tag.name }}</span>
+                {% for label in task.labels.all %}
+                    <span class="badge bg-secondary">{{ label.name }}</span>
                 {% empty %}
                     -
                 {% endfor %}

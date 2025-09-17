@@ -3,7 +3,7 @@ from django.utils.timezone import localtime
 from django.utils.translation import gettext_lazy as _
 
 
-class Tag(models.Model):
+class Label(models.Model):
     name = models.CharField(
         max_length=200,
         unique=True,
@@ -28,6 +28,6 @@ class Tag(models.Model):
         return localtime(self.updated_at)
 
     class Meta:
-        db_table = 'tags'
+        db_table = 'labels'
         verbose_name = _('метка')
         verbose_name_plural = _('метки')

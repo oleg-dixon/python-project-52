@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'task_manager',
     'task_manager.users.apps.UsersConfig',
     'task_manager.statuses.apps.StatusesConfig',
-    'task_manager.tags.apps.TagsConfig',
+    'task_manager.labels.apps.LabelsConfig',
     'task_manager.tasks.apps.TasksConfig',
 ]
 

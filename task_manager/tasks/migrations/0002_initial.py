@@ -11,7 +11,6 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('statuses', '0001_initial'),
-        ('tags', '0001_initial'),
         ('tasks', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
@@ -34,7 +33,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='task',
-            name='tags',
-            field=models.ManyToManyField(blank=True, related_name='tasks', to='tags.tag', verbose_name='Метки'),
+            name='labels',
+            field=models.ManyToManyField(blank=True, related_name='tasks', to='labels.label', verbose_name='Метки'),
         ),
     ]

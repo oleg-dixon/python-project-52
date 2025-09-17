@@ -39,7 +39,6 @@ class StatusCreateView(
 
 
 class StatusUpdateView(
-    StatusPermissionMixin,
     SuccessMessageMixin,
     ContextActionMixin,
     UpdateView

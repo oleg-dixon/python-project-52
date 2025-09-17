@@ -1,11 +1,11 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from .models import Tag
+from .models import Label
 
 
-class TagForm(forms.ModelForm):
+class LabelForm(forms.ModelForm):
     class Meta:
-        model = Tag
+        model = Label
         fields = ['name']
         labels = {
             'name': _('Название метки')
@@ -19,7 +19,7 @@ class TagForm(forms.ModelForm):
 
     def clean_name(self):
         name = self.cleaned_data['name']
-        qs = Tag.objects.filter(name=name)
+        qs = Label.objects.filter(name=name)
         if self.instance.pk:
             qs = qs.exclude(pk=self.instance.pk)
         if qs.exists():

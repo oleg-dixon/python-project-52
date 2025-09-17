@@ -56,8 +56,8 @@
                             {% if object.executor %}{{ object.executor.username }}{% else %}-{% endif %}
                         </li>
                         <li><strong>{% trans "Теги:" %}</strong>
-                            {% for tag in object.tags.all %}
-                                <span class="badge bg-secondary">{{ tag.name }}</span>
+                            {% for label in object.labels.all %}
+                                <span class="badge bg-secondary">{{ label.name }}</span>
                             {% empty %}
                                 -
                             {% endfor %}
