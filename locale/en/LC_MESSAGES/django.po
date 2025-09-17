@@ -278,8 +278,8 @@ msgstr ""
 
 #: task_manager/templates/index.html:21
 #, python-format
-msgid "Рады снова видеть вас, %(user.username)s!"
-msgstr "Glad to see you again, %(user.username)s!"
+msgid "Рады снова видеть вас, %(username)s!"
+msgstr "Glad to see you again, %(username)s!"
 
 #: task_manager/templates/index.html:25
 msgid "Перейти к задачам"

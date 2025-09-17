@@ -18,7 +18,7 @@
             {% if user.is_authenticated %}
             <div class="mt-4">
                 <p class="text-success mb-3">
-                    <i class="bi bi-check-circle-fill"></i> {% blocktrans %}Рады снова видеть вас, {{ user.username }}!{% endblocktrans %}
+                    <i class="bi bi-check-circle-fill"></i> {% blocktrans with username=user.username %}Рады снова видеть вас, {{ username }}!{% endblocktrans %}
                 </p>
                 <div class="d-grid gap-2 d-md-flex justify-content-center">
                     <a href="{% url 'tasks:index' %}" class="btn btn-primary btn-lg me-md-2">
