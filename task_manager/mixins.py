@@ -1,7 +1,9 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
-from django.contrib import messages
 from django.urls import reverse_lazy
+from django.utils.translation import activate
+from django.utils.translation import gettext_lazy as _
 
 
 class ContextActionMixin:
@@ -24,7 +26,7 @@ class DeleteProtectMixin(LoginRequiredMixin):
     login_url = reverse_lazy('users:login')
     protected_related_names = []
     redirect_url = None
-    error_message = 'Невозможно удалить объект, потому что он используется'
+    error_message = _('Невозможно удалить объект, потому что он используется')
 
     def post(self, request, *args, **kwargs):
         obj = self.get_object()
@@ -48,7 +50,7 @@ class UserUpdatePermissionMixin(LoginRequiredMixin):
         if request.user != user:
             messages.error(
                 request,
-                'У вас нет прав для изменения этого пользователя.'
+                _('У вас нет прав для изменения этого пользователя.')
             )
             return redirect('users:index')
         return super().dispatch(request, *args, **kwargs)
@@ -66,13 +68,13 @@ class UserDeletePermissionMixin(LoginRequiredMixin):
         if request.user != user:
             messages.error(
                 request,
-                'У вас нет прав для удаления этого пользователя.'
+                _('У вас нет прав для удаления этого пользователя.')
             )
             return redirect('users:index')
         if user.created_tasks.exists() or user.assigned_tasks.exists():
             messages.error(
                 request,
-                'Невозможно удалить пользователя, потому что он используется в задачах.'
+                _('Невозможно удалить пользователя, потому что он используется в задачах.')
             )
             return redirect('users:index')
         return super().dispatch(request, *args, **kwargs)
@@ -93,7 +95,7 @@ class TaskPermissionMixin(LoginRequiredMixin):
             if request.user != task.author:
                 messages.error(
                     request,
-                    'У вас нет прав для удаления этой задачи.'
+                    _('У вас нет прав для удаления этой задачи.')
                 )
                 return redirect('tasks:index')
         return super().dispatch(request, *args, **kwargs)
@@ -113,7 +115,7 @@ class StatusPermissionMixin(LoginRequiredMixin):
             if hasattr(status, 'tasks') and status.tasks.exists():
                 messages.error(
                     request,
-                    'Невозможно удалить статус, потому что он используется в задаче.'
+                    _('Невозможно удалить статус, потому что он используется в задаче.')
                 )
                 return redirect('statuses:index')
         return super().dispatch(request, *args, **kwargs)
@@ -133,7 +135,16 @@ class TagPermissionMixin(LoginRequiredMixin):
             if hasattr(tag, 'tasks') and tag.tasks.exists():
                 messages.error(
                     request,
-                    'Невозможно удалить метку, потому что она используется в задаче.'
+                    _('Невозможно удалить метку, потому что она используется в задаче.')
                 )
                 return redirect('tags:index')
         return super().dispatch(request, *args, **kwargs)
+
+
+class LanguageMixin:
+    """Миксин для автоматической активации нужного языка в тестах."""
+    LANGUAGE_CODE = 'ru'
+
+    def setUp(self):
+        super().setUp()
+        activate(self.LANGUAGE_CODE)

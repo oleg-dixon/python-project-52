@@ -1,14 +1,37 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load django_bootstrap5 %}
 
 {% block title %}
-{% if action == 'delete' %}Удаление метки{% elif action == 'update' %}Изменить метку{% else %}Создать метку{% endif %} | Менеджер задач
+{% if action == 'delete' %}
+    {% trans "Удаление метки" %}
+{% elif action == 'update' %}
+    {% trans "Изменить метку" %}
+{% else %}
+    {% trans "Создать метку" %}
+{% endif %} | {% trans "Менеджер задач" %}
 {% endblock %}
 
 {% block content %}
 <div class="container mt-4">
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{% trans "Закрыть" %}"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <h1 class="text-center mb-4">
-        {% if action == 'delete' %}Удаление метки{% elif action == 'update' %}Изменить метку{% else %}Создать метку{% endif %}
+        {% if action == 'delete' %}
+            {% trans "Удаление метки" %}
+        {% elif action == 'update' %}
+            {% trans "Изменить метку" %}
+        {% else %}
+            {% trans "Создать метку" %}
+        {% endif %}
     </h1>
 
     {% if action == 'delete' %}
@@ -16,23 +39,23 @@
     <div class="card shadow-sm">
         <div class="card-header bg-danger text-white">
             <h4 class="card-title mb-0 text-center">
-                <i class="bi bi-exclamation-triangle"></i> Внимание!
+                <i class="bi bi-exclamation-triangle"></i> {% trans "Внимание!" %}
             </h4>
         </div>
         <div class="card-body">
-            <p>Вы собираетесь удалить метку. Это действие невозможно отменить.</p>
+            <p>{% trans "Вы собираетесь удалить метку. Это действие невозможно отменить." %}</p>
             <div class="mb-4 p-3 bg-light rounded">
-                <h5>Название метки:</h5>
+                <h5>{% trans "Название метки:" %}</h5>
                 <p>{{ object.name }}</p>
             </div>
             <form method="post">
                 {% csrf_token %}
                 <div class="d-grid gap-2 d-md-flex justify-content-md-center">
                     <button type="submit" class="btn btn-danger me-md-2">
-                        <i class="bi bi-trash"></i> Да, удалить
+                        <i class="bi bi-trash"></i> {% trans "Да, удалить" %}
                     </button>
                     <a href="{% url 'tags:index' %}" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-left"></i> Отмена
+                        <i class="bi bi-arrow-left"></i> {% trans "Отмена" %}
                     </a>
                 </div>
             </form>
@@ -54,7 +77,11 @@
 
         <div class="d-grid gap-2">
             <button type="submit" class="btn btn-primary btn-lg">
-                {% if action == 'update' %}Сохранить{% else %}Создать{% endif %}
+                {% if action == 'update' %}
+                    {% trans "Сохранить" %}
+                {% else %}
+                    {% trans "Создать" %}
+                {% endif %}
             </button>
         </div>
     </form>

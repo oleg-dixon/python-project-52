@@ -4,7 +4,6 @@
   "pk": 5,
   "fields": {
     "name": "vgf",
-    "creator": null,
     "created_at": "2025-09-14T10:07:38.700Z",
     "updated_at": "2025-09-14T10:07:38.700Z"
   }
@@ -14,7 +13,6 @@
   "pk": 6,
   "fields": {
     "name": "423",
-    "creator": null,
     "created_at": "2025-09-14T10:07:42.403Z",
     "updated_at": "2025-09-14T10:07:42.403Z"
   }
@@ -24,7 +22,6 @@
   "pk": 7,
   "fields": {
     "name": "2311",
-    "creator": null,
     "created_at": "2025-09-14T10:07:45.339Z",
     "updated_at": "2025-09-14T10:07:45.339Z"
   }
@@ -34,7 +31,6 @@
   "pk": 8,
   "fields": {
     "name": "665hh",
-    "creator": null,
     "created_at": "2025-09-14T10:07:49.308Z",
     "updated_at": "2025-09-14T10:07:49.308Z"
   }
@@ -44,7 +40,6 @@
   "pk": 9,
   "fields": {
     "name": "4r2234",
-    "creator": null,
     "created_at": "2025-09-14T10:08:00.515Z",
     "updated_at": "2025-09-14T10:08:00.515Z"
   }
@@ -54,7 +49,6 @@
   "pk": 11,
   "fields": {
     "name": "Дом",
-    "creator": 2,
     "created_at": "2025-09-14T14:58:00.893Z",
     "updated_at": "2025-09-14T14:58:00.893Z"
   }
@@ -64,7 +58,6 @@
   "pk": 12,
   "fields": {
     "name": "Работа",
-    "creator": 2,
     "created_at": "2025-09-14T14:58:06.297Z",
     "updated_at": "2025-09-14T14:58:06.297Z"
   }

@@ -1,7 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+
 from .models import Status
+from task_manager.mixins import LanguageMixin
 
 
 class AuthTestCase(TestCase):
@@ -13,9 +15,9 @@ class AuthTestCase(TestCase):
             password="password123"
         )
         self.client.login(username="testuser", password="password123")
+        
 
-
-class StatusesTest(AuthTestCase):
+class StatusesTest(LanguageMixin, AuthTestCase):
     fixtures = ["statuses.json"]
 
     # ----- 1. Тесты обновления статуса -----

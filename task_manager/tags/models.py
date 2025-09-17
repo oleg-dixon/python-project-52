@@ -1,21 +1,21 @@
 from django.db import models
 from django.utils.timezone import localtime
-from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 
 class Tag(models.Model):
     name = models.CharField(
         max_length=200,
         unique=True,
-        verbose_name='Название метки'
+        verbose_name=_('Название метки')
     )
     created_at = models.DateTimeField(
         auto_now_add=True,
-        verbose_name='Дата создания'
+        verbose_name=_('Дата создания')
     )
     updated_at = models.DateTimeField(
         auto_now=True,
-        verbose_name='Дата обновления'
+        verbose_name=_('Дата обновления')
     )
 
     def __str__(self):
@@ -29,5 +29,5 @@ class Tag(models.Model):
 
     class Meta:
         db_table = 'tags'
-        verbose_name = 'метка'
-        verbose_name_plural = 'метки'
+        verbose_name = _('метка')
+        verbose_name_plural = _('метки')

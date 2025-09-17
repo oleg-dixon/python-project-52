@@ -1,0 +1,465 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-17 10:13+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: English <en@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Невозможно удалить объект, потому что он используется"
+msgstr "Cannot delete object because it is in use"
+
+msgid "У вас нет прав для изменения этого пользователя."
+msgstr "You do not have permission to change this user."
+
+msgid "У вас нет прав для удаления этого пользователя."
+msgstr "You do not have permission to delete this user."
+
+msgid "Невозможно удалить пользователя, потому что он используется в задачах."
+msgstr "Cannot delete user because they are assigned to tasks."
+
+msgid "У вас нет прав для удаления этой задачи."
+msgstr "You do not have permission to delete this task."
+
+msgid "Невозможно удалить статус, потому что он используется в задаче."
+msgstr "Cannot delete status because it is used in a task."
+
+msgid "Невозможно удалить метку, потому что она используется в задаче."
+msgstr "Cannot delete tag because it is used in a task"
+
+msgid "English"
+msgstr "English"
+
+msgid "Русский"
+msgstr "Russian"
+
+msgid "Название статуса"
+msgstr "Status name"
+
+msgid "Введите название статуса"
+msgstr "Enter status name"
+
+msgid "Статус с таким названием уже существует."
+msgstr "A status with this name already exists."
+
+msgid "статус"
+msgstr "status"
+
+msgid "статусы"
+msgstr "statuses"
+
+msgid "Статус успешно создан"
+msgstr "Status successfully created"
+
+msgid "Статус успешно изменен"
+msgstr "Status successfully updated"
+
+msgid "Статус успешно удален"
+msgstr "Status successfully deleted"
+
+msgid "Название метки"
+msgstr "Tag name"
+
+msgid "Введите название метки"
+msgstr "Enter tag name"
+
+msgid "Метка с таким названием уже существует"
+msgstr "A tag with this name already exists"
+
+msgid "Дата создания"
+msgstr "Created at"
+
+msgid "Дата обновления"
+msgstr "Updated at"
+
+msgid "метка"
+msgstr "tag"
+
+msgid "метки"
+msgstr "tags"
+
+msgid "Метка успешно создана"
+msgstr "Tag successfully created"
+
+msgid "Метка успешно изменена"
+msgstr "Tag successfully updated"
+
+msgid "Метка успешно удалена"
+msgstr "Tag successfully deleted"
+
+msgid "Название задачи"
+msgstr "Task name"
+
+msgid "Введите название задачи"
+msgstr "Enter task name"
+
+msgid "Описание"
+msgstr "Description"
+
+msgid "Введите описание задачи"
+msgstr "Enter task description"
+
+msgid "Статус"
+msgstr "Status"
+
+msgid "Исполнитель"
+msgstr "Executor"
+
+msgid "Метки"
+msgstr "Tags"
+
+msgid "Автор"
+msgstr "Author"
+
+msgid "Только мои задачи"
+msgstr "Only my tasks"
+
+msgid "задача"
+msgstr "task"
+
+msgid "задачи"
+msgstr "tasks"
+
+msgid "Задача успешно создана"
+msgstr "Task successfully created"
+
+msgid "Задача успешно изменена"
+msgstr "Task successfully updated"
+
+msgid "Задача успешно удалена"
+msgstr "Task successfully deleted"
+
+msgid "Менеджер задач"
+msgstr "Task Manager"
+
+msgid "Пользователи"
+msgstr "Users"
+
+msgid "Статусы"
+msgstr "Statuses"
+
+msgid "Задачи"
+msgstr "Tasks"
+
+msgid "Привет"
+msgstr "Hello"
+
+msgid "Выход"
+msgstr "Logout"
+
+msgid "Вход"
+msgstr "Login"
+
+msgid "Регистрация"
+msgstr "Sign up"
+
+msgid "Закрыть"
+msgstr "Close"
+
+msgid "Developed by Oleg Dixon"
+msgstr "Developed by Oleg Dixon"
+
+msgid "Главная"
+msgstr "Home"
+
+msgid "Этот менеджер задач позволяет вам устанавливать задачи, назначать исполнителей и изменять их статусы. Для работы с системой требуется регистрация и аутентификация."
+msgstr "This task manager allows you to create tasks, assign executors, and update their status. Registration and login are required."
+
+msgid "Рады снова видеть вас, %(user.username)s!"
+msgstr "Welcome back, %(user.username)s!"
+
+msgid "Перейти к задачам"
+msgstr "Go to tasks"
+
+msgid "Начните работу прямо сейчас!"
+msgstr "Get started right now!"
+
+msgid "Войти"
+msgstr "Log in"
+
+msgid "Зарегистрироваться"
+msgstr "Register"
+
+msgid "Управление задачами"
+msgstr "Task management"
+
+msgid "Создавайте, редактируйте и отслеживайте статус выполнения задач"
+msgstr "Create, edit, and track task progress"
+
+msgid "Метки и статусы"
+msgstr "Tags and statuses"
+
+msgid "Организуйте задачи с помощью меток и отслеживайте их статус"
+msgstr "Organize tasks using tags and monitor their status"
+
+msgid "Работа в команде"
+msgstr "Teamwork"
+
+msgid "Назначайте задачи другим пользователям и работайте вместе"
+msgstr "Assign tasks to other users and collaborate"
+
+msgid "Нет аккаунта?"
+msgstr "Don't have an account?"
+
+msgid "Зарегистрируйтесь!"
+msgstr "Sign up!"
+
+msgid "Создать статус"
+msgstr "Create status"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Название"
+msgstr "Name"
+
+msgid "Действия"
+msgstr "Actions"
+
+msgid "Изменить"
+msgstr "Edit"
+
+msgid "Удалить"
+msgstr "Delete"
+
+msgid "Статусы не найдены"
+msgstr "No statuses found"
+
+msgid "Удаление статуса"
+msgstr "Delete status"
+
+msgid "Изменить статус"
+msgstr "Edit status"
+
+msgid "Внимание!"
+msgstr "Warning!"
+
+msgid "Вы собираетесь удалить статус. Это действие невозможно отменить."
+msgstr "You are about to delete the status. This action cannot be undone."
+
+msgid "Название статуса:"
+msgstr "Status name:"
+
+msgid "Да, удалить"
+msgstr "Yes, delete"
+
+msgid "Отмена"
+msgstr "Cancel"
+
+msgid "Сохранить"
+msgstr "Save"
+
+msgid "Создать"
+msgstr "Create"
+
+msgid "Создать метку"
+msgstr "Create tag"
+
+msgid "Метки не найдены"
+msgstr "No tags found"
+
+msgid "Удаление метки"
+msgstr "Delete tag"
+
+msgid "Изменить метку"
+msgstr "Edit tag"
+
+msgid "Вы собираетесь удалить метку. Это действие невозможно отменить."
+msgstr "You are about to delete the tag. This action cannot be undone."
+
+msgid "Название метки:"
+msgstr "Tag name:"
+
+msgid "Создать задачу"
+msgstr "Create task"
+
+msgid "Показать"
+msgstr "Show"
+
+msgid "Задачи не найдены"
+msgstr "No tasks found"
+
+msgid "Удаление задачи"
+msgstr "Delete task"
+
+msgid "Изменение задачи"
+msgstr "Edit task"
+
+msgid "Создание задачи"
+msgstr "Create task"
+
+msgid "Вы собираетесь удалить задачу. Это действие невозможно отменить."
+msgstr "You are about to delete the task. This action cannot be undone."
+
+msgid "Информация о задаче:"
+msgstr "Task information:"
+
+msgid "Название:"
+msgstr "Name:"
+
+msgid "Статус:"
+msgstr "Status:"
+
+msgid "Автор:"
+msgstr "Author:"
+
+msgid "Исполнитель:"
+msgstr "Executor:"
+
+msgid "Теги:"
+msgstr "Tags:"
+
+msgid "Дата создания:"
+msgstr "Created at:"
+
+msgid "Дата обновления:"
+msgstr "Updated at:"
+
+msgid "Сохранить изменения"
+msgstr "Save changes"
+
+msgid "Имя пользователя"
+msgstr "Username"
+
+msgid "Полное имя"
+msgstr "Full name"
+
+msgid "Пользователи не найдены"
+msgstr "No users found"
+
+msgid "Удаление пользователя"
+msgstr "Delete user"
+
+msgid "Изменение пользователя"
+msgstr "Edit user"
+
+msgid "Создание пользователя"
+msgstr "Create user"
+
+msgid "Вы собираетесь удалить пользователя. Это действие невозможно отменить."
+msgstr "You are about to delete the user. This action cannot be undone."
+
+msgid "Информация о пользователе:"
+msgstr "User information:"
+
+msgid "Имя пользователя:"
+msgstr "Username:"
+
+msgid "Полное имя:"
+msgstr "Full name:"
+
+msgid "Дата регистрации:"
+msgstr "Registered at:"
+
+msgid "Зарегистрировать"
+msgstr "Register"
+
+msgid "Personal info"
+msgstr "Personal info"
+
+msgid "Permissions"
+msgstr "Permissions"
+
+msgid "Important dates"
+msgstr "Important dates"
+
+msgid "Введите имя пользователя"
+msgstr "Enter username"
+
+msgid "Пароль"
+msgstr "Password"
+
+msgid "Введите пароль"
+msgstr "Enter password"
+
+msgid "Имя"
+msgstr "First name"
+
+msgid "Введите имя"
+msgstr "Enter first name"
+
+msgid "Фамилия"
+msgstr "Last name"
+
+msgid "Введите фамилию"
+msgstr "Enter last name"
+
+msgid "Обязательное поле.  Не более 150 символов. Только буквы, цифры и символы @/./+/-/_."
+msgstr "Required field. Max 150 characters. Only letters, digits and @/./+/-/_ symbols."
+
+msgid "Ваш пароль должен содержать как минимум 3 символа."
+msgstr "Your password must be at least 3 characters long."
+
+msgid "Подтверждение пароля"
+msgstr "Password confirmation"
+
+msgid "Подтвердите пароль"
+msgstr "Confirm password"
+
+msgid "Для подтверждения введите, пожалуйста, пароль ещё раз."
+msgstr "Please enter the password again for confirmation."
+
+msgid "Пароли не совпадают"
+msgstr "Passwords do not match"
+
+msgid "Новый пароль"
+msgstr "New password"
+
+msgid "Введите новый пароль"
+msgstr "Enter new password"
+
+msgid "Оставьте пустым, если не хотите менять пароль."
+msgstr "Leave blank if you don't want to change the password."
+
+msgid "Подтверждение нового пароля"
+msgstr "New password confirmation"
+
+msgid "Подтвердите новый пароль"
+msgstr "Confirm new password"
+
+msgid "Новый пароль и подтверждение не совпадают"
+msgstr "New password and confirmation do not match"
+
+msgid "В поле \"Имя пользователя\" должно быть задано"
+msgstr "The 'Username' field must be set"
+
+msgid "Пользователь с таким именем уже существует."
+msgstr "A user with this username already exists."
+
+msgid "Активен"
+msgstr "Active"
+
+msgid "Сотрудник"
+msgstr "Staff"
+
+msgid "пользователь"
+msgstr "user"
+
+msgid "пользователи"
+msgstr "users"
+
+msgid "Только буквы, цифры и символы @/./+/-/_."
+msgstr "Only letters, digits, and @/./+/-/_ symbols are allowed."
+
+msgid "Пользователь успешно зарегистрирован"
+msgstr "User successfully registered"
+
+msgid "Пользователь успешно изменен"
+msgstr "User successfully updated"
+
+msgid "Пользователь успешно удален"
+msgstr "User successfully deleted"
+
+msgid "Невозможно удалить пользователя, потому что он используется"
+msgstr "Cannot delete user because it is in use"

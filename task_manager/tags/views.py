@@ -1,9 +1,20 @@
-from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
-from .models import Tag
+from django.urls import reverse_lazy
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    ListView,
+    UpdateView
+)
+from django.utils.translation import gettext_lazy as _
+from task_manager.mixins import (
+    ContextActionMixin,
+    DeleteProtectMixin,
+    TagPermissionMixin,
+)
+
 from .forms import TagForm
-from task_manager.mixins import TagPermissionMixin, DeleteProtectMixin, ContextActionMixin
+from .models import Tag
 
 
 class TagListView(ListView):
@@ -13,29 +24,44 @@ class TagListView(ListView):
     ordering = ['id']
 
 
-class TagCreateView(SuccessMessageMixin, ContextActionMixin, CreateView):
+class TagCreateView(
+    SuccessMessageMixin,
+    ContextActionMixin,
+    CreateView
+):
     model = Tag
     form_class = TagForm
     template_name = 'tags/tag_form.html'
     success_url = reverse_lazy('tags:index')
-    success_message = 'Метка успешно создана'
+    success_message = _('Метка успешно создана')
     action = 'create'
 
 
-class TagUpdateView(TagPermissionMixin, SuccessMessageMixin, ContextActionMixin, UpdateView):
+class TagUpdateView(
+    TagPermissionMixin,
+    SuccessMessageMixin,
+    ContextActionMixin,
+    UpdateView
+):
     model = Tag
     form_class = TagForm
     template_name = 'tags/tag_form.html'
     success_url = reverse_lazy('tags:index')
-    success_message = 'Метка успешно изменена'
+    success_message = _('Метка успешно изменена')
     action = 'update'
 
 
-class TagDeleteView(TagPermissionMixin, DeleteProtectMixin, SuccessMessageMixin, ContextActionMixin, DeleteView):
+class TagDeleteView(
+    TagPermissionMixin,
+    DeleteProtectMixin,
+    SuccessMessageMixin,
+    ContextActionMixin,
+    DeleteView
+):
     model = Tag
     template_name = 'tags/tag_form.html'
     success_url = reverse_lazy('tags:index')
-    success_message = 'Метка успешно удалена'
+    success_message = _('Метка успешно удалена')
     redirect_url = reverse_lazy('tags:index')
     protected_related_names = ['tasks']
     action = 'delete'

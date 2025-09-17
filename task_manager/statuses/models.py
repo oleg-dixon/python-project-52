@@ -1,13 +1,13 @@
 from django.db import models
 from django.utils.timezone import localtime
-from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 
 class Status(models.Model):
     name = models.CharField(
         max_length=200,
         unique=True,
-        verbose_name='Название статуса'
+        verbose_name=_('Название статуса')
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -23,5 +23,5 @@ class Status(models.Model):
 
     class Meta:
         db_table = 'statuses'
-        verbose_name = 'статус'
-        verbose_name_plural = 'статусы'
+        verbose_name = _('статус')
+        verbose_name_plural = _('статусы')

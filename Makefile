@@ -18,6 +18,12 @@ migrate:
 tests:
 	uv run manage.py test
 
+check-lint:
+	uv run ruff check
+
+fix-lint:
+	uv run ruff check --fix
+
 rmcache:
 	find . -name "__pycache__" -exec rm -rf {} +
 

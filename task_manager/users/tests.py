@@ -1,11 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+from task_manager.mixins import LanguageMixin
 
 User = get_user_model()
 
 
-class UsersTest(TestCase):
+class UsersTest(LanguageMixin, TestCase):
     fixtures = ["users.json"]
 
     def setUp(self):
@@ -14,14 +15,14 @@ class UsersTest(TestCase):
         self.client.force_login(self.user)
 
         # Дополнительные пользователи для тестов обновления/удаления
-        self.user1 = User.objects.create(
-            username="Alice_test",
-            password="password123"
-        )
-        self.user2 = User.objects.create(
-            username="Oleg_test",
-            password="password123"
-        )
+        self.user1 = User.objects.create_user(
+        username="Alice_test",
+        password="password123"
+    )
+        self.user2 = User.objects.create_user(
+        username="Oleg_test",
+        password="password123"
+    )
 
     # ----- 1. Тесты обновления пользователя -----
     def test_update_name_and_lastname(self):
@@ -204,6 +205,8 @@ class UsersTest(TestCase):
     # ----- 4. Тесты обновления и удаления новых пользователей -----
     def test_user_update(self):
         """Обновление username существующего пользователя."""
+        self.client.force_login(self.user1)
+
         data = {
             "first_name": "Alisha",
             "last_name": "Perkinton",
@@ -211,9 +214,13 @@ class UsersTest(TestCase):
             "new_password": "",
             "new_password_confirm": "",
         }
+
         response = self.client.post(
-            reverse("users:update", args=[self.user1.id]), data, follow=True
+            reverse("users:update", args=[self.user1.id]),
+            data,
+            follow=True
         )
+
         self.user1.refresh_from_db()
         self.assertEqual(self.user1.username, "AliceUpdated")
         self.assertContains(response, "Пользователь успешно изменен")
@@ -221,7 +228,7 @@ class UsersTest(TestCase):
     def test_user_delete(self):
         """Удаление существующего пользователя."""
         response = self.client.post(
-            reverse("users:delete", args=[self.user2.id]), follow=True
+            reverse("users:delete", args=[self.user.id]), follow=True
         )
         self.assertContains(response, "Пользователь успешно удален")
-        self.assertFalse(User.objects.filter(id=self.user2.id).exists())
+        self.assertFalse(User.objects.filter(id=self.user.id).exists())

@@ -1,9 +1,21 @@
-from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse_lazy
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    ListView,
+    UpdateView
+)
+from django.utils.translation import gettext_lazy as _
+
+from task_manager.mixins import (
+    ContextActionMixin,
+    LoginRequiredMixin,
+    TaskPermissionMixin,
+)
+
+from .forms import TaskFilterForm, TaskForm
 from .models import Task
-from .forms import TaskForm, TaskFilterForm
-from task_manager.mixins import LoginRequiredMixin, TaskPermissionMixin, ContextActionMixin
 
 
 class TaskListView(LoginRequiredMixin, ListView):
@@ -42,12 +54,16 @@ class TaskListView(LoginRequiredMixin, ListView):
         return context
 
 
-class TaskCreateView(SuccessMessageMixin, ContextActionMixin, CreateView):
+class TaskCreateView(
+    SuccessMessageMixin,
+    ContextActionMixin,
+    CreateView
+):
     model = Task
     form_class = TaskForm
     template_name = 'tasks/task_form.html'
     success_url = reverse_lazy('tasks:index')
-    success_message = 'Задача успешно создана'
+    success_message = _('Задача успешно создана')
     action = 'create'
 
     def form_valid(self, form):
@@ -55,18 +71,28 @@ class TaskCreateView(SuccessMessageMixin, ContextActionMixin, CreateView):
         return super().form_valid(form)
 
 
-class TaskUpdateView(TaskPermissionMixin, SuccessMessageMixin, ContextActionMixin, UpdateView):
+class TaskUpdateView(
+    TaskPermissionMixin,
+    SuccessMessageMixin,
+    ContextActionMixin,
+    UpdateView
+):
     model = Task
     form_class = TaskForm
     template_name = 'tasks/task_form.html'
     success_url = reverse_lazy('tasks:index')
-    success_message = 'Задача успешно изменена'
+    success_message = _('Задача успешно изменена')
     action = 'update'
 
 
-class TaskDeleteView(TaskPermissionMixin, SuccessMessageMixin, ContextActionMixin, DeleteView):
+class TaskDeleteView(
+    TaskPermissionMixin,
+    SuccessMessageMixin,
+    ContextActionMixin,
+    DeleteView
+):
     model = Task
     template_name = 'tasks/task_form.html'
     success_url = reverse_lazy('tasks:index')
-    success_message = 'Задача успешно удалена'
+    success_message = _('Задача успешно удалена')
     action = 'delete'

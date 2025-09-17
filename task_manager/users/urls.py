@@ -1,11 +1,12 @@
-from django.urls import path
 from django.contrib.auth import views as auth_views
+from django.urls import path
+
 from task_manager.users.views import (
-    UserListView,
-    UserCreateView,
-    UserUpdateView,
-    UserDeleteView,
     CustomLoginView,
+    UserCreateView,
+    UserDeleteView,
+    UserListView,
+    UserUpdateView,
 )
 
 app_name = 'users'
