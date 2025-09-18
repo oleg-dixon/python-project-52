@@ -16,8 +16,5 @@ dependencies = [
     "ruff>=0.13.0",
 ]
 
-[tool.setuptools]
-packages = ["task_manager"]
-
-[tool.setuptools.package-dir]
-task_manager = "task_manager"
+[tool.setuptools.packages.find]
+where = ["."]
