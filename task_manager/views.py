@@ -9,5 +9,3 @@ class IndexView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['app_name'] = _('Менеджер задач')
         return context
-
-
