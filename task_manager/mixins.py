@@ -74,7 +74,10 @@ class UserDeletePermissionMixin(LoginRequiredMixin):
         if user.created_tasks.exists() or user.assigned_tasks.exists():
             messages.error(
                 request,
-                _('Невозможно удалить пользователя, потому что он используется в задачах.')
+                _(
+                    'Невозможно удалить пользователя, '
+                    'потому что он используется в задачах.'
+                )
             )
             return redirect('users:index')
         return super().dispatch(request, *args, **kwargs)
@@ -115,7 +118,10 @@ class StatusPermissionMixin(LoginRequiredMixin):
             if hasattr(status, 'tasks') and status.tasks.exists():
                 messages.error(
                     request,
-                    _('Невозможно удалить статус, потому что он используется в задаче.')
+                    _(
+                        'Невозможно удалить статус, '
+                        'потому что он используется в задаче.'
+                    )
                 )
                 return redirect('statuses:index')
         return super().dispatch(request, *args, **kwargs)
@@ -135,7 +141,10 @@ class LabelPermissionMixin(LoginRequiredMixin):
             if hasattr(label, 'tasks') and label.tasks.exists():
                 messages.error(
                     request,
-                    _('Невозможно удалить метку, потому что она используется в задаче.')
+                    _(
+                        'Невозможно удалить метку, '
+                        'потому что она используется в задаче.'
+                    )
                 )
                 return redirect('labels:index')
         return super().dispatch(request, *args, **kwargs)

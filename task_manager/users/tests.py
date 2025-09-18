@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+
 from task_manager.mixins import LanguageMixin
 
 User = get_user_model()
@@ -110,7 +111,9 @@ class UsersTest(LanguageMixin, TestCase):
             },
         )
         form = response.context["form"]
-        self.assertFormError(form, None, "Новый пароль и подтверждение не совпадают")
+        self.assertFormError(
+            form, None, "Новый пароль и подтверждение не совпадают"
+        )
 
     # ----- 2. Тесты создания пользователя -----
     def test_create_user_success(self):
@@ -179,7 +182,11 @@ class UsersTest(LanguageMixin, TestCase):
             },
         )
         form = response.context["form"]
-        self.assertFormError(form, "username", "Пользователь с таким именем уже существует.")
+        self.assertFormError(
+            form,
+            "username",
+            "Пользователь с таким именем уже существует."
+        )
 
     # ----- 3. Тесты отправки пустой формы -----
     def test_user_creation_form_error(self):

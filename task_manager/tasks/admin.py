@@ -6,10 +6,21 @@ from .models import Task
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'name', 'status', 'author', 'executor', 'created_at', 'updated_at'
+        'id',
+        'name',
+        'status',
+        'author',
+        'executor',
+        'created_at',
+        'updated_at'
     )
     list_display_links = ('id', 'name')
-    search_fields = ('name', 'description', 'author__username', 'executor__username')
+    search_fields = (
+        'name',
+        'description',
+        'author__username',
+        'executor__username'
+    )
     list_filter = ('status', 'labels', 'author', 'executor')
     ordering = ('id',)
     filter_horizontal = ('labels',)

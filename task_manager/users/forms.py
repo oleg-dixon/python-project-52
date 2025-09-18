@@ -57,7 +57,8 @@ class BaseUserForm(forms.ModelForm):
             'placeholder': _('Введите имя пользователя')
         }),
         help_text=_('Обязательное поле. '
-                ' Не более 150 символов. Только буквы, цифры и символы @/./+/-/_.')
+                'Не более 150 символов. '
+                'Только буквы, цифры и символы @/./+/-/_.')
     )
 
     class Meta:
@@ -115,7 +116,10 @@ class UserUpdateForm(BaseUserForm):
         min_length=3,
         label=_('Новый пароль'),
         widget=forms.PasswordInput(
-            attrs={'class': 'form-control', 'placeholder': _('Введите новый пароль')}
+            attrs={
+                'class': 'form-control',
+                'placeholder': _('Введите новый пароль')
+            }
         ),
         help_text=_('Оставьте пустым, если не хотите менять пароль.'),
     )
@@ -124,7 +128,10 @@ class UserUpdateForm(BaseUserForm):
         required=False,
         label=_('Подтверждение нового пароля'),
         widget=forms.PasswordInput(
-            attrs={'class': 'form-control', 'placeholder': _('Подтвердите новый пароль')}
+            attrs={
+                'class': 'form-control',
+                'placeholder': _('Подтвердите новый пароль')
+            }
         ),
     )
 
@@ -133,7 +140,9 @@ class UserUpdateForm(BaseUserForm):
         password = cleaned_data.get("new_password")
         password_confirm = cleaned_data.get("new_password_confirm")
         if password and password != password_confirm:
-            raise ValidationError(_("Новый пароль и подтверждение не совпадают"))
+            raise ValidationError(
+                _("Новый пароль и подтверждение не совпадают")
+            )
         return cleaned_data
 
     def save(self, commit=True):

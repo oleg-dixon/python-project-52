@@ -3,13 +3,8 @@ from django.contrib.auth.views import LoginView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import (
-    CreateView, 
-    DeleteView,
-    ListView,
-    UpdateView
-)
 from django.utils.translation import gettext_lazy as _
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from task_manager.mixins import (
     ContextActionMixin,
@@ -17,11 +12,7 @@ from task_manager.mixins import (
     UserUpdatePermissionMixin,
 )
 
-from .forms import (
-    CustomLoginForm,
-    UserCreateForm,
-    UserUpdateForm
-)
+from .forms import CustomLoginForm, UserCreateForm, UserUpdateForm
 from .models import User
 
 

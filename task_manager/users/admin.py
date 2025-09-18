@@ -33,7 +33,10 @@ class CustomUserAdmin(UserAdmin):
 
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name')}),
+        (_('Personal info'),
+         {'fields': (
+             'first_name', 'last_name'
+         )}),
         (_('Permissions'), {
             'fields': (
                 'is_active',
@@ -43,13 +46,24 @@ class CustomUserAdmin(UserAdmin):
                 'user_permissions',
             ),
         }),
-        (_('Important dates'), {'fields': ('last_login', 'created_at', 'updated_at')}),
+        (_('Important dates'),
+         {'fields': (
+             'last_login',
+             'created_at',
+             'updated_at'
+         )}),
     )
 
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'first_name', 'last_name', 'password', 'password_confirm'),
+            'fields': (
+                'username',
+                'first_name',
+                'last_name',
+                'password',
+                'password_confirm'
+            ),
         }),
     )
 

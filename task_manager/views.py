@@ -1,5 +1,5 @@
-from django.views.generic.base import TemplateView
 from django.utils.translation import gettext_lazy as _
+from django.views.generic.base import TemplateView
 
 
 class IndexView(TemplateView):

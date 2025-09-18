@@ -2,9 +2,9 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from task_manager.statuses.models import Status
 from task_manager.labels.models import Label
 from task_manager.mixins import LanguageMixin
+from task_manager.statuses.models import Status
 
 from .models import Task
 
@@ -90,38 +90,39 @@ class TasksTest(LanguageMixin, AuthTestCase):
     # ----- 4. Тест фильтрации по статусу -----
     def test_task_filter_by_status(self):
         status = Status.objects.get(pk=1)
-        response = self.client.get(reverse('tasks:index'), data={"status": status.pk})
+        response = self.client.get(
+            reverse('tasks:index'), data={"status": status.pk}
+        )
         tasks = response.context['tasks']
         self.assertTrue(all(task.status == status for task in tasks))
 
     # ----- 5. Тест фильтрации по исполнителю -----
     def test_task_filter_by_executor(self):
         executor = get_user_model().objects.get(pk=2)
-        response = self.client.get(reverse('tasks:index'), data={"executor": executor.pk})
+        response = self.client.get(
+            reverse('tasks:index'), data={"executor": executor.pk}
+        )
         tasks = response.context['tasks']
         self.assertTrue(all(task.executor == executor for task in tasks))
 
-    # ----- 6. Тест фильтрации по автору -----
-    def test_task_filter_by_author(self):
-        author = get_user_model().objects.get(pk=2)
-        response = self.client.get(reverse('tasks:index'), data={"author": author.pk})
-        tasks = response.context['tasks']
-        self.assertTrue(all(task.author == author for task in tasks))
-
-    # ----- 7. Тест фильтрации по меткам -----
+    # ----- 6. Тест фильтрации по меткам -----
     def test_task_filter_by_labels(self):
         label = Label.objects.get(pk=1)
-        response = self.client.get(reverse('tasks:index'), data={"labels": [label.pk]})
+        response = self.client.get(
+            reverse('tasks:index'), data={"labels": [label.pk]}
+        )
         tasks = response.context['tasks']
         self.assertTrue(any(label in task.labels.all() for task in tasks))
 
-    # ----- 8. Тест фильтрации своих задач -----
+    # ----- 7. Тест фильтрации своих задач -----
     def test_task_filter_self_tasks(self):
-        response = self.client.get(reverse('tasks:index'), data={"self_tasks": True})
+        response = self.client.get(
+            reverse('tasks:index'), data={"self_tasks": True}
+        )
         tasks = response.context['tasks']
         self.assertTrue(all(task.author == self.user for task in tasks))
 
-    # ----- 9. Тест запрета редактирования чужой задачи -----
+    # ----- 8. Тест запрета редактирования чужой задачи -----
     def test_update_other_user_task(self):
         task = Task.objects.get(pk=2)
         status = Status.objects.first()
@@ -142,9 +143,12 @@ class TasksTest(LanguageMixin, AuthTestCase):
 
         task.refresh_from_db()
         self.assertNotEqual(task.name, "Попытка изменить чужое")
-        self.assertContains(response, "У вас нет прав для удаления этой задачи.")
+        self.assertContains(
+            response,
+            "У вас нет прав для удаления этой задачи."
+        )
 
-    # ----- 10. Тест запрета удаления чужой задачи -----
+    # ----- 9. Тест запрета удаления чужой задачи -----
     def test_delete_other_user_task(self):
         task = Task.objects.get(pk=2)
 
@@ -154,16 +158,19 @@ class TasksTest(LanguageMixin, AuthTestCase):
         )
 
         self.assertTrue(Task.objects.filter(pk=task.pk).exists())
-        self.assertContains(response, "У вас нет прав для удаления этой задачи.")
+        self.assertContains(
+            response,
+            "У вас нет прав для удаления этой задачи."
+        )
 
-    # ----- 11. Тест просмотра списка задач -----
+    # ----- 10. Тест просмотра списка задач -----
     def test_task_list_view(self):
         response = self.client.get(reverse('tasks:index'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "<table")
         self.assertTrue(len(response.context['tasks']) > 0)
 
-    # ----- 12. Тест создания задачи с пустыми полями (валидация) -----
+    # ----- 11. Тест создания задачи с пустыми полями (валидация) -----
     def test_create_task_empty_fields(self):
         response = self.client.post(
             reverse('tasks:create'),

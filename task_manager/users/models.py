@@ -39,11 +39,19 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=30, verbose_name=_('Имя'))
     last_name = models.CharField(max_length=150, verbose_name=_('Фамилия'))
     password = models.CharField(max_length=128, verbose_name=_('Пароль'))
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Дата создания'))
-    updated_at = models.DateTimeField(auto_now=True, verbose_name=_('Дата обновления'))
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name=_('Дата создания')
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True, verbose_name=_('Дата обновления')
+    )
     
-    is_active = models.BooleanField(default=True, verbose_name=_('Активен'))
-    is_staff = models.BooleanField(default=False, verbose_name=_('Сотрудник'))
+    is_active = models.BooleanField(
+        default=True, verbose_name=_('Активен')
+    )
+    is_staff = models.BooleanField(
+        default=False, verbose_name=_('Сотрудник')
+    )
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['first_name', 'last_name']
