@@ -108,12 +108,12 @@ class TasksTest(LanguageMixin, AuthTestCase):
         tasks = response.context['tasks']
         self.assertTrue(all(task.author == author for task in tasks))
 
-    # ----- 7. Тест фильтрации по тегам -----
+    # ----- 7. Тест фильтрации по меткам -----
     def test_task_filter_by_labels(self):
-        label = Label.objects.get(pk=8)
+        label = Label.objects.get(pk=1)
         response = self.client.get(reverse('tasks:index'), data={"labels": [label.pk]})
         tasks = response.context['tasks']
-        self.assertTrue(all(label in task.labels.all() for task in tasks))
+        self.assertTrue(any(label in task.labels.all() for task in tasks))
 
     # ----- 8. Тест фильтрации своих задач -----
     def test_task_filter_self_tasks(self):

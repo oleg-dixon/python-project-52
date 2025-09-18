@@ -24,6 +24,6 @@ class LabelForm(forms.ModelForm):
             qs = qs.exclude(pk=self.instance.pk)
         if qs.exists():
             raise forms.ValidationError(
-                _("Метка с таким названием уже существует")
+                _("Метка с таким названием уже существует.")
             )
         return name
