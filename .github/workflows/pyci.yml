@@ -1,0 +1,102 @@
+name: Python CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.12']
+        database: ['sqlite', 'postgres']
+
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+        # Условие переносим в steps
+        # Сервис будет запускаться всегда, но использоваться только когда нужно
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install uv
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+    - name: Install dependencies
+      run: |
+        uv sync --all-extras
+
+    - name: Setup database environment
+      run: |
+        if [ "${{ matrix.database }}" = "postgres" ]; then
+          echo "DATABASE_URL=postgres://postgres:postgres@localhost:5432/test_db" >> $GITHUB_ENV
+          echo "Using PostgreSQL"
+        else
+          echo "DATABASE_URL=sqlite:///db.sqlite3" >> $GITHUB_ENV
+          echo "Using SQLite"
+        fi
+
+    - name: Run migrations
+      run: |
+        uv run python manage.py migrate
+      env:
+        SECRET_KEY: test-secret-key-for-ci-${{ github.run_id }}
+        DEBUG: False
+        DJANGO_ALLOWED_HOSTS: localhost,testserver,127.0.0.1
+
+    - name: Run tests
+      run: |
+        uv run python manage.py test
+      env:
+        SECRET_KEY: test-secret-key-for-ci-${{ github.run_id }}
+        DEBUG: False
+        DJANGO_ALLOWED_HOSTS: localhost,testserver,127.0.0.1
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install uv
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+    - name: Install dependencies
+      run: |
+        uv sync --all-extras
+
+    - name: Run ruff check
+      run: |
+        uv run ruff check
+
+    - name: Run ruff format check
+      run: |
+        uv run ruff format --check
