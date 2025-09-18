@@ -20,3 +20,9 @@ dependencies = [
 dev = [
     "pytest-cov>=7.0.0",
 ]
+
+[tool.setuptools]
+packages = ["task_manager"]
+
+[tool.setuptools.package-dir]
+task_manager = "task_manager"
