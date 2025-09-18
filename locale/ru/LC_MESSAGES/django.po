@@ -116,8 +116,8 @@ msgstr "Статус"
 msgid "Исполнитель"
 msgstr "Исполнитель"
 
-msgid "Метки"
-msgstr "Метки"
+msgid "Метка"
+msgstr "Метка"
 
 msgid "Автор"
 msgstr "Автор"

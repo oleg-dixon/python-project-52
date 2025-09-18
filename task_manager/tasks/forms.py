@@ -75,17 +75,11 @@ class TaskFilterForm(forms.Form):
         label=_('Исполнитель'),
         widget=forms.Select(attrs={'class': 'form-select'})
     )
-    author = forms.ModelChoiceField(
-        queryset=User.objects.all(),
-        required=False,
-        label=_('Автор'),
-        widget=forms.Select(attrs={'class': 'form-select'})
-    )
     labels = forms.ModelMultipleChoiceField(
         queryset=Label.objects.all(),
         required=False,
         label=_('Метки'),
-        widget=forms.SelectMultiple(attrs={'class': 'form-select'})
+        widget=forms.Select(attrs={'class': 'form-select'})
     )
     self_tasks = forms.BooleanField(
         required=False,

@@ -85,47 +85,47 @@ msgstr "Status updated successfully"
 msgid "Статус успешно удален"
 msgstr "Status deleted successfully"
 
-#: task_manager/tags/forms.py:11 task_manager/tags/models.py:10
+#: task_manager/labels/forms.py:11 task_manager/labels/models.py:10
 msgid "Название метки"
 msgstr "Label name"
 
-#: task_manager/tags/forms.py:16
+#: task_manager/labels/forms.py:16
 msgid "Введите название метки"
 msgstr "Enter label name"
 
-#: task_manager/tags/forms.py:27
+#: task_manager/labels/forms.py:27
 msgid "Метка с таким названием уже существует"
 msgstr "Label with this name already exists"
 
-#: task_manager/tags/models.py:14 task_manager/tasks/models.py:44
+#: task_manager/labels/models.py:14 task_manager/tasks/models.py:44
 #: task_manager/templates/statuses/index.html:19
-#: task_manager/templates/tags/index.html:19
+#: task_manager/templates/labels/index.html:19
 #: task_manager/templates/users/index.html:17 task_manager/users/models.py:42
 msgid "Дата создания"
 msgstr "Created at"
 
-#: task_manager/tags/models.py:18 task_manager/tasks/models.py:48
+#: task_manager/labels/models.py:18 task_manager/tasks/models.py:48
 #: task_manager/users/models.py:43
 msgid "Дата обновления"
 msgstr "Updated at"
 
-#: task_manager/tags/models.py:32
+#: task_manager/labels/models.py:32
 msgid "метка"
 msgstr "label"
 
-#: task_manager/tags/models.py:33
+#: task_manager/labels/models.py:33
 msgid "метки"
 msgstr "labels"
 
-#: task_manager/tags/views.py:36
+#: task_manager/labels/views.py:36
 msgid "Метка успешно создана"
 msgstr "Label created successfully"
 
-#: task_manager/tags/views.py:50
+#: task_manager/labels/views.py:50
 msgid "Метка успешно изменена"
 msgstr "Label updated successfully"
 
-#: task_manager/tags/views.py:64
+#: task_manager/labels/views.py:64
 msgid "Метка успешно удалена"
 msgstr "Label deleted successfully"
 
@@ -160,12 +160,12 @@ msgstr "Executor"
 #: task_manager/tasks/forms.py:56 task_manager/tasks/forms.py:87
 #: task_manager/tasks/models.py:40 task_manager/templates/base.html:34
 #: task_manager/templates/index.html:31
-#: task_manager/templates/tags/index.html:4
-#: task_manager/templates/tags/index.html:8
+#: task_manager/templates/labels/index.html:4
+#: task_manager/templates/labels/index.html:8
 #: task_manager/templates/tasks/index.html:29
 #: task_manager/templates/tasks/index.html:49
-msgid "Метки"
-msgstr "Labels"
+msgid "Метка"
+msgstr "Label"
 
 #: task_manager/tasks/forms.py:81 task_manager/tasks/models.py:26
 #: task_manager/templates/tasks/index.html:25
@@ -202,8 +202,8 @@ msgstr "Task deleted successfully"
 #: task_manager/templates/login.html:5
 #: task_manager/templates/statuses/index.html:4
 #: task_manager/templates/statuses/status_form.html:12
-#: task_manager/templates/tags/index.html:4
-#: task_manager/templates/tags/tag_form.html:12
+#: task_manager/templates/labels/index.html:4
+#: task_manager/templates/labels/label_form.html:12
 #: task_manager/templates/tasks/index.html:4
 #: task_manager/templates/tasks/task_form.html:12
 #: task_manager/templates/users/index.html:5
@@ -252,7 +252,7 @@ msgstr "Registration"
 
 #: task_manager/templates/base.html:106
 #: task_manager/templates/statuses/status_form.html:22
-#: task_manager/templates/tags/tag_form.html:22
+#: task_manager/templates/labels/label_form.html:22
 #: task_manager/templates/tasks/task_form.html:22
 #: task_manager/templates/users/user_form.html:33
 msgid "Закрыть"
@@ -336,27 +336,27 @@ msgid "Создать статус"
 msgstr "Create status"
 
 #: task_manager/templates/statuses/index.html:17
-#: task_manager/templates/tags/index.html:17
+#: task_manager/templates/labels/index.html:17
 #: task_manager/templates/tasks/index.html:44
 #: task_manager/templates/users/index.html:14
 msgid "ID"
 msgstr "ID"
 
 #: task_manager/templates/statuses/index.html:18
-#: task_manager/templates/tags/index.html:18
+#: task_manager/templates/labels/index.html:18
 #: task_manager/templates/tasks/index.html:45
 msgid "Название"
 msgstr "Name"
 
 #: task_manager/templates/statuses/index.html:20
-#: task_manager/templates/tags/index.html:20
+#: task_manager/templates/labels/index.html:20
 #: task_manager/templates/tasks/index.html:50
 #: task_manager/templates/users/index.html:18
 msgid "Действия"
 msgstr "Actions"
 
 #: task_manager/templates/statuses/index.html:32
-#: task_manager/templates/tags/index.html:32
+#: task_manager/templates/labels/index.html:32
 #: task_manager/templates/tasks/index.html:69
 #: task_manager/templates/users/index.html:31
 #: task_manager/templates/users/user_form.html:93
@@ -364,7 +364,7 @@ msgid "Изменить"
 msgstr "Edit"
 
 #: task_manager/templates/statuses/index.html:33
-#: task_manager/templates/tags/index.html:33
+#: task_manager/templates/labels/index.html:33
 #: task_manager/templates/tasks/index.html:70
 #: task_manager/templates/tasks/task_form.html:73
 #: task_manager/templates/users/index.html:32
@@ -386,7 +386,7 @@ msgid "Изменить статус"
 msgstr "Edit status"
 
 #: task_manager/templates/statuses/status_form.html:42
-#: task_manager/templates/tags/tag_form.html:42
+#: task_manager/templates/labels/label_form.html:42
 #: task_manager/templates/tasks/task_form.html:41
 #: task_manager/templates/tasks/task_form.html:45
 #: task_manager/templates/users/user_form.html:43
@@ -403,13 +403,13 @@ msgid "Название статуса:"
 msgstr "Status name:"
 
 #: task_manager/templates/statuses/status_form.html:55
-#: task_manager/templates/tags/tag_form.html:55
+#: task_manager/templates/labels/label_form.html:55
 #: task_manager/templates/users/user_form.html:65
 msgid "Да, удалить"
 msgstr "Yes, delete"
 
 #: task_manager/templates/statuses/status_form.html:58
-#: task_manager/templates/tags/tag_form.html:58
+#: task_manager/templates/labels/label_form.html:58
 #: task_manager/templates/tasks/task_form.html:74
 #: task_manager/templates/tasks/task_form.html:92
 #: task_manager/templates/users/user_form.html:68
@@ -417,40 +417,40 @@ msgid "Отмена"
 msgstr "Cancel"
 
 #: task_manager/templates/statuses/status_form.html:81
-#: task_manager/templates/tags/tag_form.html:81
+#: task_manager/templates/labels/label_form.html:81
 msgid "Сохранить"
 msgstr "Save"
 
 #: task_manager/templates/statuses/status_form.html:83
-#: task_manager/templates/tags/tag_form.html:83
+#: task_manager/templates/labels/label_form.html:83
 msgid "Создать"
 msgstr "Create"
 
-#: task_manager/templates/tags/index.html:11
-#: task_manager/templates/tags/tag_form.html:11
-#: task_manager/templates/tags/tag_form.html:33
+#: task_manager/templates/labels/index.html:11
+#: task_manager/templates/labels/label_form.html:11
+#: task_manager/templates/labels/label_form.html:33
 msgid "Создать метку"
 msgstr "Create label"
 
-#: task_manager/templates/tags/index.html:38
+#: task_manager/templates/labels/index.html:38
 msgid "Метки не найдены"
 msgstr "No labels found"
 
-#: task_manager/templates/tags/tag_form.html:7
-#: task_manager/templates/tags/tag_form.html:29
+#: task_manager/templates/labels/label_form.html:7
+#: task_manager/templates/labels/label_form.html:29
 msgid "Удаление метки"
 msgstr "Delete label"
 
-#: task_manager/templates/tags/tag_form.html:9
-#: task_manager/templates/tags/tag_form.html:31
+#: task_manager/templates/labels/label_form.html:9
+#: task_manager/templates/labels/label_form.html:31
 msgid "Изменить метку"
 msgstr "Edit label"
 
-#: task_manager/templates/tags/tag_form.html:46
+#: task_manager/templates/labels/label_form.html:46
 msgid "Вы собираетесь удалить метку. Это действие невозможно отменить."
 msgstr "You are about to delete a label. This action cannot be undone."
 
-#: task_manager/templates/tags/tag_form.html:48
+#: task_manager/templates/labels/label_form.html:48
 msgid "Название метки:"
 msgstr "Label name:"
 
@@ -512,7 +512,7 @@ msgstr "Executor:"
 
 #: task_manager/templates/tasks/task_form.html:58
 msgid "Теги:"
-msgstr "Tags:"
+msgstr "labels:"
 
 #: task_manager/templates/tasks/task_form.html:65
 msgid "Дата создания:"
