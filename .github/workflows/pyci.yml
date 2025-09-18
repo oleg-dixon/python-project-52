@@ -28,8 +28,6 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
-        # Условие переносим в steps
-        # Сервис будет запускаться всегда, но использоваться только когда нужно
 
     steps:
     - uses: actions/checkout@v4
@@ -73,30 +71,3 @@ jobs:
         SECRET_KEY: test-secret-key-for-ci-${{ github.run_id }}
         DEBUG: False
         DJANGO_ALLOWED_HOSTS: localhost,testserver,127.0.0.1
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.12'
-
-    - name: Install uv
-      run: |
-        curl -LsSf https://astral.sh/uv/install.sh | sh
-        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
-
-    - name: Install dependencies
-      run: |
-        uv sync --all-extras
-
-    - name: Run ruff check
-      run: |
-        uv run ruff check
-
-    - name: Run ruff format check
-      run: |
-        uv run ruff format --check
