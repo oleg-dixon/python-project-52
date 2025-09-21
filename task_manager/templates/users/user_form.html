@@ -3,12 +3,12 @@
 {% load django_bootstrap5 %}
 
 {% block title %}
-{% if action == 'delete' %}
-    {% trans "Удаление пользователя" %}
+{% if action == 'create' %}
+    {% trans "Создание пользователя" %}
 {% elif action == 'update' %}
     {% trans "Изменение пользователя" %}
-{% else %}
-    {% trans "Создание пользователя" %}
+{% elif action == 'delete' %}
+    {% trans "Удаление пользователя" %}
 {% endif %} | {% trans "Менеджер задач" %}
 {% endblock %}
 
@@ -17,12 +17,12 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <h1 class="text-center mb-4">
-                {% if action == 'delete' %}
-                    {% trans "Удаление пользователя" %}
+                {% if action == 'create' %}
+                    {% trans "Создание пользователя" %}
                 {% elif action == 'update' %}
                     {% trans "Изменение пользователя" %}
-                {% else %}
-                    {% trans "Создание пользователя" %}
+                {% elif action == 'delete' %}
+                    {% trans "Удаление пользователя" %}
                 {% endif %}
             </h1>
 
