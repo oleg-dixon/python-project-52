@@ -27,7 +27,7 @@ class TaskListView(LoginRequiredMixin, ListView):
             status = form.cleaned_data.get('status')
             executor = form.cleaned_data.get('executor')
             author = form.cleaned_data.get('author')
-            tags = form.cleaned_data.get('tags')
+            labels = form.cleaned_data.get('labels')
             self_tasks = form.cleaned_data.get('self_tasks')
 
             if status:
@@ -36,8 +36,8 @@ class TaskListView(LoginRequiredMixin, ListView):
                 queryset = queryset.filter(executor=executor)
             if author:
                 queryset = queryset.filter(author=author)
-            if tags:
-                queryset = queryset.filter(tags__in=tags).distinct()
+            if labels:
+                queryset = queryset.filter(labels=labels).distinct()
             if self_tasks:
                 queryset = queryset.filter(author=self.request.user)
 
