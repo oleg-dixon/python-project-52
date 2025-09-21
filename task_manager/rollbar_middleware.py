@@ -1,22 +1,27 @@
 import os
-from rollbar.contrib.django.middleware import RollbarNotifierMiddleware
+import rollbar
+from django.conf import settings
+from rollbar.contrib.django.middleware import RollbarNotifierMiddleware as BaseRollbarMiddleware
 
 ROLLBAR_ACCESS_TOKEN = os.getenv("ROLLBAR_ACCESS_TOKEN")
 ROLLBAR_ENVIRONMENT = os.getenv("ROLLBAR_ENVIRONMENT", "development")
 
+if ROLLBAR_ACCESS_TOKEN:
+    rollbar.init(
+        access_token=ROLLBAR_ACCESS_TOKEN,
+        environment=ROLLBAR_ENVIRONMENT,
+        root=getattr(settings, "BASE_DIR", None),
+    )
 
-class CustomRollbarNotifierMiddleware(RollbarNotifierMiddleware):
+class CustomRollbarNotifierMiddleware(BaseRollbarMiddleware):
     def __init__(self, get_response):
-        super().__init__(
-            get_response,
-            access_token=ROLLBAR_ACCESS_TOKEN or None,
-            environment=ROLLBAR_ENVIRONMENT,
-        )
-        self.disabled = not bool(ROLLBAR_ACCESS_TOKEN)
+        if not ROLLBAR_ACCESS_TOKEN:
+            self.get_extra_data = lambda request, exc: {}
+            self.get_payload_data = lambda request, exc: {}
+        super().__init__(get_response)
 
     def get_extra_data(self, request, exc):
-        if getattr(self, "disabled", False):
-            return {}
+        """Дополнительные данные для Rollbar"""
         extra_data = {}
         if hasattr(request, "session"):
             extra_data["session_id"] = request.session.session_key
@@ -30,8 +35,7 @@ class CustomRollbarNotifierMiddleware(RollbarNotifierMiddleware):
         return extra_data
 
     def get_payload_data(self, request, exc):
-        if getattr(self, "disabled", False):
-            return {}
+        """Данные пользователя для Rollbar"""
         payload_data = {}
         if hasattr(request, "user") and not request.user.is_anonymous:
             payload_data["person"] = {
