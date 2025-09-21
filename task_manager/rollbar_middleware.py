@@ -6,19 +6,17 @@ ROLLBAR_ENVIRONMENT = os.getenv("ROLLBAR_ENVIRONMENT", "development")
 
 
 class CustomRollbarNotifierMiddleware(RollbarNotifierMiddleware):
-    def __init__(self, *args, **kwargs):
-        if not ROLLBAR_ACCESS_TOKEN:
-            self.get_extra_data = lambda request, exc: {}
-            self.get_payload_data = lambda request, exc: {}
-        else:
-            super().__init__(
-                *args,
-                access_token=ROLLBAR_ACCESS_TOKEN,
-                environment=ROLLBAR_ENVIRONMENT,
-                **kwargs
-            )
+    def __init__(self, get_response):
+        super().__init__(
+            get_response,
+            access_token=ROLLBAR_ACCESS_TOKEN or None,
+            environment=ROLLBAR_ENVIRONMENT,
+        )
+        self.disabled = not bool(ROLLBAR_ACCESS_TOKEN)
 
     def get_extra_data(self, request, exc):
+        if getattr(self, "disabled", False):
+            return {}
         extra_data = {}
         if hasattr(request, "session"):
             extra_data["session_id"] = request.session.session_key
@@ -32,6 +30,8 @@ class CustomRollbarNotifierMiddleware(RollbarNotifierMiddleware):
         return extra_data
 
     def get_payload_data(self, request, exc):
+        if getattr(self, "disabled", False):
+            return {}
         payload_data = {}
         if hasattr(request, "user") and not request.user.is_anonymous:
             payload_data["person"] = {
