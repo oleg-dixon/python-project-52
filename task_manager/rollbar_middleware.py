@@ -1,7 +1,7 @@
 import os
 import rollbar
 from django.conf import settings
-from rollbar.contrib.django.middleware import RollbarNotifierMiddleware as BaseRollbarMiddleware
+from rollbar.contrib.django.middleware import RollbarNotifierMiddleware
 
 ROLLBAR_ACCESS_TOKEN = os.getenv("ROLLBAR_ACCESS_TOKEN")
 ROLLBAR_ENVIRONMENT = os.getenv("ROLLBAR_ENVIRONMENT", "development")
@@ -13,7 +13,7 @@ if ROLLBAR_ACCESS_TOKEN:
         root=getattr(settings, "BASE_DIR", None),
     )
 
-class CustomRollbarNotifierMiddleware(BaseRollbarMiddleware):
+class CustomRollbarNotifierMiddleware(RollbarNotifierMiddleware):
     def __init__(self, get_response):
         if not ROLLBAR_ACCESS_TOKEN:
             self.get_extra_data = lambda request, exc: {}
