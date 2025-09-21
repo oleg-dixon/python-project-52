@@ -75,7 +75,7 @@ class TaskFilterForm(forms.Form):
         label=_('Исполнитель'),
         widget=forms.Select(attrs={'class': 'form-select'})
     )
-    labels = forms.ModelMultipleChoiceField(
+    labels = forms.ModelChoiceField(
         queryset=Label.objects.all(),
         required=False,
         label=_('Метки'),
