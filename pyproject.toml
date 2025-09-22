@@ -18,3 +18,19 @@ dependencies = [
 
 [tool.setuptools.packages.find]
 where = ["."]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "task_manager.settings"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+addopts = "--reuse-db -v"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+    "pytest-base-url>=2.1.0",
+    "pytest-django>=4.11.1",
+    "pytest-dotenv>=0.5.2",
+    "pytest-env>=1.1.5",
+    "pytest-playwright>=0.7.1",
+    "ruff>=0.13.0",
+]
