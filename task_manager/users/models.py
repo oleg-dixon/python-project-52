@@ -86,6 +86,5 @@ class User(AbstractBaseUser, PermissionsMixin):
         return localtime(self.updated_at)
     
     class Meta:
-        db_table = 'users'
         verbose_name = _('пользователь')
         verbose_name_plural = _('пользователи')
