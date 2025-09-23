@@ -36,9 +36,21 @@ class User(AbstractBaseUser, PermissionsMixin):
             'unique': _("Пользователь с таким именем уже существует."),
         },
     )
-    first_name = models.CharField(max_length=30, verbose_name=_('Имя'))
-    last_name = models.CharField(max_length=150, verbose_name=_('Фамилия'))
-    password = models.CharField(max_length=128, verbose_name=_('Пароль'))
+    first_name = models.CharField(
+        max_length=30,
+        blank=False,
+        null=False,
+        verbose_name=_('Имя')
+    )
+    last_name = models.CharField(
+        max_length=150,
+        blank=False,
+        null=False,
+        verbose_name=_('Фамилия')
+    )
+    password = models.CharField(
+        max_length=128, verbose_name=_('Пароль')
+    )
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name=_('Дата создания')
     )
