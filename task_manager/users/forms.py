@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 from .models import User
 from .validators import username_validator
+from task_manager.mixins import PasswordMixin
 
 
 class CustomLoginForm(AuthenticationForm):
@@ -66,7 +67,11 @@ class BaseUserForm(forms.ModelForm):
         fields = ['first_name', 'last_name', 'username']
 
 
-class UserCreateForm(BaseUserForm):
+class UserCreateForm(BaseUserForm, PasswordMixin):
+    password_field_name = 'password'
+    password_confirm_field_name = 'password_confirm'
+    mismatch_error_message = _("Пароли не совпадают")
+    
     password = forms.CharField(
         required=True,
         min_length=3,
@@ -93,23 +98,18 @@ class UserCreateForm(BaseUserForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        password = cleaned_data.get("password")
-        password_confirm = cleaned_data.get("password_confirm")
-        
-        if password and password_confirm and password != password_confirm:
-            raise ValidationError(_("Пароли не совпадают"))
-        
+        self.clean_passwords()
         return cleaned_data
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.set_password(self.cleaned_data["password"])
-        if commit:
-            user.save()
-        return user
+        return self.save_password(user, commit=commit)
     
 
-class UserUpdateForm(BaseUserForm):
+class UserUpdateForm(BaseUserForm, PasswordMixin):
+    password_field_name = 'new_password'
+    password_confirm_field_name = 'new_password_confirm'
+    mismatch_error_message = _("Новый пароль и подтверждение не совпадают")
 
     new_password = forms.CharField(
         required=False,
@@ -137,20 +137,10 @@ class UserUpdateForm(BaseUserForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        password = cleaned_data.get("new_password")
-        password_confirm = cleaned_data.get("new_password_confirm")
-        if password and password != password_confirm:
-            raise ValidationError(
-                _("Новый пароль и подтверждение не совпадают")
-            )
+        self.clean_passwords()
         return cleaned_data
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        password = self.cleaned_data.get("new_password")
-        if password:
-            user.set_password(password)
-        if commit:
-            user.save()
-        return user
+        return self.save_password(user, commit=commit)
 

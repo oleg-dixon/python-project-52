@@ -39,6 +39,9 @@ class UserCreateView(
     success_message = _('Пользователь успешно зарегистрирован')
     action = 'create'
 
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
+
 
 class UserUpdateView(
     UserUpdatePermissionMixin,
@@ -52,6 +55,9 @@ class UserUpdateView(
     success_url = reverse_lazy('users:index')
     success_message = _('Пользователь успешно изменен')
     action = 'update'
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
 
 
 class UserDeleteView(

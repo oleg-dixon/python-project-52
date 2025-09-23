@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import activate
 from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ValidationError
 
 
 class ContextActionMixin:
@@ -157,3 +158,35 @@ class LanguageMixin:
     def setUp(self):
         super().setUp()
         activate(self.LANGUAGE_CODE)
+
+
+class PasswordMixin:
+    """
+    Миксин для обработки паролей в формах создания и обновления пользователей.
+    Позволяет проверять совпадение пароля и сохранять его.
+    """
+    password_field_name = None
+    password_confirm_field_name = None
+    mismatch_error_message = _('Пароли не совпадают')
+
+    def clean_passwords(self):
+        """Проверка совпадения пароля и подтверждения"""
+        if not self.password_field_name or not self.password_confirm_field_name:
+            return self.cleaned_data
+
+        password = self.cleaned_data.get(self.password_field_name)
+        password_confirm = self.cleaned_data.get(self.password_confirm_field_name)
+
+        if password or password_confirm:
+            if password != password_confirm:
+                self.add_error(None, self.mismatch_error_message)
+        return self.cleaned_data
+
+    def save_password(self, user, commit=True):
+        """Сохраняем пароль пользователя, если он задан"""
+        password = self.cleaned_data.get(self.password_field_name)
+        if password:
+            user.set_password(password)
+        if commit:
+            user.save()
+        return user
