@@ -28,6 +28,5 @@ class Label(models.Model):
         return localtime(self.updated_at)
 
     class Meta:
-        db_table = 'labels'
         verbose_name = _('метка')
         verbose_name_plural = _('метки')

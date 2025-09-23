@@ -58,6 +58,5 @@ class Task(models.Model):
         return self.name
 
     class Meta:
-        db_table = 'tasks'
         verbose_name = _('задача')
         verbose_name_plural = _('задачи')

@@ -22,6 +22,5 @@ class Status(models.Model):
         return localtime(self.updated_at)
 
     class Meta:
-        db_table = 'statuses'
         verbose_name = _('статус')
         verbose_name_plural = _('статусы')
