@@ -72,13 +72,3 @@ class UserDeleteView(
     success_url = reverse_lazy('users:index')
     success_message = _('Пользователь успешно удален')
     action = 'delete'
-
-    def delete(self, request, *args, **kwargs):
-        user = self.get_object()
-        if user.created_tasks.exists() or user.assigned_tasks.exists():
-            messages.error(
-                request,
-                _('Невозможно удалить пользователя, потому что он используется')
-            )
-            return redirect('users:index')
-        return super().delete(request, *args, **kwargs)
