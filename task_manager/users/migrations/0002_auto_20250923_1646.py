@@ -31,7 +31,7 @@ def create_test_users(apps, schema_editor):
 
 def delete_test_users(apps, schema_editor):
     User = apps.get_model('users', 'User')
-    User.objects.filter(username__in=['admin', 'Papa', 'Maria']).delete()
+    User.objects.filter(username__in=['Sofia', 'Diana', 'Maria']).delete()
 
 class Migration(migrations.Migration):
     dependencies = [
