@@ -70,14 +70,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
-    'task_manager.rollbar_middleware.CustomRollbarNotifierMiddleware',
+    # 'task_manager.rollbar_middleware.CustomRollbarNotifierMiddleware',
 ]
 
 ROLLBAR = {
     'access_token': os.getenv('ROLLBAR_ACCESS_TOKEN', ''),
     'environment': os.getenv(
         'ROLLBAR_ENVIRONMENT',
-        'development' if DEBUG else 'production'
+        'development' if DEBUG else 'production',
     ),
     'code_version': '1.0',
     'root': BASE_DIR,
