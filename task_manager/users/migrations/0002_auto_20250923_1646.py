@@ -7,18 +7,18 @@ def create_test_users(apps, schema_editor):
     User = apps.get_model('users', 'User')
     
     User.objects.create(
-        username='admin',
-        first_name='Oleg',
-        last_name='Dixon',
+        username='Sofia',
+        first_name='София',
+        last_name='Дюкарева',
         password=make_password('adminpass'),
         is_staff=True,
         is_superuser=True
     )
     
     User.objects.create(
-        username='Papa', 
-        first_name='Папа',
-        last_name='Дюкарев',
+        username='Diana', 
+        first_name='Диана',
+        last_name='Дюкарева',
         password=make_password('testpass')
     )
     
