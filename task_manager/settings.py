@@ -36,7 +36,7 @@ else:
 # ------------------------------------------------------------------
 SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = True
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,webserver,python-project-52-ya5h.onrender.com').split(',')
 
 LOGIN_REDIRECT_URL = 'root'
 LOGIN_URL = 'login'
