@@ -8,7 +8,7 @@ User = get_user_model()
 
 
 class UsersTest(LanguageMixin, TestCase):
-    fixtures = ["users.json"]
+    fixtures = ["users"]
 
     def setUp(self):
         """Настройка пользователей для тестов."""
@@ -239,3 +239,13 @@ class UsersTest(LanguageMixin, TestCase):
         )
         self.assertContains(response, "Пользователь успешно удален")
         self.assertFalse(User.objects.filter(id=self.user.id).exists())
+
+    # ----- 5. Тесты выгрузки пользователей -----
+    def test_load_users(self):
+        """Проверка выгрузки всех пользователей из базы."""
+        users_in_db = User.objects.all()
+        self.assertEqual(len(users_in_db), 5)
+        usernames = [user.username for user in users_in_db]
+        self.assertIn("admin", usernames)
+        self.assertIn("Papa", usernames)
+        self.assertIn("Maria", usernames)
