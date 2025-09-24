@@ -1,4 +1,3 @@
-from django.contrib import messages
 from django.contrib.auth.views import LoginView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
@@ -10,6 +9,7 @@ from task_manager.mixins import (
     ContextActionMixin,
     UserDeletePermissionMixin,
     UserUpdatePermissionMixin,
+    FormInvalidMixin
 )
 
 from .forms import CustomLoginForm, UserCreateForm, UserUpdateForm
@@ -30,6 +30,7 @@ class UserListView(ListView):
 class UserCreateView(
     SuccessMessageMixin,
     ContextActionMixin,
+    FormInvalidMixin,
     CreateView
 ):
     model = User
@@ -39,14 +40,12 @@ class UserCreateView(
     success_message = _('Пользователь успешно зарегистрирован')
     action = 'create'
 
-    def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(form=form))
-
 
 class UserUpdateView(
     UserUpdatePermissionMixin,
     SuccessMessageMixin,
     ContextActionMixin,
+    FormInvalidMixin,
     UpdateView
 ):
     model = User
@@ -55,9 +54,6 @@ class UserUpdateView(
     success_url = reverse_lazy('users:index')
     success_message = _('Пользователь успешно изменен')
     action = 'update'
-
-    def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(form=form))
 
 
 class UserDeleteView(

@@ -190,3 +190,11 @@ class PasswordMixin:
         if commit:
             user.save()
         return user
+    
+
+class FormInvalidMixin:
+    """
+    Миксин для единообразной обработки невалидных форм.
+    """
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
