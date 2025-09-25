@@ -168,8 +168,19 @@ class PasswordMixin:
     password_confirm_field_name = None
     mismatch_error_message = _('Пароли не совпадают')
 
+
+    def clean(self):
+        cleaned_data = super().clean()
+        self.clean_passwords()
+        return cleaned_data
+    
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        return self.save_password(user, commit=commit)
+
+
     def clean_passwords(self):
-        """Проверка совпадения пароля и подтверждения"""
         if not self.password_field_name or not self.password_confirm_field_name:
             return self.cleaned_data
 
@@ -182,7 +193,6 @@ class PasswordMixin:
         return self.cleaned_data
 
     def save_password(self, user, commit=True):
-        """Сохраняем пароль пользователя, если он задан"""
         password = self.cleaned_data.get(self.password_field_name)
         if password:
             user.set_password(password)

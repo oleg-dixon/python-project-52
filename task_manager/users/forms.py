@@ -2,7 +2,6 @@ from django import forms
 from django.contrib.auth.forms import (
     AuthenticationForm,
 )
-from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from .models import User
@@ -93,15 +92,6 @@ class UserCreateForm(BaseUserForm, PasswordMixin):
 
     class Meta(BaseUserForm.Meta):
         fields = BaseUserForm.Meta.fields + ['password']
-
-    def clean(self):
-        cleaned_data = super().clean()
-        self.clean_passwords()
-        return cleaned_data
-
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        return self.save_password(user, commit=commit)
     
 
 class UserUpdateForm(BaseUserForm, PasswordMixin):
@@ -132,13 +122,3 @@ class UserUpdateForm(BaseUserForm, PasswordMixin):
             }
         ),
     )
-
-    def clean(self):
-        cleaned_data = super().clean()
-        self.clean_passwords()
-        return cleaned_data
-
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        return self.save_password(user, commit=commit)
-
