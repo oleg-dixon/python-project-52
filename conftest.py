@@ -1,6 +1,7 @@
 import pytest
 from django.contrib.auth import get_user_model
 
+
 @pytest.fixture(autouse=True)
 def create_test_users(db):
     """Автоматически создаёт трёх пользователей для всех тестов."""

@@ -4,8 +4,9 @@ from django.contrib.auth.forms import (
 )
 from django.utils.translation import gettext_lazy as _
 
-from .models import User
 from task_manager.mixins import PasswordMixin
+
+from .models import User
 
 
 class CustomLoginForm(AuthenticationForm):
@@ -64,7 +65,7 @@ class BaseUserForm(forms.ModelForm):
         fields = ['first_name', 'last_name', 'username']
 
 
-class UserCreateForm(BaseUserForm, PasswordMixin):
+class UserCreateForm(PasswordMixin, BaseUserForm):
     password_field_name = 'password'
     password_confirm_field_name = 'password_confirm'
     mismatch_error_message = _("Пароли не совпадают")
@@ -94,7 +95,7 @@ class UserCreateForm(BaseUserForm, PasswordMixin):
         fields = BaseUserForm.Meta.fields + ['password']
     
 
-class UserUpdateForm(BaseUserForm, PasswordMixin):
+class UserUpdateForm(PasswordMixin, BaseUserForm):
     password_field_name = 'new_password'
     password_confirm_field_name = 'new_password_confirm'
     mismatch_error_message = _("Новый пароль и подтверждение не совпадают")
@@ -122,3 +123,4 @@ class UserUpdateForm(BaseUserForm, PasswordMixin):
             }
         ),
     )
+ 

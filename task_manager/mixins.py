@@ -162,23 +162,17 @@ class LanguageMixin:
 class PasswordMixin:
     """
     Миксин для обработки паролей в формах создания и обновления пользователей.
-    Позволяет проверять совпадение пароля и сохранять его.
+    Позволяет проверять совпадение пароля
+    и сохранять его в зашифрованном виде.
     """
     password_field_name = None
     password_confirm_field_name = None
     mismatch_error_message = _('Пароли не совпадают')
 
-
     def clean(self):
         cleaned_data = super().clean()
         self.clean_passwords()
         return cleaned_data
-    
-
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        return self.save_password(user, commit=commit)
-
 
     def clean_passwords(self):
         if not self.password_field_name or not self.password_confirm_field_name:
@@ -190,7 +184,12 @@ class PasswordMixin:
         if password or password_confirm:
             if password != password_confirm:
                 self.add_error(None, self.mismatch_error_message)
+
         return self.cleaned_data
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        return self.save_password(user, commit=commit)
 
     def save_password(self, user, commit=True):
         password = self.cleaned_data.get(self.password_field_name)
@@ -199,7 +198,7 @@ class PasswordMixin:
         if commit:
             user.save()
         return user
-    
+
 
 class FormInvalidMixin:
     """
