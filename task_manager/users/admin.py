@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.contrib.admin import DateFieldListFilter
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 
@@ -19,7 +18,6 @@ class CustomUserAdmin(UserAdmin):
         'last_name',
         'is_staff',
         'is_active',
-        'created_at',
     ]
 
     search_fields = ['username', 'first_name', 'last_name']
@@ -28,15 +26,13 @@ class CustomUserAdmin(UserAdmin):
         'is_staff',
         'is_superuser',
         'is_active',
-        ('created_at', DateFieldListFilter),
     ]
 
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
-        (_('Personal info'),
-         {'fields': (
-             'first_name', 'last_name'
-         )}),
+        (_('Personal info'), {
+            'fields': ('first_name', 'last_name'),
+        }),
         (_('Permissions'), {
             'fields': (
                 'is_active',
@@ -46,12 +42,9 @@ class CustomUserAdmin(UserAdmin):
                 'user_permissions',
             ),
         }),
-        (_('Important dates'),
-         {'fields': (
-             'last_login',
-             'created_at',
-             'updated_at'
-         )}),
+        (_('Important dates'), {
+            'fields': ('last_login',),
+        }),
     )
 
     add_fieldsets = (
@@ -62,9 +55,9 @@ class CustomUserAdmin(UserAdmin):
                 'first_name',
                 'last_name',
                 'password',
-                'password_confirm'
+                'password_confirm',
             ),
         }),
     )
 
-    readonly_fields = ['created_at', 'updated_at', 'last_login']
+    readonly_fields = ['last_login']

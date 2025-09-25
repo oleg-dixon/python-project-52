@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.db import models
-from django.utils.timezone import localtime
 from django.utils.translation import gettext_lazy as _
 
 
@@ -48,15 +47,5 @@ class Task(models.Model):
         verbose_name=_('Дата обновления')
     )
 
-    def get_local_created_at(self):
-        return localtime(self.created_at)
-
-    def get_local_updated_at(self):
-        return localtime(self.updated_at)
-
     def __str__(self):
         return self.name
-
-    class Meta:
-        verbose_name = _('задача')
-        verbose_name_plural = _('задачи')
