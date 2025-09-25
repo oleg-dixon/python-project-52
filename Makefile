@@ -16,7 +16,7 @@ migrate:
 	uv run manage.py migrate
 
 tests:
-	uv run manage.py test
+	uv run pytest -s -v
 
 check-lint:
 	uv run ruff check

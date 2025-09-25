@@ -4,7 +4,6 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import activate
 from django.utils.translation import gettext_lazy as _
-from django.core.exceptions import ValidationError
 
 
 class ContextActionMixin:
