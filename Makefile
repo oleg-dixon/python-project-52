@@ -29,3 +29,6 @@ rmcache:
 
 collectstatic:
 	uv run manage.py collectstatic --noinput
+
+reset_local_db:
+	./reset_db.sh

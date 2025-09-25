@@ -7,12 +7,12 @@ class User(AbstractUser):
     first_name = models.CharField(
         max_length=150,
         blank=False,
-        verbose_name=_('Имя')
+        verbose_name=_('First Name')
     )
     last_name = models.CharField(
         max_length=150,
         blank=False,
-        verbose_name=_('Фамилия')
+        verbose_name=_('Last Name')
     )
 
     USERNAME_FIELD = 'username'

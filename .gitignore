@@ -17,3 +17,4 @@ TODO.md
 db.sqlite3
 *.db
 *.sqlite
+reset_db.sh
