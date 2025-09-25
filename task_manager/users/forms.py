@@ -6,7 +6,6 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from .models import User
-from .validators import username_validator
 from task_manager.mixins import PasswordMixin
 
 
@@ -52,7 +51,6 @@ class BaseUserForm(forms.ModelForm):
         max_length=150,
         required=True,
         label=_('Имя пользователя'),
-        validators=[username_validator],
         widget=forms.TextInput(attrs={
             'class': 'form-control',
             'placeholder': _('Введите имя пользователя')

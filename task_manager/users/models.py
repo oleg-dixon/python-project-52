@@ -4,15 +4,12 @@ from django.db import models
 from django.utils.timezone import localtime
 from django.utils.translation import gettext_lazy as _
 
-from .validators import username_validator
-
 
 class User(AbstractUser):
     username = models.CharField(
         max_length=150,
         unique=True,
         verbose_name=_('Имя пользователя'),
-        validators=[username_validator],
         error_messages={
             'unique': _("Пользователь с таким именем уже существует."),
         },
