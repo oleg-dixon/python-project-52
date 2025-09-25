@@ -54,7 +54,7 @@
                         <ul class="list-unstyled">
                             <li><strong>{% trans "Имя пользователя:" %}</strong> {{ user.username }}</li>
                             <li><strong>{% trans "Полное имя:" %}</strong> {{ user.first_name }} {{ user.last_name }}</li>
-                            <li><strong>{% trans "Дата регистрации:" %}</strong> {{ user.get_local_created_at|date:"d.m.Y H:i" }}</li>
+                            <li><strong>{% trans "Дата регистрации:" %}</strong> {{ user.date_joined|date:"d.m.Y H:i" }}</li>
                         </ul>
                     </div>
 

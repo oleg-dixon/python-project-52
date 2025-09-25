@@ -46,7 +46,7 @@ class UsersTest(LanguageMixin, TestCase):
             data={
                 "first_name": "Oleg",
                 "last_name": "Dixon",
-                "username": "Maria",
+                "username": "mary",
                 "new_password": "",
                 "new_password_confirm": "",
             },
@@ -239,5 +239,5 @@ class UsersTest(LanguageMixin, TestCase):
         self.assertEqual(len(users_in_db), 3)
         usernames = [user.username for user in users_in_db]
         self.assertIn("admin", usernames)
-        self.assertIn("Papa", usernames)
-        self.assertIn("Maria", usernames)
+        self.assertIn("mary", usernames)
+        self.assertIn("Diana", usernames)
