@@ -1,4 +1,3 @@
-from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -6,14 +5,14 @@ from django.utils.translation import gettext_lazy as _
 
 class User(AbstractUser):
     first_name = models.CharField(
-        max_length=30,
+        max_length=150,
         blank=False,
-        null=False,
+        verbose_name=_('Имя')
     )
     last_name = models.CharField(
         max_length=150,
         blank=False,
-        null=False,
+        verbose_name=_('Фамилия')
     )
 
     USERNAME_FIELD = 'username'
