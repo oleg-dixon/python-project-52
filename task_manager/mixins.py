@@ -179,7 +179,9 @@ class PasswordMixin:
             return self.cleaned_data
 
         password = self.cleaned_data.get(self.password_field_name)
-        password_confirm = self.cleaned_data.get(self.password_confirm_field_name)
+        password_confirm = self.cleaned_data.get(
+            self.password_confirm_field_name
+        )
 
         if password or password_confirm:
             if password != password_confirm:
