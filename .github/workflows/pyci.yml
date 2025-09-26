@@ -64,7 +64,7 @@ jobs:
         DJANGO_ALLOWED_HOSTS: localhost,testserver,127.0.0.1
 
     - name: Run tests
-      run: uv run python.manage.py test
+      run: uv run python manage.py test
       env:
         SECRET_KEY: test-secret-key-for-ci-${{ github.run_id }}
         DEBUG: False
