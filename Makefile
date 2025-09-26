@@ -9,11 +9,11 @@ build:
 render-start:
 	gunicorn task_manager.wsgi
 
-# dev:
-# 	uv run manage.py runserver
-
 migrate:
-	uv run python3 manage.py migrate
+	uv run manage.py migrate
+
+migrate-postgres:
+	DJANGO_ENV=production uv run manage.py migrate
 
 check-lint:
 	uv run ruff check
@@ -21,8 +21,9 @@ check-lint:
 fix-lint:
 	uv run ruff check --fix
 
-# rmcache:
-# 	find . -name "__pycache__" -exec rm -rf {} +
-
 collectstatic:
 	uv run manage.py collectstatic --noinput
+
+test:
+	make migrate-postgres
+	uv run pytest
