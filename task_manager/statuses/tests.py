@@ -1,7 +1,10 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from task_manager.statuses.models import Status
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+
+
+User = get_user_model()
 
 
 class StatusCRUDIntegrationTest(TestCase):

@@ -22,23 +22,23 @@ class TaskView(ListView):
 
     def get_queryset(self):
         queryset = Task.objects.select_related(
-            'status',
-            'author',
-            'executor'
-            ).order_by('time_create')
+            'status', 'author', 'executor'
+        ).order_by('time_create')
+
         status = self.request.GET.get('status')
         executor = self.request.GET.get('executor')
         label = self.request.GET.get('label')
         self_tasks = self.request.GET.get('self_tasks')
 
-        if status and status != '':
-            queryset = queryset.filter(status_id=int(status))
+        if status:
+            queryset = queryset.filter(status_id=status)
 
-        if executor is not None:
-            if executor and executor != '':
-                queryset = queryset.filter(executor_id=int(executor))
+        if executor:
+            queryset = queryset.filter(executor_id=executor)
+        elif executor == '':
+            queryset = queryset.filter(executor__isnull=True)
 
-        if label and label != '':
+        if label:
             queryset = queryset.filter(labels__id=label).distinct()
 
         if self_tasks and self_tasks.lower() in ['true', 'on', '1', 'yes']:

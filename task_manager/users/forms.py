@@ -113,14 +113,14 @@ class UserEditForm(forms.ModelForm):
         widget=forms.PasswordInput(attrs={'class': 'form-control',
                                           'placeholder': 'Пароль'
                                           }),
-        required=True
+        required=False
     )
     password2 = forms.CharField(
         label="Подтверждение пароля",
         widget=forms.PasswordInput(attrs={'class': 'form-control',
                                           'placeholder': 'Подтверждение пароля'
                                           }),
-        required=True
+        required=False
     )
 
     class Meta:
@@ -128,14 +128,24 @@ class UserEditForm(forms.ModelForm):
         fields = [
             'first_name',
             'last_name',
-            'username',
-            'password1',
-            'password2']
+            'username']
 
     def clean(self):
         cleaned_data = super().clean()
         password1 = cleaned_data.get('password1')
         password2 = cleaned_data.get('password2')
-        if password1 and password2 and password1 != password2:
-            raise ValidationError("Пароли не совпадают!")
+        
+        if password1 or password2:
+            if password1 != password2:
+                raise ValidationError("Пароли не совпадают!")
+        
         return cleaned_data
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        password1 = self.cleaned_data.get('password1')
+        if password1:
+            user.set_password(password1)
+        if commit:
+            user.save()
+        return user
