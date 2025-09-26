@@ -1,13 +1,13 @@
 from django.contrib import messages
-from django.contrib.auth import logout, get_user_model
+from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.views import LoginView
 from django.db.models import Value
 from django.db.models.functions import Concat
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, ListView, View
+from django.views.generic import CreateView, ListView, UpdateView, View
 
-from .forms import RegisterUserForm, LoginUserForm, UserEditForm
+from .forms import LoginUserForm, RegisterUserForm, UserEditForm
 
 CustomUser = get_user_model()
 

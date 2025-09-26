@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, View, UpdateView
-from .forms import LabelForm
-from .models import Label
-from django.urls import reverse_lazy
 from django.contrib import messages
 from django.db.models import ProtectedError
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
+from django.views.generic import ListView, UpdateView, View
+
+from .forms import LabelForm
+from .models import Label
 
 
 class LabelsView(ListView):

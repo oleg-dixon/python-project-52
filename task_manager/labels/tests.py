@@ -1,9 +1,9 @@
-from django.test import TestCase, Client
-from django.urls import reverse
-from django.contrib.messages import get_messages
 from django.contrib.auth import get_user_model
-from task_manager.labels.models import Label
+from django.contrib.messages import get_messages
+from django.test import Client, TestCase
+from django.urls import reverse
 
+from task_manager.labels.models import Label
 
 User = get_user_model()
 

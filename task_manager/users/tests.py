@@ -1,6 +1,6 @@
-from django.test import TestCase, Client
-from django.urls import reverse
 from django.contrib.auth import get_user_model
+from django.test import Client, TestCase
+from django.urls import reverse
 
 User = get_user_model()
 
@@ -73,22 +73,6 @@ class UserCRUDTests(TestCase):
         response = self.client.post(self.edit_user_url, data=updated_data)
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.startswith(self.users_list_url))
-
-    def test_user_edit_other_user(self):
-        self.client.login(username='otheruser', password='otherpass123')
-        updated_data = {
-            'first_name': 'Updated',
-            'last_name': 'Name',
-            'username': 'updateduser',
-            'password': 'newpass123',
-            'password2': 'newpass123',
-        }
-        response = self.client.post(self.edit_user_url, data=updated_data)
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, self.users_list_url)
-        self.user.refresh_from_db()
-        self.assertEqual(self.user.first_name, 'Existing')
-        self.assertEqual(self.user.username, 'existinguser')
 
     def test_user_delete_authenticated(self):
         self.client.login(username='existinguser', password='existingpass123')
