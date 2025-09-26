@@ -2,9 +2,9 @@ name: Python CI
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
   pull_request:
-    branches: [ main, master ]
+    branches: [main, master]
 
 jobs:
   test:
@@ -43,30 +43,28 @@ jobs:
         echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
     - name: Install dependencies
-      run: |
-        uv sync --all-extras
+      run: uv sync --all-extras
 
     - name: Setup database environment
       run: |
         if [ "${{ matrix.database }}" = "postgres" ]; then
+          echo "DJANGO_ENV=production" >> $GITHUB_ENV
           echo "DATABASE_URL=postgres://postgres:postgres@localhost:5432/test_db" >> $GITHUB_ENV
           echo "Using PostgreSQL"
         else
-          echo "DATABASE_URL=sqlite:///db.sqlite3" >> $GITHUB_ENV
+          echo "DJANGO_ENV=development" >> $GITHUB_ENV
           echo "Using SQLite"
         fi
 
     - name: Run migrations
-      run: |
-        uv run python manage.py migrate
+      run: uv run python manage.py migrate
       env:
         SECRET_KEY: test-secret-key-for-ci-${{ github.run_id }}
         DEBUG: False
         DJANGO_ALLOWED_HOSTS: localhost,testserver,127.0.0.1
 
     - name: Run tests
-      run: |
-        uv run python manage.py test
+      run: uv run python.manage.py test
       env:
         SECRET_KEY: test-secret-key-for-ci-${{ github.run_id }}
         DEBUG: False

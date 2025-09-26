@@ -18,29 +18,30 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Database
 # ------------------------------------------------------------------
-if os.getenv('DJANGO_ENV') == 'development':
+DJANGO_ENV = os.getenv('DJANGO_ENV', 'development')
+
+if DJANGO_ENV == 'development':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
 else:
     db_url = os.getenv('DATABASE_URL')
-    if db_url:
-        parsed = urllib.parse.urlparse(db_url)
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.postgresql',
-                'NAME': parsed.path[1:],
-                'USER': parsed.username,
-                'PASSWORD': parsed.password,
-                'HOST': parsed.hostname,
-                'PORT': parsed.port,
-            }
-        }
-    else:
+    if not db_url:
         raise ValueError("DATABASE_URL not set for production environment")
+    parsed = urllib.parse.urlparse(db_url)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': parsed.path[1:],
+            'USER': parsed.username,
+            'PASSWORD': parsed.password,
+            'HOST': parsed.hostname,
+            'PORT': parsed.port or 5432,
+        }
+    }
 
 # Security
 # ------------------------------------------------------------------
