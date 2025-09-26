@@ -1,29 +1,20 @@
-PORT ?= 8000
-
-install:
-	uv sync
-
 build:
 	./build.sh
 
 render-start:
 	gunicorn task_manager.wsgi
 
+install:
+	uv sync
+
 migrate:
-	uv run manage.py migrate
+	uv run python3 manage.py migrate
 
-migrate-postgres:
-	DJANGO_ENV=production uv run manage.py migrate
-
-check-lint:
-	uv run ruff check
-
-fix-lint:
-	uv run ruff check --fix
+start:
+	uv run manage.py runserver 127.0.0.1:8000
 
 collectstatic:
-	uv run manage.py collectstatic --noinput
+	uv run python3 manage.py collectstatic --no-input
 
-test:
-	make migrate-postgres
-	uv run pytest
+lint:
+	uv run ruff check
