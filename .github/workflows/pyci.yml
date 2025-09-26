@@ -1,4 +1,4 @@
-name: my check
+name: Python CI
 
 on:
   - push
