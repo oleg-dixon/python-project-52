@@ -1,51 +1,36 @@
-from django.conf import settings
 from django.db import models
-from django.utils.translation import gettext_lazy as _
+from task_manager.users.models import CustomUser
+from task_manager.statuses.models import Status
+from task_manager.labels.models import Label
 
 
 class Task(models.Model):
-    name = models.CharField(
-        max_length=255,
-        verbose_name=_('Название задачи')
-    )
-    description = models.TextField(
-        blank=True,
-        verbose_name=_('Описание')
-    )
-    status = models.ForeignKey(
-        'statuses.Status',
-        on_delete=models.PROTECT,
-        related_name='tasks',
-        verbose_name=_('Статус')
-    )
+    name = models.CharField(max_length=255)
+    description = models.TextField()
     author = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        CustomUser, 
         on_delete=models.PROTECT,
-        related_name='created_tasks',
-        verbose_name=_('Автор')
+        related_name='authored_tasks'
     )
     executor = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        CustomUser, 
         on_delete=models.PROTECT,
-        related_name='assigned_tasks',
-        blank=True,
-        null=True,
-        verbose_name=_('Исполнитель')
+        null=True, 
+        blank=True, 
+        related_name='executed_tasks'
+    )
+    status = models.ForeignKey(
+        Status,
+        on_delete=models.PROTECT,
+        related_name='task_set'
     )
     labels = models.ManyToManyField(
-        'labels.Label',
-        blank=True,
+        Label,
         related_name='tasks',
-        verbose_name=_('Метки')
+        blank=True,
+        verbose_name='Метки'
     )
-    created_at = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name=_('Дата создания')
-    )
-    updated_at = models.DateTimeField(
-        auto_now=True,
-        verbose_name=_('Дата обновления')
-    )
+    time_create = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name

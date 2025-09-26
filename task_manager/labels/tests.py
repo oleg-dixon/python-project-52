@@ -1,102 +1,125 @@
-from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.urls import reverse
+from django.contrib.messages import get_messages
+from django.contrib.auth.models import User
+from task_manager.labels.models import Label
 
-from task_manager.mixins import LanguageMixin
 
-from .models import Label
-
-
-class AuthTestCase(TestCase):
-    """Базовый класс для тестов с авторизованным пользователем"""
-
+class LabelCRUDTest(TestCase):
     def setUp(self):
-        self.user = get_user_model().objects.create_user(
-            username="testuser",
-            password="password123"
+        self.client = Client()
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='testpass123'
         )
-        self.client.login(username="testuser", password="password123")
+        self.client.login(username='testuser', password='testpass123')
+        self.label = Label.objects.create(name='Test Label')
+        self.labels_url = reverse('labels')
+        self.create_url = reverse('create_label')
+        self.edit_url = lambda id: reverse(
+            'edit_label', 
+            kwargs={'label_id': id}
+            )
+        self.delete_url = lambda id: reverse(
+            'delete_label', 
+            kwargs={'label_id': id}
+            )
+
+    def test_label_list_view(self):
+        """Тест отображения списка меток"""
+        response = self.client.get(self.labels_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Test Label')
+        self.assertTemplateUsed(response, 'label/index.html')
+
+    def test_create_label_view_get(self):
+        """Тест GET-запроса для создания метки"""
+        response = self.client.get(self.create_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'label/create.html')
+        self.assertContains(response, 'Имя')
+
+    def test_create_label_view_post_success(self):
+        """Тест успешного создания метки"""
+        data = {'name': 'New Label'}
+        response = self.client.post(self.create_url, data)
+        self.assertRedirects(response, self.labels_url)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), 'Метка успешно создана')
+        self.assertTrue(Label.objects.filter(name='New Label').exists())
+
+    def test_label_create_view_post_invalid(self):
+        """Тест создания метки с невалидными данными"""
+        data = {'name': ''}
+        response = self.client.post(self.create_url, data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('form' in response.context)
+        self.assertTrue(response.context['form'].errors)
+        self.assertIn(
+            'This field is required.', 
+            response.context['form'].errors['name'][0]
+            )
+
+    def test_label_edit_view_get(self):
+        """Тест GET-запроса для редактирования метки"""
+        response = self.client.get(self.edit_url(self.label.id))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'label/edit.html')
+        self.assertContains(response, 'Test Label')
+
+    def test_label_edit_view_post_success(self):
+        """Тест успешного редактирования метки"""
+        data = {'name': 'Updated Label'}
+        response = self.client.post(self.edit_url(self.label.id), data)
         
+        self.assertRedirects(response, self.labels_url)
+        self.label.refresh_from_db()
+        self.assertEqual(self.label.name, 'Updated Label')
 
-class LabelsTest(LanguageMixin, AuthTestCase):
-    fixtures = ["labels.json"]
+    def test_label_edit_view_post_invalid(self):
+        """Тест редактирования метки с невалидными данными"""
+        data = {'name': ''}
+        response = self.client.post(self.edit_url(self.label.id), data)
 
-    # ----- 1. Тесты обновления метки -----
-    def test_update_label(self):
-        """Проверка успешного обновления метки"""
-        update_url = reverse('labels:update', kwargs={'pk': 1})
-        response = self.client.post(
-            update_url,
-            data={"name": "Дела"},
-            follow=True
-        )
-        label = Label.objects.get(pk=1)
-        self.assertEqual(label.name, "Дела")
-        self.assertContains(response, "<td>Дела</td>", html=True)
-        self.assertNotContains(response, "<td>Дом</td>", html=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('form' in response.context)
+        self.assertTrue(response.context['form'].errors)
+        self.assertIn(
+            'This field is required.',
+            response.context['form'].errors['name'][0]
+            )
 
-    def test_update_label_unique_validation(self):
-        """Нельзя установить существующее название метки"""
-        update_url = reverse('labels:update', kwargs={'pk': 1})
-        response = self.client.post(
-            update_url,
-            data={"name": "Работа"}
-        )
+    def test_label_delete_view_get(self):
+        """Тест GET-запроса для удаления метки"""
+        response = self.client.get(self.delete_url(self.label.id))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'label/label_confirm_delete.html')
+        self.assertContains(response, 'Test Label')
 
-        form = response.context['form']
-        self.assertFormError(
-            form,
-            'name',
-            'Метка с таким названием уже существует.'
-        )
+    def test_label_delete_view_post_success(self):
+        """Тест успешного удаления метки"""
+        response = self.client.post(self.delete_url(self.label.id))
+        self.assertRedirects(response, self.labels_url)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), 'Метка успешно удалена')
+        self.assertFalse(Label.objects.filter(id=self.label.id).exists())
 
-    def test_update_label_empty(self):
-        """Нельзя оставить пустое название метки"""
-        update_url = reverse('labels:update', kwargs={'pk': 1})
-        response = self.client.post(update_url, data={"name": ""})
-        form = response.context['form']
-        self.assertFormError(form, 'name', 'Обязательное поле.')
-
-    # ----- 2. Тесты создания метки -----
-    def test_create_label_success(self):
-        """Создание новой метки через форму"""
-        create_url = reverse('labels:create')
-        response = self.client.post(
-            create_url,
-            data={"name": "Продакшен"},
-            follow=True
-        )
-        label = Label.objects.get(name="Продакшен")
-        self.assertEqual(label.name, "Продакшен")
-        self.assertContains(response, "Метка успешно создана")
-
-    def test_create_label_unique_validation(self):
-        """Нельзя создать метку с уже существующим названием"""
-        create_url = reverse('labels:create')
-        response = self.client.post(
-            create_url,
-            data={"name": "Работа"}
-        )
-        form = response.context['form']
-        self.assertFormError(
-            form,
-            'name',
-            'Метка с таким названием уже существует.'
-        )
-
-    def test_label_creation_form_error(self):
-        """Отправка пустой формы при создании метки"""
-        response = self.client.post(reverse('labels:create'), {}, follow=True)
-        form = response.context['form']
-        self.assertFormError(form, 'name', 'Обязательное поле.')
-
-    # ----- 3. Тесты удаления метки -----
-    def test_label_delete(self):
-        """Удаление существующей метки"""
-        label_to_delete = Label.objects.create(name="Удаляемая метка")
-        response = self.client.post(
-            reverse('labels:delete', kwargs={'pk': label_to_delete.pk}),
-            follow=True
-        )
-        self.assertContains(response, 'Метка успешно удалена')
-        self.assertFalse(Label.objects.filter(pk=label_to_delete.pk).exists())
+    def test_unauthenticated_access(self):
+        """Тест доступа неавторизованного пользователя"""
+        self.client.logout()
+        
+        urls = [
+            self.labels_url,
+            self.create_url,
+            self.edit_url(self.label.id),
+            self.delete_url(self.label.id),
+        ]
+        
+        for url in urls:
+            response = self.client.get(url)
+            self.assertRedirects(response, reverse('login'))
+            response = self.client.post(url)
+            self.assertRedirects(response, reverse('login'))

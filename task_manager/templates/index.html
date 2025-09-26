@@ -1,83 +1,32 @@
-{% extends "base.html" %}
-{% load i18n %}
-
-{% block title %}{% trans "Главная" %} | {% trans "Менеджер задач" %}{% endblock %}
+{% extends 'base.html' %}
 
 {% block content %}
-<div class="d-flex align-items-center justify-content-center" style="min-height: 50vh;">
-    <div class="card" style="max-width: 800px; width: 100%;">
-        <div class="card-body p-5 bg-light text-center">
-            <div class="display-4 mb-4 fw-bold">
-                <i class="bi bi-list-check"></i> {% trans "Менеджер задач" %}
-            </div>
-            <p class="lead mx-auto fw-medium" style="max-width: 600px;">
-                {% trans "Этот менеджер задач позволяет вам устанавливать задачи, назначать исполнителей и изменять их статусы. Для работы с системой требуется регистрация и аутентификация." %}
-            </p>
-            <hr class="my-4">
-            
-            {% if user.is_authenticated %}
-            <div class="mt-4">
-                <p class="text-success mb-3">
-                    <i class="bi bi-check-circle-fill"></i> {% blocktrans with username=user.username %}Рады снова видеть вас, {{ username }}!{% endblocktrans %}
-                </p>
-                <div class="d-grid gap-2 d-md-flex justify-content-center">
-                    <a href="{% url 'tasks:index' %}" class="btn btn-primary btn-lg me-md-2">
-                        <i class="bi bi-card-checklist"></i> {% trans "Перейти к задачам" %}
-                    </a>
-                    <a href="{% url 'statuses:index' %}" class="btn btn-outline-primary btn-lg">
-                        <i class="bi bi-circle-half"></i> {% trans "Статусы" %}
-                    </a>
-                    <a href="{% url 'labels:index' %}" class="btn btn-outline-primary btn-lg">
-                        <i class="bi bi-tag"></i> {% trans "Метки" %}
-                    </a>
-                </div>
-            </div>
-            {% else %}
-            <div class="mt-4">
-                <p class="mb-3">{% trans "Начните работу прямо сейчас!" %}</p>
-                <div class="d-grid gap-2 d-md-flex justify-content-center">
-                    <a href="{% url 'users:login' %}" class="btn btn-primary btn-lg me-md-2">
-                        <i class="bi bi-box-arrow-in-right"></i> {% trans "Войти" %}
-                    </a>
-                    <a href="{% url 'users:create' %}" class="btn btn-outline-primary btn-lg">
-                        <i class="bi bi-person-plus"></i> {% trans "Зарегистрироваться" %}
-                    </a>
-                </div>
-            </div>
-            {% endif %}
+<div class="container wrapper flex-grow-1">
+    {% if messages %}
+    <div class="mb-4">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+        {% endfor %}
     </div>
-</div>
-
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card text-center h-100 border-0 shadow-sm">
-                <div class="card-body p-4">
-                    <i class="bi bi-card-checklist display-4 text-primary"></i>
-                    <h5 class="card-title mt-3">{% trans "Управление задачами" %}</h5>
-                    <p class="card-text">{% trans "Создавайте, редактируйте и отслеживайте статус выполнения задач" %}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-4">
-            <div class="card text-center h-100 border-0 shadow-sm">
-                <div class="card-body p-4">
-                    <i class="bi bi-tag display-4 text-success"></i>
-                    <h5 class="card-title mt-3">{% trans "Метки и статусы" %}</h5>
-                    <p class="card-text">{% trans "Организуйте задачи с помощью меток и отслеживайте их статус" %}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-4">
-            <div class="card text-center h-100 border-0 shadow-sm">
-                <div class="card-body p-4">
-                    <i class="bi bi-people display-4 text-info"></i>
-                    <h5 class="card-title mt-3">{% trans "Работа в команде" %}</h5>
-                    <p class="card-text">{% trans "Назначайте задачи другим пользователям и работайте вместе" %}</p>
+    {% endif %}
+    <div class="px-4 py-5 my-5 text-center">
+        <h1 class="display-5 fw-bold text-body-emphasis">Менеджер задач</h1>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4">Этот менеджер задач позволяет вам устанавливать задачи, назначать исполнителей и изменять их статусы. Для работы с системой требуется регистрация и аутентификация.</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <div class="col-md-3 ">
+                    {% if user.is_authenticated %}
+                    <a href="/logout/"><button type="button" class="btn btn-primary">Выход</button></a>
+                    {% else %}
+                    <a href="/login/"><button type="button" class="btn btn-outline-primary me-2">Вход</button></a>
+                    <a href="/users/create/"><button type="button" class="btn btn-primary mt-3">Регистрация</button></a>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
+{% endblock content %}

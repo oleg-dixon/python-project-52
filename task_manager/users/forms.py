@@ -1,126 +1,141 @@
 from django import forms
-from django.contrib.auth.forms import (
-    AuthenticationForm,
-)
-from django.utils.translation import gettext_lazy as _
-
-from task_manager.mixins import PasswordMixin
-
-from .models import User
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm
 
 
-class CustomLoginForm(AuthenticationForm):
-    username = forms.CharField(
-        label=_("Имя пользователя"),
-        widget=forms.TextInput(attrs={
-            "class": "form-control",
-            "placeholder": _("Введите имя пользователя")
-        })
-    )
-    password = forms.CharField(
-        label=_("Пароль"),
-        widget=forms.PasswordInput(attrs={
-            "class": "form-control",
-            "placeholder": _("Введите пароль")
-        })
-    )
-
-
-class BaseUserForm(forms.ModelForm):
+class RegisterUserForm(UserCreationForm):
     first_name = forms.CharField(
-        max_length=200,
-        required=True,
-        label=_('Имя'),
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': _('Введите имя')
-        })
+        label="Имя",
+        widget=forms.TextInput(attrs={'class': 'form-control',
+                                      'placeholder': 'Имя'
+                                      }),
+        required=True
     )
-    
     last_name = forms.CharField(
-        max_length=200,
-        required=True,
-        label=_('Фамилия'),
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': _('Введите фамилию')
-        })
+        label="Фамилия",
+        widget=forms.TextInput(attrs={'class': 'form-control',
+                                      'placeholder': 'Фамилия'
+                                      }),
+        required=True
     )
-    
     username = forms.CharField(
-        max_length=150,
-        required=True,
-        label=_('Имя пользователя'),
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': _('Введите имя пользователя')
-        }),
-        help_text=_('Обязательное поле. '
-                'Не более 150 символов. '
-                'Только буквы, цифры и символы @/./+/-/_.')
+        label="Имя пользователя",
+        widget=forms.TextInput(attrs={'class': 'form-control',
+                                      'placeholder': 'Имя пользователя'
+                                      }),
+        required=True
+    )
+    password1 = forms.CharField(
+        label="Пароль",
+        widget=forms.PasswordInput(attrs={'class': 'form-control',
+                                          'placeholder': 'Пароль'
+                                          }),
+        required=True
+    )
+    password2 = forms.CharField(
+        label="Подтверждение пароля",
+        widget=forms.PasswordInput(attrs={'class': 'form-control',
+                                          'placeholder': 'Подтверждение пароля'
+                                          }),
+        required=True
     )
 
     class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'username']
+        model = get_user_model()
+        fields = (
+            'username',
+            'first_name',
+            'last_name',
+            'password1',
+            'password2'
+            )
 
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get("password1")
+        password2 = cleaned_data.get("password2")
 
-class UserCreateForm(PasswordMixin, BaseUserForm):
-    password_field_name = 'password'
-    password_confirm_field_name = 'password_confirm'
-    mismatch_error_message = _("Пароли не совпадают")
+        if password1 and password2 and password1 != password2:
+            raise ValidationError("Пароли не совпадают!")
+
+        return cleaned_data
     
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if get_user_model().objects.filter(username=username).exists():
+            raise ValidationError("Пользователь с таким именем уже существует")
+        return username
+
+
+class LoginUserForm(AuthenticationForm):
+    username = forms.CharField(
+        label="Имя пользователя", 
+        widget=forms.TextInput(attrs={'class': 'form-control',
+                                      'placeholder': 'Имя пользователя'
+                                      })
+    )
     password = forms.CharField(
-        required=True,
-        min_length=3,
-        label=_('Пароль'),
-        widget=forms.PasswordInput(attrs={
-            'class': 'form-control',
-            'placeholder': _('Введите пароль')
-        }),
-        help_text=_('Ваш пароль должен содержать как минимум 3 символа.')
+        label="Пароль", 
+        widget=forms.PasswordInput(attrs={'class': 'form-control',
+                                          'placeholder': 'Пароль'
+                                          })
     )
     
-    password_confirm = forms.CharField(
-        required=True,
-        label=_('Подтверждение пароля'),
-        widget=forms.PasswordInput(attrs={
-            'class': 'form-control',
-            'placeholder': _('Подтвердите пароль')
-        }),
-        help_text=_('Для подтверждения введите, пожалуйста, пароль ещё раз.')
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].label = "Имя пользователя"
+        self.fields['password'].label = "Пароль"
+
+
+class UserEditForm(forms.ModelForm):
+    first_name = forms.CharField(
+        label="Имя",
+        widget=forms.TextInput(attrs={'class': 'form-control',
+                                      'placeholder': 'Имя'
+                                      })
+    )
+    last_name = forms.CharField(
+        label="Фамилия",
+        widget=forms.TextInput(attrs={'class': 'form-control',
+                                      'placeholder': 'Фамилия'
+                                      })
+    )
+    username = forms.CharField(
+        label="Имя пользователя",
+        widget=forms.TextInput(attrs={'class': 'form-control',
+                                      'placeholder': 'Имя пользователя'
+                                      })
+    )
+    password1 = forms.CharField(
+        label="Пароль",
+        widget=forms.PasswordInput(attrs={'class': 'form-control',
+                                          'placeholder': 'Пароль'
+                                          }),
+        required=True
+    )
+    password2 = forms.CharField(
+        label="Подтверждение пароля",
+        widget=forms.PasswordInput(attrs={'class': 'form-control',
+                                          'placeholder': 'Подтверждение пароля'
+                                          }),
+        required=True
     )
 
-    class Meta(BaseUserForm.Meta):
-        fields = BaseUserForm.Meta.fields + ['password']
-    
+    class Meta:
+        model = get_user_model()
+        fields = [
+            'first_name',
+            'last_name',
+            'username',
+            'password1',
+            'password2']
 
-class UserUpdateForm(PasswordMixin, BaseUserForm):
-    password_field_name = 'new_password'
-    password_confirm_field_name = 'new_password_confirm'
-    mismatch_error_message = _("Новый пароль и подтверждение не совпадают")
-
-    new_password = forms.CharField(
-        required=False,
-        min_length=3,
-        label=_('Новый пароль'),
-        widget=forms.PasswordInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': _('Введите новый пароль')
-            }
-        ),
-        help_text=_('Оставьте пустым, если не хотите менять пароль.'),
-    )
-
-    new_password_confirm = forms.CharField(
-        required=False,
-        label=_('Подтверждение нового пароля'),
-        widget=forms.PasswordInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': _('Подтвердите новый пароль')
-            }
-        ),
-    )
- 
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+        if password1 and password2 and password1 != password2:
+            raise ValidationError("Пароли не совпадают!")
+        return cleaned_data

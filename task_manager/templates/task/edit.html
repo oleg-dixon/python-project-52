@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container wrapper flex-grow-1 mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Редактирование задачи</h2>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_name" class="form-label fw-bold">Имя</label>
+                    <input type="text" class="form-control" id="id_name" name="name" 
+                           value="{{ form.name.value|default_if_none:'' }}" required>
+                    {% if form.name.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.name.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label for="id_description" class="form-label fw-bold">Описание</label>
+                    <textarea class="form-control" id="id_description" name="description" 
+                              rows="4">{{ form.description.value|default_if_none:'' }}</textarea>
+                    {% if form.description.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.description.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="id_status" class="form-label fw-bold">Статус</label>
+                        {{ form.status }}
+                        {% if form.status.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.status.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="id_executor" class="form-label fw-bold">Исполнитель</label>
+                        {{ form.executor }}
+                        {% if form.executor.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.executor.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="id_labels" class="form-label fw-bold">Метки</label>
+                    <select name="labels" id="id_labels" class="form-select" multiple size="4">
+                        {% for label in form.labels.field.queryset %}
+                        <option value="{{ label.pk }}" {% if label.id in form.labels.value %}selected{% endif %}>{{ label.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <small class="form-text text-muted">
+                        Для выбора нескольких меток удерживайте Ctrl (Windows) или Command (Mac)
+                    </small>
+                    {% if form.labels.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.labels.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{% url 'tasks' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i>Отмена
+                    </a>
+                    <input class="btn btn-primary" type="submit" value="Изменить">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

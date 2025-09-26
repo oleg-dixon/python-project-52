@@ -1,85 +1,73 @@
 from django import forms
-from django.utils.translation import gettext_lazy as _
-
+from .models import Task
 from task_manager.labels.models import Label
 from task_manager.statuses.models import Status
-from task_manager.users.models import User
-
-from .models import Task
+from task_manager.users.models import CustomUser
 
 
 class TaskForm(forms.ModelForm):
-    name = forms.CharField(
-        max_length=255,
-        required=True,
-        label=_('Название задачи'),
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': _('Введите название задачи')
-            }
-        )
-    )
-
-    description = forms.CharField(
-        required=False,
-        label=_('Описание'),
-        widget=forms.Textarea(
-            attrs={
-                'class': 'form-control',
-                'placeholder': _('Введите описание задачи'),
-                'rows': 4
-            }
-        )
-    )
-
-    status = forms.ModelChoiceField(
-        queryset=Status.objects.all(),
-        required=True,
-        label=_('Статус'),
-        widget=forms.Select(attrs={'class': 'form-control'})
-    )
-
-    executor = forms.ModelChoiceField(
-        queryset=User.objects.all(),
-        required=False,
-        label=_('Исполнитель'),
-        widget=forms.Select(attrs={'class': 'form-control'})
-    )
-
-    labels = forms.ModelMultipleChoiceField(
-        queryset=Label.objects.all(),
-        required=False,
-        label=_('Метки'),
-        widget=forms.SelectMultiple(attrs={'class': 'form-control'})
-    )
-
     class Meta:
         model = Task
         fields = ['name', 'description', 'status', 'executor', 'labels']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 5
+                }),
+            'labels': forms.SelectMultiple(attrs={'class': 'form-select'}),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        
+        self.fields['status'].queryset = Status.objects.all()
+        self.fields['executor'].queryset = CustomUser.objects.all()
+        self.fields['labels'].queryset = Label.objects.all()
+        
+        for field_name, field in self.fields.items():
+            if field_name in ['status', 'executor', 'labels']:
+                field.widget.attrs.update({'class': 'form-select'})
+            elif not isinstance(field.widget, forms.CheckboxInput):
+                if 'class' not in field.widget.attrs:
+                    field.widget.attrs['class'] = 'form-control'
+            
+            if field_name == 'name':
+                field.widget.attrs['placeholder'] = 'Введите название задачи'
+            elif field_name == 'description':
+                field.widget.attrs['placeholder'] = 'Опишите задачу подробнее'
+    
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        instance.author = self.user
+        if commit:
+            instance.save()
+            self.save_m2m()
+        return instance
 
 
 class TaskFilterForm(forms.Form):
     status = forms.ModelChoiceField(
         queryset=Status.objects.all(),
         required=False,
-        label=_('Статус'),
+        label='Статус',
         widget=forms.Select(attrs={'class': 'form-select'})
     )
     executor = forms.ModelChoiceField(
-        queryset=User.objects.all(),
+        queryset=CustomUser.objects.all(),
         required=False,
-        label=_('Исполнитель'),
+        label='Исполнитель',
         widget=forms.Select(attrs={'class': 'form-select'})
     )
-    labels = forms.ModelChoiceField(
+    label = forms.ModelChoiceField(
         queryset=Label.objects.all(),
         required=False,
-        label=_('Метки'),
+        label='Метка',
         widget=forms.Select(attrs={'class': 'form-select'})
     )
-    self_tasks = forms.BooleanField(
+    self_tasks = forms.CharField(
         required=False,
-        label=_('Только мои задачи'),
+        label='Только свои задачи',
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
     )

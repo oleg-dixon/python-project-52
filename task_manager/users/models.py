@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-class User(AbstractUser):
+class CustomUser(AbstractUser):
     first_name = models.CharField(
         max_length=150,
         blank=False,
