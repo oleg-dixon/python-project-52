@@ -74,38 +74,35 @@ class UserEditView(UpdateView):
     template_name = 'user/edit.html'
     pk_url_kwarg = 'user_id'
     success_url = reverse_lazy('users')
-    
+
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             messages.error(
-                request, 
+                request,
                 'Вы не авторизованы! Пожалуйста, войдите в систему.'
-                )
+            )
             return redirect('login')
         return super().dispatch(request, *args, **kwargs)
-    
+
     def get_object(self, queryset=None):
         user = super().get_object(queryset)
         if self.request.user.id != user.id:
             messages.error(
-                self.request, 
+                self.request,
                 'У вас нет прав для изменения другого пользователя'
-                )
+            )
             return None
         return user
-    
+
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object is None:
             return redirect(self.success_url)
         return super().get(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if self.object is None:
-            return redirect(self.success_url)
-        messages.success(request, 'Пользователь успешно изменен')
-        return super().post(request, *args, **kwargs)
+    def form_valid(self, form):
+        messages.success(self.request, 'Пользователь успешно изменен')
+        return super().form_valid(form)
 
     
 class UserDeleteView(LoginRequiredMixin, View):
