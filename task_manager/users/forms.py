@@ -7,37 +7,42 @@ from django.core.exceptions import ValidationError
 class RegisterUserForm(UserCreationForm):
     first_name = forms.CharField(
         label="Имя",
-        widget=forms.TextInput(attrs={'class': 'form-control',
-                                      'placeholder': 'Имя'
-                                      }),
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Имя'
+        }),
         required=True
     )
     last_name = forms.CharField(
         label="Фамилия",
-        widget=forms.TextInput(attrs={'class': 'form-control',
-                                      'placeholder': 'Фамилия'
-                                      }),
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Фамилия'
+        }),
         required=True
     )
     username = forms.CharField(
         label="Имя пользователя",
-        widget=forms.TextInput(attrs={'class': 'form-control',
-                                      'placeholder': 'Имя пользователя'
-                                      }),
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Имя пользователя'
+        }),
         required=True
     )
     password1 = forms.CharField(
         label="Пароль",
-        widget=forms.PasswordInput(attrs={'class': 'form-control',
-                                          'placeholder': 'Пароль'
-                                          }),
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Пароль'
+        }),
         required=True
     )
     password2 = forms.CharField(
         label="Подтверждение пароля",
-        widget=forms.PasswordInput(attrs={'class': 'form-control',
-                                          'placeholder': 'Подтверждение пароля'
-                                          }),
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Подтверждение пароля'
+        }),
         required=True
     )
 
@@ -49,18 +54,8 @@ class RegisterUserForm(UserCreationForm):
             'last_name',
             'password1',
             'password2'
-            )
+        )
 
-    def clean(self):
-        cleaned_data = super().clean()
-        password1 = cleaned_data.get("password1")
-        password2 = cleaned_data.get("password2")
-
-        if password1 and password2 and password1 != password2:
-            raise ValidationError("Пароли не совпадают!")
-
-        return cleaned_data
-    
     def clean_username(self):
         username = self.cleaned_data.get('username')
         if get_user_model().objects.filter(username=username).exists():
@@ -70,18 +65,20 @@ class RegisterUserForm(UserCreationForm):
 
 class LoginUserForm(AuthenticationForm):
     username = forms.CharField(
-        label="Имя пользователя", 
-        widget=forms.TextInput(attrs={'class': 'form-control',
-                                      'placeholder': 'Имя пользователя'
-                                      })
+        label="Имя пользователя",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Имя пользователя'
+        })
     )
     password = forms.CharField(
-        label="Пароль", 
-        widget=forms.PasswordInput(attrs={'class': 'form-control',
-                                          'placeholder': 'Пароль'
-                                          })
+        label="Пароль",
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Пароль'
+        })
     )
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].label = "Имя пользователя"
@@ -91,35 +88,40 @@ class LoginUserForm(AuthenticationForm):
 class UserEditForm(forms.ModelForm):
     first_name = forms.CharField(
         label="Имя",
-        widget=forms.TextInput(attrs={'class': 'form-control',
-                                      'placeholder': 'Имя'
-                                      })
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Имя'
+        })
     )
     last_name = forms.CharField(
         label="Фамилия",
-        widget=forms.TextInput(attrs={'class': 'form-control',
-                                      'placeholder': 'Фамилия'
-                                      })
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Фамилия'
+        })
     )
     username = forms.CharField(
         label="Имя пользователя",
-        widget=forms.TextInput(attrs={'class': 'form-control',
-                                      'placeholder': 'Имя пользователя'
-                                      })
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Имя пользователя'
+        })
     )
     password1 = forms.CharField(
         label="Пароль",
-        widget=forms.PasswordInput(attrs={'class': 'form-control',
-                                          'placeholder': 'Пароль'
-                                          }),
-        required=True
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Пароль'
+        }),
+        required=False
     )
     password2 = forms.CharField(
         label="Подтверждение пароля",
-        widget=forms.PasswordInput(attrs={'class': 'form-control',
-                                          'placeholder': 'Подтверждение пароля'
-                                          }),
-        required=True
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Подтверждение пароля'
+        }),
+        required=False
     )
 
     class Meta:
@@ -127,14 +129,25 @@ class UserEditForm(forms.ModelForm):
         fields = [
             'first_name',
             'last_name',
-            'username',
-            'password1',
-            'password2']
+            'username'
+        ]
 
     def clean(self):
         cleaned_data = super().clean()
         password1 = cleaned_data.get('password1')
         password2 = cleaned_data.get('password2')
-        if password1 and password2 and password1 != password2:
-            raise ValidationError("Пароли не совпадают!")
+
+        if password1 or password2:
+            if password1 != password2:
+                raise ValidationError("Пароли не совпадают!")
+
         return cleaned_data
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        password = self.cleaned_data.get('password1')
+        if password:
+            user.set_password(password)
+        if commit:
+            user.save()
+        return user

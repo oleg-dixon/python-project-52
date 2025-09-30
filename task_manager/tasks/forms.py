@@ -1,52 +1,9 @@
 from django import forms
+from django.contrib.auth import get_user_model
 
 from task_manager.labels.models import Label
 from task_manager.statuses.models import Status
-from task_manager.users.models import CustomUser
-
-from .models import Task
-
-
-class TaskForm(forms.ModelForm):
-    class Meta:
-        model = Task
-        fields = ['name', 'description', 'status', 'executor', 'labels']
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={
-                'class': 'form-control',
-                'rows': 5
-                }),
-            'labels': forms.SelectMultiple(attrs={'class': 'form-select'}),
-        }
-    
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)
-        super().__init__(*args, **kwargs)
-        
-        self.fields['status'].queryset = Status.objects.all()
-        self.fields['executor'].queryset = CustomUser.objects.all()
-        self.fields['labels'].queryset = Label.objects.all()
-        
-        for field_name, field in self.fields.items():
-            if field_name in ['status', 'executor', 'labels']:
-                field.widget.attrs.update({'class': 'form-select'})
-            elif not isinstance(field.widget, forms.CheckboxInput):
-                if 'class' not in field.widget.attrs:
-                    field.widget.attrs['class'] = 'form-control'
-            
-            if field_name == 'name':
-                field.widget.attrs['placeholder'] = 'Введите название задачи'
-            elif field_name == 'description':
-                field.widget.attrs['placeholder'] = 'Опишите задачу подробнее'
-    
-    def save(self, commit=True):
-        instance = super().save(commit=False)
-        instance.author = self.user
-        if commit:
-            instance.save()
-            self.save_m2m()
-        return instance
+from task_manager.tasks.models import Task
 
 
 class TaskFilterForm(forms.Form):
@@ -54,22 +11,81 @@ class TaskFilterForm(forms.Form):
         queryset=Status.objects.all(),
         required=False,
         label='Статус',
-        widget=forms.Select(attrs={'class': 'form-select'})
+        widget=forms.Select(attrs={'class': 'form-control'})
     )
     executor = forms.ModelChoiceField(
-        queryset=CustomUser.objects.all(),
+        queryset=get_user_model().objects.all(),
         required=False,
         label='Исполнитель',
-        widget=forms.Select(attrs={'class': 'form-select'})
+        widget=forms.Select(attrs={'class': 'form-control'})
     )
     label = forms.ModelChoiceField(
         queryset=Label.objects.all(),
         required=False,
         label='Метка',
-        widget=forms.Select(attrs={'class': 'form-select'})
+        widget=forms.Select(attrs={'class': 'form-control'})
     )
-    self_tasks = forms.CharField(
+    self_tasks = forms.BooleanField(
         required=False,
-        label='Только свои задачи',
+        label='Только мои задачи',
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
     )
+
+
+class TaskForm(forms.ModelForm):
+    name = forms.CharField(
+        label="Имя",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Имя'
+        })
+    )
+    description = forms.CharField(
+        label="Описание",
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'placeholder': 'Описание',
+            'rows': 3
+        }),
+        required=False
+    )
+    status = forms.ModelChoiceField(
+        label="Статус",
+        queryset=Status.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    executor = forms.ModelChoiceField(
+        label="Исполнитель",
+        queryset=get_user_model().objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        required=False
+    )
+    labels = forms.ModelMultipleChoiceField(
+        label="Метки",
+        queryset=Label.objects.all(),
+        widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
+        required=False
+    )
+
+    class Meta:
+        model = Task
+        fields = [
+            'name',
+            'description',
+            'status',
+            'executor',
+            'labels'
+        ]
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        task = super().save(commit=False)
+        if self.user:
+            task.author = self.user
+        if commit:
+            task.save()
+            self.save_m2m()
+        return task
