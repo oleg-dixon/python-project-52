@@ -56,10 +56,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'task_manager',
-    'task_manager.users.apps.UsersConfig',
-    'task_manager.statuses.apps.StatusesConfig',
-    'task_manager.tasks.apps.TasksConfig',
-    'task_manager.labels.apps.LabelsConfig'
+    'task_manager.users',
+    'task_manager.statuses',
+    'task_manager.tasks',
+    'task_manager.labels'
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
