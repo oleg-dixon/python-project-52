@@ -79,7 +79,8 @@ class UserEditView(UpdateView):
         if not request.user.is_authenticated:
             messages.error(
                 request,
-                'Вы не авторизованы! Пожалуйста, войдите в систему.'
+                'Вы не авторизованы! Пожалуйста, войдите в систему.',
+                extra_tags='alert'
             )
             return redirect('login')
         return super().dispatch(request, *args, **kwargs)
@@ -89,7 +90,8 @@ class UserEditView(UpdateView):
         if self.request.user.id != user.id:
             messages.error(
                 self.request,
-                'У вас нет прав для изменения другого пользователя'
+                'У вас нет прав для изменения другого пользователя',
+                extra_tags='alert'
             )
             return None
         return user
@@ -102,8 +104,11 @@ class UserEditView(UpdateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.success(self.request, 'Пользователь успешно изменен')
+        messages.success(
+            self.request, 'Пользователь успешно изменен', extra_tags='alert'
+        )
         return response
+
 
     
 class UserDeleteView(LoginRequiredMixin, View):
