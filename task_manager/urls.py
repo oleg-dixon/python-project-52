@@ -16,10 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from django.views.generic import RedirectView
+
+from task_manager.users.views import LoginUserView, LogoutUserView
 
 from .views import HomePageView
-from task_manager.users import views as user_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +28,6 @@ urlpatterns = [
     path('statuses/', include('task_manager.statuses.urls')),
     path('tasks/', include('task_manager.tasks.urls')),
     path('users/', include('task_manager.users.urls')),
-    path('login/', user_views.LoginUserView.as_view(), name='login'),
-    path('logout/', user_views.LogoutUserView.as_view(), name='logout'),
+    path('login/', LoginUserView.as_view(), name='login'),
+    path('logout/', LogoutUserView.as_view(), name='logout'),
 ]
