@@ -16,8 +16,16 @@ class BootstrapMixin:
 
 
 class RegisterUserForm(UserCreationForm, BootstrapMixin):
-    first_name = forms.CharField(label="Имя", required=True)
-    last_name = forms.CharField(label="Фамилия", required=True)
+    first_name = forms.CharField(
+        label="Имя",
+        required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'Имя'})
+    )
+    last_name = forms.CharField(
+        label="Фамилия",
+        required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'Фамилия'})
+    )
     username = forms.CharField(
         label="Имя пользователя",
         help_text=(
@@ -25,29 +33,24 @@ class RegisterUserForm(UserCreationForm, BootstrapMixin):
             "Только буквы, цифры и символы @/./+/-/_."
         ),
         required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'Имя пользователя'})
     )
     password1 = forms.CharField(
         label="Пароль",
         help_text="Ваш пароль должен содержать как минимум 3 символа.",
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Пароль'}),
         required=True
     )
     password2 = forms.CharField(
         label="Подтверждение пароля",
         help_text="Для подтверждения введите, пожалуйста, пароль ещё раз.",
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Подтверждение пароля'}),
         required=True
     )
 
     class Meta:
         model = User
-        fields = (
-            'username',
-            'first_name',
-            'last_name',
-            'password1',
-            'password2'
-        )
+        fields = ('username', 'first_name', 'last_name', 'password1', 'password2')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -61,8 +64,14 @@ class RegisterUserForm(UserCreationForm, BootstrapMixin):
 
 
 class LoginUserForm(AuthenticationForm, BootstrapMixin):
-    username = forms.CharField(label="Имя пользователя")
-    password = forms.CharField(label="Пароль", widget=forms.PasswordInput)
+    username = forms.CharField(
+        label="Имя пользователя",
+        widget=forms.TextInput(attrs={'placeholder': 'Имя пользователя'})
+    )
+    password = forms.CharField(
+        label="Пароль",
+        widget=forms.PasswordInput(attrs={'placeholder': 'Пароль'})
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -70,8 +79,16 @@ class LoginUserForm(AuthenticationForm, BootstrapMixin):
 
 
 class UserEditForm(forms.ModelForm, BootstrapMixin):
-    first_name = forms.CharField(label="Имя", required=True)
-    last_name = forms.CharField(label="Фамилия", required=True)
+    first_name = forms.CharField(
+        label="Имя",
+        required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'Имя'})
+    )
+    last_name = forms.CharField(
+        label="Фамилия",
+        required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'Фамилия'})
+    )
     username = forms.CharField(
         label="Имя пользователя",
         help_text=(
@@ -79,17 +96,18 @@ class UserEditForm(forms.ModelForm, BootstrapMixin):
             "Только буквы, цифры и символы @/./+/-/_."
         ),
         required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'Имя пользователя'})
     )
     password1 = forms.CharField(
         label="Пароль",
         help_text="Ваш пароль должен содержать как минимум 3 символа.",
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Пароль'}),
         required=False
     )
     password2 = forms.CharField(
         label="Подтверждение пароля",
         help_text="Для подтверждения введите, пожалуйста, пароль ещё раз.",
-        widget=forms.PasswordInput,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Подтверждение пароля'}),
         required=False
     )
 
