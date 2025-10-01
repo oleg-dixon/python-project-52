@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
-from django.db.models import Value
+from django.db.models import Value, ProtectedError
 from django.db.models.functions import Concat
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -29,7 +29,7 @@ class UserView(LoginRequiredMixin, ListView):
         ).order_by('date_joined')
 
 
-class RegistrationView(LoginRequiredMixin, CreateView):
+class RegistrationView(CreateView):
     form_class = RegisterUserForm
     template_name = 'users/create.html'
     success_url = reverse_lazy('users:login')
@@ -40,7 +40,7 @@ class RegistrationView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class LoginUserView(LoginRequiredMixin, LoginView):
+class LoginUserView(LoginView):
     form_class = LoginUserForm
     template_name = 'users/login.html'
 
@@ -68,7 +68,7 @@ class UserEditView(LoginRequiredMixin, UpdateView):
     
     def get_object(self, queryset=None):
         user = super().get_object(queryset)
-        if self.request.user.id != user.pk:
+        if self.request.user.pk != user.pk:
             messages.error(
                 self.request, 
                 'У вас нет прав для изменения другого пользователя'
@@ -114,6 +114,15 @@ class UserDeleteView(LoginRequiredMixin, View):
                 request, 'У вас нет прав для изменения другого пользователя.'
             )
             return redirect(self.success_url)
-        user_to_delete.delete()
-        messages.success(request, 'Пользователь успешно удален')
+        
+        try:
+            user_to_delete.delete()
+            messages.success(request, 'Пользователь успешно удален')
+            
+        except ProtectedError:
+            messages.error(
+                request, 
+                'Невозможно удалить пользователя, потому что он используется'
+            )
+        
         return redirect(self.success_url)
