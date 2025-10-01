@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic import RedirectView
 
 from .views import HomePageView
 
@@ -26,4 +27,12 @@ urlpatterns = [
     path('statuses/', include('task_manager.statuses.urls')),
     path('tasks/', include('task_manager.tasks.urls')),
     path('users/', include('task_manager.users.urls')),
+    path(
+        'login/',
+        RedirectView.as_view(pattern_name='users:login', permanent=False)
+    ),
+    path(
+        'logout/',
+        RedirectView.as_view(pattern_name='users:logout', permanent=False)
+    ),
 ]
