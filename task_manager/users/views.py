@@ -17,15 +17,12 @@ class IndexView(ListView):
     model = CustomUser
     template_name = 'user/index.html'
     context_object_name = 'users'
-    
+
     def get_queryset(self):
         return CustomUser.objects.annotate(
             full_name=Concat('first_name', Value(' '), 'last_name')
         ).values(
-            'id', 
-            'username', 
-            'full_name', 
-            'date_joined'
+            'id', 'username', 'full_name', 'date_joined'
         ).order_by('date_joined')
 
 
@@ -35,28 +32,26 @@ class RegistrationView(CreateView):
     success_url = reverse_lazy('login')
 
     def form_valid(self, form):
-        user = form.save(commit=False)
-        user.save()
+        form.save()
         messages.success(self.request, 'Пользователь успешно зарегистрирован')
         return super().form_valid(form)
 
     def form_invalid(self, form):
         messages.error(
-            self.request, 
-            f'Исправьте ошибки в форме: {form.errors}'
-            )
+            self.request, f'Исправьте ошибки в форме: {form.errors}'
+        )
         return super().form_invalid(form)
 
 
 class LoginUserView(LoginView):
     form_class = LoginUserForm
     template_name = 'user/login.html'
-    
+
     def form_valid(self, form):
         response = super().form_valid(form)
         messages.success(self.request, 'Вы залогинены')
         return response
-    
+
     def get_success_url(self):
         return reverse_lazy('main_page')
 
@@ -78,8 +73,7 @@ class UserEditView(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             messages.error(
-                request,
-                'Вы не авторизованы! Пожалуйста, войдите в систему.',
+                request, 'Вы не авторизованы! Пожалуйста, войдите в систему.'
             )
             return redirect('login')
         return super().dispatch(request, *args, **kwargs)
@@ -89,7 +83,7 @@ class UserEditView(UpdateView):
         if self.request.user.id != user.id:
             messages.error(
                 self.request,
-                'У вас нет прав для изменения другого пользователя',
+                'У вас нет прав для изменения другого пользователя'
             )
             return None
         return user
@@ -105,6 +99,10 @@ class UserEditView(UpdateView):
         messages.success(self.request, 'Пользователь успешно изменен')
         return response
 
+    def form_invalid(self, form):
+        messages.error(self.request, f'Исправьте ошибки в форме: {form.errors}')
+        return super().form_invalid(form)
+
 
 class UserDeleteView(LoginRequiredMixin, View):
     success_url = reverse_lazy('users')
@@ -113,13 +111,12 @@ class UserDeleteView(LoginRequiredMixin, View):
     def get_object(self):
         user_id = self.kwargs.get('user_id')
         return get_object_or_404(CustomUser, pk=user_id)
-    
+
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             messages.error(
-                request, 
-                'Вы не авторизованы! Пожалуйста, войдите в систему.'
-                )
+                request, 'Вы не авторизованы! Пожалуйста, войдите в систему.'
+            )
             return redirect('login')
         return super().dispatch(request, *args, **kwargs)
 
@@ -127,9 +124,8 @@ class UserDeleteView(LoginRequiredMixin, View):
         user_to_delete = self.get_object()
         if request.user.id != user_to_delete.id:
             messages.error(
-                request, 
-                'У вас нет прав для изменения другого пользователя.'
-                )
+                request, 'У вас нет прав для изменения другого пользователя.'
+            )
             return redirect(self.success_url)
         return render(request, self.template_name, {'user': user_to_delete})
 
@@ -137,9 +133,8 @@ class UserDeleteView(LoginRequiredMixin, View):
         user_to_delete = self.get_object()
         if request.user.id != user_to_delete.id:
             messages.error(
-                request, 
-                'У вас нет прав для изменения другого пользователя.'
-                )
+                request, 'У вас нет прав для изменения другого пользователя.'
+            )
             return redirect(self.success_url)
         user_to_delete.delete()
         messages.success(request, 'Пользователь успешно удален')

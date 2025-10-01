@@ -44,13 +44,17 @@ class RegisterUserForm(UserCreationForm, BootstrapMixin):
     password2 = forms.CharField(
         label="Подтверждение пароля",
         help_text="Для подтверждения введите, пожалуйста, пароль ещё раз.",
-        widget=forms.PasswordInput(attrs={'placeholder': 'Подтверждение пароля'}),
+        widget=forms.PasswordInput(
+            attrs={'placeholder': 'Подтверждение пароля'}
+        ),
         required=True
     )
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'password1', 'password2')
+        fields = (
+            'username', 'first_name', 'last_name', 'password1', 'password2'
+        )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -102,13 +106,15 @@ class UserEditForm(forms.ModelForm, BootstrapMixin):
         label="Пароль",
         help_text="Ваш пароль должен содержать как минимум 3 символа.",
         widget=forms.PasswordInput(attrs={'placeholder': 'Пароль'}),
-        required=False
+        required=True
     )
     password2 = forms.CharField(
         label="Подтверждение пароля",
         help_text="Для подтверждения введите, пожалуйста, пароль ещё раз.",
-        widget=forms.PasswordInput(attrs={'placeholder': 'Подтверждение пароля'}),
-        required=False
+        widget=forms.PasswordInput(
+            attrs={'placeholder': 'Подтверждение пароля'}
+        ),
+        required=True
     )
 
     class Meta:
@@ -123,16 +129,18 @@ class UserEditForm(forms.ModelForm, BootstrapMixin):
         cleaned_data = super().clean()
         password1 = cleaned_data.get('password1')
         password2 = cleaned_data.get('password2')
-        if password1 or password2:
-            if password1 != password2:
-                raise ValidationError("Пароли не совпадают!")
+        if not password1 or not password2:
+            raise ValidationError(
+                "Пароль обязателен для изменения пользователя!"
+            )
+        if password1 != password2:
+            raise ValidationError("Пароли не совпадают!")
         return cleaned_data
 
     def save(self, commit=True):
         user = super().save(commit=False)
         password = self.cleaned_data.get('password1')
-        if password:
-            user.set_password(password)
+        user.set_password(password)
         if commit:
             user.save()
         return user
