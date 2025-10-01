@@ -119,7 +119,13 @@ class UserEditForm(forms.ModelForm, BootstrapMixin):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username']
+        fields = [
+            'first_name',
+            'last_name',
+            'username',
+            'password1',
+            'password2'
+        ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -144,3 +150,4 @@ class UserEditForm(forms.ModelForm, BootstrapMixin):
         if commit:
             user.save()
         return user
+

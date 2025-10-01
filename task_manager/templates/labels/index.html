@@ -3,8 +3,8 @@
 <div class="container wrapper flex-grow-1">
     <div class="modal modal-sheet position-static d-block p-4 py-md-5" tabindex="-1" role="dialog" id="modalSignin">
         <div class="">
-            <h1 class="my-4">Статусы</h1>
-            <a href="/statuses/create/"><button type="button" class="btn btn-outline-primary me-2">Создать статус</button></a>
+            <h1 class="my-4">Метки</h1>
+            <a href="{% url 'labels:create_label' %}"><button type="button" class="btn btn-outline-primary me-2">Создать метку</button></a>
         </div>
         <table class="table table-striped">
             <thead>
@@ -16,15 +16,15 @@
                 </tr>
             </thead>
             <tbody>
-                {% for status in statuses %}
+                {% for label in labels %}
                 <tr>
-                    <td>{{ status.id }}</td>
-                    <td>{{ status.name }}</td>
-                    <td>{{ status.time_create|date:"d.m.Y H:i" }}</td>
+                    <td>{{ label.id }}</td>
+                    <td>{{ label.name }}</td>
+                    <td>{{ label.time_create|date:"d.m.Y H:i" }}</td>
                     <td>
-                        <a href="/statuses/{{ status.id }}/update/">Изменить</a>
+                        <a href="{% url 'labels:edit_label' label.id %}">Изменить</a>
                         <br>
-                        <a href="/statuses/{{ status.id }}/delete/">Удалить</a>
+                        <a href="{% url 'labels:delete_label' label.id %}">Удалить</a>
                     </td>
                 </tr>
                 {% endfor %}

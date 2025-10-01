@@ -56,10 +56,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'task_manager',
-    'task_manager.users',
-    'task_manager.statuses',
-    'task_manager.tasks',
-    'task_manager.labels'
+    'task_manager.users.apps.UsersConfig',
+    'task_manager.statuses.apps.StatusesConfig',
+    'task_manager.tasks.apps.TasksConfig',
+    'task_manager.labels.apps.LabelsConfig'
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -141,9 +141,9 @@ AUTH_PASSWORD_VALIDATORS = [
             'min_length': 3,
         }
     },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    # },
 ]
 
 

@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
 <div class="container wrapper flex-grow-1">
-    <div class="modal modal-sheet position-static d-block  p-4 py-md-5" tabindex="-1" role="dialog" id="modalSignin">
+    <div class="modal modal-sheet position-static d-block p-4 py-md-5" tabindex="-1" role="dialog" id="modalSignin">
         <div class="">
-            <h1 class="my-4">Создание статуса</h1>
+            <h1 class="my-4">Изменение статуса</h1>
             <form method="post">
                 {% csrf_token %}
                 <input type="hidden" name="next" value="{{ next }}" />
@@ -18,10 +17,12 @@
                     </div>
                     {% endif %}
                 </div>
-                <p><button class="btn btn-primary" type="submit">Создать</button></p>
+                <p>
+                    <button class="btn btn-primary" type="submit">Изменить</button>
+                    <a href="{% url 'statuses:statuses' %}" class="btn btn-secondary">Отмена</a>
+                </p>
             </form>
         </div>
     </div>
 </div>
-
 {% endblock content %}

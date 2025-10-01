@@ -13,27 +13,27 @@
     {% block header %}
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
         <div class="col-md-3 mb-2 mb-md-0">
-            <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+            <a href="{% url 'main_page' %}" class="d-inline-flex link-body-emphasis text-decoration-none">
                 <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap">
                     <use xlink:href="#bootstrap"></use>
                 </svg>
             </a>
         </div>
         <ul class="nav me-auto">
-            <li><a href="/" class="nav-link px-2 link-secondary">Менеджер задач</a></li>
-            <li><a href="/users" class="nav-link px-2">Пользователи</a></li>
+            <li><a href="{% url 'main_page' %}" class="nav-link px-2 link-secondary">Менеджер задач</a></li>
+            <li><a href="{% url 'users:users' %}" class="nav-link px-2">Пользователи</a></li>
             {% if user.is_authenticated %}
-            <li><a href="/statuses" class="nav-link px-2">Статусы</a></li>
-            <li><a href="/tasks" class="nav-link px-2">Задачи</a></li>
-            <li><a href="/labels" class="nav-link px-2">Метки</a></li>
+            <li><a href="{% url 'statuses:statuses' %}" class="nav-link px-2">Статусы</a></li>
+            <li><a href="{% url 'tasks:tasks' %}" class="nav-link px-2">Задачи</a></li>
+            <li><a href="{% url 'labels:labels' %}" class="nav-link px-2">Метки</a></li>
             {% endif %}
         </ul>
         <div class="col-md-3">
             {% if user.is_authenticated %}
-            <a href="/logout/" class="btn btn-primary">Выход</a>
+            <a href="{% url 'users:logout' %}" class="btn btn-primary">Выход</a>
             {% else %}
-            <a href="/login/" class="btn btn-outline-primary me-2">Вход</a>
-            <a href="/users/create/" class="btn btn-primary">Регистрация</a>
+            <a href="{% url 'users:login' %}" class="btn btn-outline-primary me-2">Вход</a>
+            <a href="{% url 'users:create_user' %}" class="btn btn-primary">Регистрация</a>
             {% endif %}
         </div>
     </header>

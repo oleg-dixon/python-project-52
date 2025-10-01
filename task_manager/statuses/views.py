@@ -1,126 +1,68 @@
 from django.contrib import messages
 from django.db.models import ProtectedError
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, UpdateView, View
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+
+from task_manager.mixins import LoginRequiredMixin
 
 from .forms import StatusForm
 from .models import Status
 
 
-class StatusView(ListView):
+class StatusView(LoginRequiredMixin, ListView):
     model = Status
-    template_name = 'status/index.html'
+    template_name = 'statuses/index.html'
     context_object_name = 'statuses'
 
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, 
-                'Вы не авторизованы! Пожалуйста, войдите в систему.'
-                )
-            return redirect('login')
-        return super().dispatch(request, *args, **kwargs)
-
     def get_queryset(self):
-        return Status.objects.annotate().values(
-            'id', 
-            'name', 
-            'time_create',
-        ).order_by('time_create')
+        return Status.objects.values(
+            'id', 'name', 'time_create').order_by('time_create'
+        )
 
 
-class CreateStatusView(View):
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, 
-                'Вы не авторизованы! Пожалуйста, войдите в систему.'
-                )
-            return redirect('login')
-        return super().dispatch(request, *args, **kwargs)
-
-    def get(self, request, *args, **kwargs):
-        form = StatusForm()
-        return render(request, 'status/create.html', {'form': form})
-
-    def post(self, request, *args, **kwargs):
-        form = StatusForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Статус успешно создан')
-            return redirect('statuses')
-        return render(request, 'status/create.html', {'form': form})
-    
-
-class EditStatusView(UpdateView):
+class CreateStatusView(LoginRequiredMixin, CreateView):
     model = Status
     form_class = StatusForm
-    template_name = 'status/edit.html'
-    pk_url_kwarg = 'status_id'
-    success_url = reverse_lazy('statuses')
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, 
-                'Вы не авторизованы! Пожалуйста, войдите в систему.'
-                )
-            return redirect('login')
-        return super().dispatch(request, *args, **kwargs)
+    template_name = 'statuses/create.html'
+    success_url = reverse_lazy('statuses:statuses')
 
-    def get_object(self, queryset=None):
-        status = super().get_object(queryset)
-        return status
-    
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if self.object is None:
-            return redirect(self.success_url)
-        return super().get(request, *args, **kwargs)
-    
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if self.object is None:
-            return redirect(self.success_url)
-        messages.success(request, 'Статус успешно изменен')
-        return super().post(request, *args, **kwargs)
-    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Статус успешно создан')
+        return response
 
-class StatusDeleteView(View):
-    success_url = reverse_lazy('statuses')
-    template_name = 'status/status_confirm_delete.html'
 
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, 
-                'Вы не авторизованы! Пожалуйста, войдите в систему.'
-                )
-            return redirect('login')
-        return super().dispatch(request, *args, **kwargs)
+class EditStatusView(LoginRequiredMixin, UpdateView):
+    model = Status
+    form_class = StatusForm
+    template_name = 'statuses/edit.html'
+    success_url = reverse_lazy('statuses:statuses')
 
-    def get_object(self):
-        status_id = self.kwargs.get('status_id')
-        return get_object_or_404(Status, pk=status_id)
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Статус успешно изменен')
+        return response
 
-    def get(self, request, *args, **kwargs):
-        status_to_delete = self.get_object()
-        return render(
-            request, 
-            self.template_name, 
-            {'status': status_to_delete}
-            )
 
-    def post(self, request, *args, **kwargs):
-        status_to_delete = self.get_object()
+class StatusDeleteView(LoginRequiredMixin, DeleteView):
+    model = Status
+    template_name = 'statuses/status_confirm_delete.html'
+    success_url = reverse_lazy('statuses:statuses')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['status'] = self.get_object()
+        return context
+
+    def form_valid(self, form):
         try:
-            status_to_delete.delete()
-            messages.success(request, 'Статус успешно удален')
-            return redirect(self.success_url)
+            response = super().form_valid(form)
+            messages.success(self.request, 'Статус успешно удален')
+            return response
         except ProtectedError:
             messages.error(
-                request, 
+                self.request,
                 'Невозможно удалить статус, потому что он используется'
-                )
-            return redirect('statuses')
+            )
+            return redirect(self.success_url)

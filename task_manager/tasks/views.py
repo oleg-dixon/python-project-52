@@ -3,23 +3,16 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, View
 
+from task_manager.mixins import LoginRequiredMixin
+
 from .forms import TaskFilterForm, TaskForm
 from .models import Task
 
 
-class TaskView(ListView):
+class TaskView(LoginRequiredMixin, ListView):
     model = Task
-    template_name = 'task/index.html'
+    template_name = 'tasks/index.html'
     context_object_name = 'tasks'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request,
-                'Вы не авторизованы! Пожалуйста, войдите в систему.'
-            )
-            return redirect('login')
-        return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         queryset = Task.objects.select_related(
@@ -56,63 +49,35 @@ class TaskView(ListView):
         return context
 
 
-class CreateTaskView(View):
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request,
-                'Вы не авторизованы! Пожалуйста, войдите в систему.'
-            )
-            return redirect('login')
-        return super().dispatch(request, *args, **kwargs)
-
+class CreateTaskView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         form = TaskForm(user=request.user)
-        return render(request, 'task/create.html', {'form': form})
+        return render(request, 'tasks/create.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
         form = TaskForm(request.POST, user=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, 'Задача успешно создана')
-            return redirect('tasks')
-        return render(request, 'task/create.html', {'form': form})
+            return redirect('tasks:tasks')
+        return render(request, 'tasks/create.html', {'form': form})
 
 
-class ShowTaskView(View):
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request,
-                'Вы не авторизованы! Пожалуйста, войдите в систему.'
-            )
-            return redirect('login')
-        return super().dispatch(request, *args, **kwargs)
-
+class ShowTaskView(LoginRequiredMixin, View):
     def get_object(self):
         task_id = self.kwargs.get('task_id')
         return get_object_or_404(Task, pk=task_id)
 
     def get(self, request, *args, **kwargs):
         task_to_show = self.get_object()
-        return render(request, 'task/show_task.html', {'task': task_to_show})
+        return render(request, 'tasks/show_task.html', {'task': task_to_show})
 
 
-class EditTaskView(UpdateView):
+class EditTaskView(LoginRequiredMixin, UpdateView):
     model = Task
     form_class = TaskForm
-    template_name = 'task/edit.html'
-    pk_url_kwarg = 'task_id'
-    success_url = reverse_lazy('tasks')
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request,
-                'Вы не авторизованы! Пожалуйста, войдите в систему.'
-            )
-            return redirect('login')
-        return super().dispatch(request, *args, **kwargs)
+    template_name = 'tasks/edit.html'
+    success_url = reverse_lazy('tasks:tasks')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -124,21 +89,12 @@ class EditTaskView(UpdateView):
         return super().form_valid(form)
 
 
-class DeleteTaskView(View):
-    success_url = reverse_lazy('tasks')
-    template_name = 'task/task_confirm_delete.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request,
-                'Вы не авторизованы! Пожалуйста, войдите в систему.'
-            )
-            return redirect('login')
-        return super().dispatch(request, *args, **kwargs)
+class DeleteTaskView(LoginRequiredMixin, View):
+    success_url = reverse_lazy('tasks:tasks')
+    template_name = 'tasks/task_confirm_delete.html'
 
     def get_object(self):
-        task_id = self.kwargs.get('task_id')
+        task_id = self.kwargs.get('pk')
         return get_object_or_404(Task, pk=task_id)
 
     def get(self, request, *args, **kwargs):

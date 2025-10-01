@@ -5,7 +5,7 @@
     <div class="modal modal-sheet position-static d-block p-4 py-md-4" tabindex="-1" role="dialog" id="modalSignin">
         <div class="">
             <h1 class="my-6">Задачи</h1>
-            <a href="/tasks/create/"><button type="button" class="btn btn-outline-primary me-2 mb-3">Создать
+            <a href="{% url 'tasks:create_task' %}"><button type="button" class="btn btn-outline-primary me-2 mb-3">Создать
                     задачу</button></a>
         </div>
 
@@ -40,7 +40,7 @@
                     </div>
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary">Показать</button>
-                        <a href="{% url 'tasks' %}" class="btn btn-outline-secondary">Сбросить</a>
+                        <a href="{% url 'tasks:tasks' %}" class="btn btn-outline-secondary">Сбросить</a>
                     </div>
                 </form>
             </div>
@@ -62,7 +62,7 @@
                 {% for task in tasks %}
                 <tr>
                     <td>{{ task.id }}</td>
-                    <td><a href="/tasks/{{ task.id }}">{{ task.name }}</a></td>
+                    <td><a href="{% url 'tasks:tasks' %}">{{ task.name }}</a></td>
                     <td>{{ task.status.name }}</td>
                     <td>{{ task.author.first_name }} {{ task.author.last_name }}</td>
                     <td>
@@ -74,9 +74,9 @@
                     </td>
                     <td>{{ task.time_create|date:"d.m.Y H:i" }}</td>
                     <td>
-                        <a href="/tasks/{{ task.id }}/update/">Изменить</a>
+                        <a href="{% url 'tasks:edit_task' task.id %}">Изменить</a>
                         <br>
-                        <a href="/tasks/{{ task.id }}/delete/">Удалить</a>
+                        <a href="{% url 'tasks:delete_task' task.id %}">Удалить</a>
                     </td>
                 </tr>
                 {% endfor %}

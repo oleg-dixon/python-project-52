@@ -4,23 +4,16 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, View
 
+from task_manager.mixins import LoginRequiredMixin
+
 from .forms import LabelForm
 from .models import Label
 
 
-class LabelsView(ListView):
+class LabelsView(LoginRequiredMixin, ListView):
     model = Label
-    template_name = 'label/index.html'
+    template_name = 'labels/index.html'
     context_object_name = 'labels'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, 
-                'Вы не авторизованы! Пожалуйста, войдите в систему.'
-                )
-            return redirect('login')
-        return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         return Label.objects.annotate().values(
@@ -30,44 +23,25 @@ class LabelsView(ListView):
         ).order_by('time_create')
 
 
-class CreateLabelView(View):
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, 
-                'Вы не авторизованы! Пожалуйста, войдите в систему.'
-                )
-            return redirect('login')
-        return super().dispatch(request, *args, **kwargs)
-
+class CreateLabelView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         form = LabelForm()
-        return render(request, 'label/create.html', {'form': form})
+        return render(request, 'labels/create.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
         form = LabelForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Метка успешно создана')
-            return redirect('labels')
-        return render(request, 'label/create.html', {'form': form})
+            return redirect('labels:labels')
+        return render(request, 'labels/create.html', {'form': form})
     
 
-class EditLabelView(UpdateView):
+class EditLabelView(LoginRequiredMixin, UpdateView):
     model = Label
     form_class = LabelForm
-    template_name = 'label/edit.html'
-    pk_url_kwarg = 'label_id'
-    success_url = reverse_lazy('labels')
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, 
-                'Вы не авторизованы! Пожалуйста, войдите в систему.'
-                )
-            return redirect('login')
-        return super().dispatch(request, *args, **kwargs)
+    template_name = 'labels/edit.html'
+    success_url = reverse_lazy('labels:labels')
 
     def get_object(self, queryset=None):
         label = super().get_object(queryset)
@@ -87,21 +61,12 @@ class EditLabelView(UpdateView):
         return super().post(request, *args, **kwargs)
     
 
-class DeleteLabelView(View):
-    success_url = reverse_lazy('labels')
-    template_name = 'label/label_confirm_delete.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, 
-                'Вы не авторизованы! Пожалуйста, войдите в систему.'
-                )
-            return redirect('login')
-        return super().dispatch(request, *args, **kwargs)
+class DeleteLabelView(LoginRequiredMixin, View):
+    success_url = reverse_lazy('labels:labels')
+    template_name = 'labels/label_confirm_delete.html'
 
     def get_object(self):
-        label_id = self.kwargs.get('label_id')
+        label_id = self.kwargs.get('pk')
         return get_object_or_404(Label, pk=label_id)
 
     def get(self, request, *args, **kwargs):
@@ -119,4 +84,4 @@ class DeleteLabelView(View):
                 request, 
                 'Невозможно удалить метку, потому что она используется'
                 )
-            return redirect('labels')
+            return redirect('labels:labels')

@@ -4,12 +4,12 @@
 <div class="container wrapper flex-grow-1">
     <div class="modal modal-sheet position-static d-block p-4 py-md-5" tabindex="-1" role="dialog" id="modalSignin">
         <div class="">
-            <h1 class="my-4">Удаление статуса</h1>
+            <h1 class="my-4">Удаление метки</h1>
             <form method="post">
                 {% csrf_token %}
-                <p>Вы уверены, что хотите удалить {{ status.name }}?</p>
+                <p>Вы уверены, что хотите удалить {{ label.name }}?</p>
                 <button type="submit" class="btn btn-danger">Да, удалить</button>
-                <a href="{% url 'statuses' %}" class="btn btn-secondary">Отмена</a>
+                <a href="{% url 'labels:labels' %}" class="btn btn-secondary">Отмена</a>
             </form>
         </div>
     </div>
