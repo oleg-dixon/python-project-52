@@ -80,7 +80,6 @@ class UserEditView(UpdateView):
             messages.error(
                 request,
                 'Вы не авторизованы! Пожалуйста, войдите в систему.',
-                extra_tags='alert'
             )
             return redirect('login')
         return super().dispatch(request, *args, **kwargs)
@@ -91,7 +90,6 @@ class UserEditView(UpdateView):
             messages.error(
                 self.request,
                 'У вас нет прав для изменения другого пользователя',
-                extra_tags='alert'
             )
             return None
         return user
@@ -104,13 +102,10 @@ class UserEditView(UpdateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.success(
-            self.request, 'Пользователь успешно изменен', extra_tags='alert'
-        )
+        messages.success(self.request, 'Пользователь успешно изменен')
         return response
 
 
-    
 class UserDeleteView(LoginRequiredMixin, View):
     success_url = reverse_lazy('users')
     template_name = 'user/user_confirm_delete.html'
