@@ -1,11 +1,17 @@
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
-from django.db.models import Value, ProtectedError
+from django.db.models import ProtectedError, Value
 from django.db.models.functions import Concat
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, UpdateView, View
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    ListView,
+    UpdateView,
+    View,
+)
 
 from task_manager.mixins import LoginRequiredMixin
 from task_manager.users.models import CustomUser
@@ -90,39 +96,34 @@ class UserEditView(LoginRequiredMixin, UpdateView):
         return redirect(self.success_url)
 
 
-class UserDeleteView(LoginRequiredMixin, View):
-    success_url = reverse_lazy('users:users')
+class UserDeleteView(LoginRequiredMixin, DeleteView):
+    model = CustomUser
     template_name = 'users/user_confirm_delete.html'
-
-    def get_object(self):
-        user_id = self.kwargs.get('pk')
-        return get_object_or_404(CustomUser, pk=user_id)
+    success_url = reverse_lazy('users:users')
 
     def get(self, request, *args, **kwargs):
-        user_to_delete = self.get_object()
-        if request.user.pk != user_to_delete.pk:
+        if request.user.pk != self.get_object().pk:
             messages.error(
                 request, 'У вас нет прав для изменения другого пользователя.'
             )
             return redirect(self.success_url)
-        return render(request, self.template_name, {'user': user_to_delete})
+        return super().get(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        user_to_delete = self.get_object()
-        if request.user.pk != user_to_delete.pk:
+    def form_valid(self, form):
+        if self.request.user.pk != self.get_object().pk:
             messages.error(
-                request, 'У вас нет прав для изменения другого пользователя.'
+                self.request,
+                'У вас нет прав для изменения другого пользователя.'
             )
             return redirect(self.success_url)
         
         try:
-            user_to_delete.delete()
-            messages.success(request, 'Пользователь успешно удален')
-            
+            response = super().form_valid(form)
+            messages.success(self.request, 'Пользователь успешно удален')
+            return response
         except ProtectedError:
             messages.error(
-                request, 
+                self.request,
                 'Невозможно удалить пользователя, потому что он используется'
             )
-        
-        return redirect(self.success_url)
+            return redirect(self.success_url)

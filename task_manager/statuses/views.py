@@ -50,11 +50,6 @@ class StatusDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'statuses/status_confirm_delete.html'
     success_url = reverse_lazy('statuses:statuses')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['status'] = self.get_object()
-        return context
-
     def form_valid(self, form):
         try:
             response = super().form_valid(form)

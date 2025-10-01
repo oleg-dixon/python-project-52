@@ -1,8 +1,8 @@
 from django.contrib import messages
 from django.db.models import ProtectedError
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, UpdateView, View
+from django.views.generic import DeleteView, ListView, UpdateView, View
 
 from task_manager.mixins import LoginRequiredMixin
 
@@ -43,45 +43,25 @@ class EditLabelView(LoginRequiredMixin, UpdateView):
     template_name = 'labels/edit.html'
     success_url = reverse_lazy('labels:labels')
 
-    def get_object(self, queryset=None):
-        label = super().get_object(queryset)
-        return label
-    
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if self.object is None:
-            return redirect(self.success_url)
-        return super().get(request, *args, **kwargs)
-    
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if self.object is None:
-            return redirect(self.success_url)
-        messages.success(request, 'Метка успешно изменена')
-        return super().post(request, *args, **kwargs)
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Метка успешно изменена')
+        return response
     
 
-class DeleteLabelView(LoginRequiredMixin, View):
-    success_url = reverse_lazy('labels:labels')
+class DeleteLabelView(LoginRequiredMixin, DeleteView):
+    model = Label
     template_name = 'labels/label_confirm_delete.html'
+    success_url = reverse_lazy('labels:labels')
 
-    def get_object(self):
-        label_id = self.kwargs.get('pk')
-        return get_object_or_404(Label, pk=label_id)
-
-    def get(self, request, *args, **kwargs):
-        label_to_delete = self.get_object()
-        return render(request, self.template_name, {'label': label_to_delete})
-
-    def post(self, request, *args, **kwargs):
-        label_to_delete = self.get_object()
+    def form_valid(self, form):
         try:
-            label_to_delete.delete()
-            messages.success(request, 'Метка успешно удалена')
-            return redirect(self.success_url)
+            response = super().form_valid(form)
+            messages.success(self.request, 'Метка успешно удалена')
+            return response
         except ProtectedError:
             messages.error(
-                request, 
+                self.request,
                 'Невозможно удалить метку, потому что она используется'
-                )
-            return redirect('labels:labels')
+            )
+            return redirect(self.success_url)

@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, UpdateView, View
+from django.views.generic import DeleteView, ListView, UpdateView, View
 
 from task_manager.mixins import LoginRequiredMixin
 
@@ -89,26 +89,22 @@ class EditTaskView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class DeleteTaskView(LoginRequiredMixin, View):
-    success_url = reverse_lazy('tasks:tasks')
+class DeleteTaskView(LoginRequiredMixin, DeleteView):
+    model = Task
     template_name = 'tasks/task_confirm_delete.html'
-
-    def get_object(self):
-        task_id = self.kwargs.get('pk')
-        return get_object_or_404(Task, pk=task_id)
+    success_url = reverse_lazy('tasks:tasks')
 
     def get(self, request, *args, **kwargs):
-        task_to_delete = self.get_object()
-        if request.user.id != task_to_delete.author.id:
+        if request.user.id != self.get_object().author.id:
             messages.error(request, 'Задачу может удалить только ее автор')
             return redirect(self.success_url)
-        return render(request, self.template_name, {'task': task_to_delete})
+        return super().get(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        task_to_delete = self.get_object()
-        if request.user.id != task_to_delete.author.id:
-            messages.error(request, 'Задачу может удалить только ее автор')
+    def form_valid(self, form):
+        if self.request.user.id != self.get_object().author.id:
+            messages.error(self.request, 'Задачу может удалить только ее автор')
             return redirect(self.success_url)
-        task_to_delete.delete()
-        messages.success(request, 'Задача успешно удалена')
-        return redirect(self.success_url)
+        
+        response = super().form_valid(form)
+        messages.success(self.request, 'Задача успешно удалена')
+        return response
