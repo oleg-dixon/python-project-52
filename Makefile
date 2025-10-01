@@ -18,3 +18,9 @@ collectstatic:
 
 lint:
 	uv run ruff check
+
+format:
+	uv run ruff check --fix
+
+test:
+	uv run manage.py test
