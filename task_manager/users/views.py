@@ -19,7 +19,7 @@ from task_manager.users.models import CustomUser
 from .forms import LoginUserForm, RegisterUserForm, UserEditForm
 
 
-class UserView(LoginRequiredMixin, ListView):
+class UserView(ListView):
     model = CustomUser
     template_name = 'users/index.html'
     context_object_name = 'users'
