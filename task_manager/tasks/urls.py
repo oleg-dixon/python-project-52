@@ -10,7 +10,7 @@ urlpatterns = [
          name='tasks'),
     path('<int:pk>/', 
         task_views.ShowTaskView.as_view(), 
-        name='task'),
+        name='show_task'),
     path('create/',
          task_views.CreateTaskView.as_view(),
          name='create_task'),

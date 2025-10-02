@@ -65,7 +65,7 @@ class CreateTaskView(LoginRequiredMixin, View):
 
 class ShowTaskView(LoginRequiredMixin, View):
     def get_object(self):
-        task_id = self.kwargs.get('task_id')
+        task_id = self.kwargs.get('pk')
         return get_object_or_404(Task, pk=task_id)
 
     def get(self, request, *args, **kwargs):
