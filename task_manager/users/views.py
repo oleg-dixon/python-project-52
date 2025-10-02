@@ -88,12 +88,14 @@ class UserEditView(LoginRequiredMixin, UpdateView):
             return redirect(self.success_url)
         return super().get(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if self.object is None:
-            return redirect(self.success_url)
-        messages.success(request, 'Пользователь успешно изменен')
-        return redirect(self.success_url)
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Пользователь успешно изменен')
+        return response
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Ошибка при изменении пользователя')
+        return super().form_invalid(form)
 
 
 class UserDeleteView(LoginRequiredMixin, DeleteView):
