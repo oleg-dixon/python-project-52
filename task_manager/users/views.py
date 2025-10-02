@@ -66,21 +66,21 @@ class LogoutUserView(LoginRequiredMixin, View):
         return redirect('main_page')
 
 
-class UserEditView(UpdateView):
+class UserEditView(LoginRequiredMixin, UpdateView):
     model = CustomUser
     form_class = UserEditForm
     template_name = 'users/edit.html'
     success_url = reverse_lazy('users:users')
 
-    def get_object(self, queryset=None):
-        user = super().get_object(queryset)
-        if self.request.user.pk != user.pk:
+    def dispatch(self, request, *args, **kwargs):
+        user = self.get_object()
+        if request.user.pk != user.pk:
             messages.error(
-                self.request,
+                request,
                 'У вас нет прав для изменения другого пользователя'
             )
-            return None
-        return user
+            return redirect(self.success_url)
+        return super().dispatch(request, *args, **kwargs)
     
     def form_valid(self, form):
         response = super().form_valid(form)
