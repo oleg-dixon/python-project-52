@@ -1,47 +1,18 @@
 [
 {
   "model": "statuses.status",
-  "pk": 1,
+  "pk": 7,
   "fields": {
-    "name": "Уже в работе",
-    "created_at": "2025-09-15T14:35:47.805Z",
-    "updated_at": "2025-09-15T15:02:54.812Z"
+    "name": "Good",
+    "time_create": "2025-10-01T15:30:04.359Z"
   }
 },
 {
   "model": "statuses.status",
-  "pk": 3,
+  "pk": 8,
   "fields": {
-    "name": "На рассмотрении",
-    "created_at": "2025-09-15T14:36:08.841Z",
-    "updated_at": "2025-09-15T14:36:08.841Z"
-  }
-},
-{
-  "model": "statuses.status",
-  "pk": 4,
-  "fields": {
-    "name": "Рефакторинг",
-    "created_at": "2025-09-15T14:36:16.226Z",
-    "updated_at": "2025-09-15T14:36:16.226Z"
-  }
-},
-{
-  "model": "statuses.status",
-  "pk": 5,
-  "fields": {
-    "name": "Готово",
-    "created_at": "2025-09-15T14:39:24.755Z",
-    "updated_at": "2025-09-15T14:39:24.755Z"
-  }
-},
-{
-  "model": "statuses.status",
-  "pk": 6,
-  "fields": {
-    "name": "В разаработке",
-    "created_at": "2025-09-15T14:42:01.057Z",
-    "updated_at": "2025-09-15T14:42:01.057Z"
+    "name": "Bad",
+    "time_create": "2025-10-01T15:47:06.239Z"
   }
 }
 ]
