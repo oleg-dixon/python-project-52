@@ -27,8 +27,8 @@ A comprehensive task management system built with Django that allows you to set 
 
 1. **Clone the repository**
 ```bash
-   git clone https://github.com/oleg-dixon/python-project-52.git
-   cd python-project-52
+git clone https://github.com/oleg-dixon/python-project-52.git
+cd python-project-52
 ```
 
 2. **Install UV (if not already installed)**
