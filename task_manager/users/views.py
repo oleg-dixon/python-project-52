@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import logout
+from django.contrib.auth import logout, update_session_auth_hash
 from django.contrib.auth.views import LoginView
 from django.db.models import ProtectedError, Value
 from django.db.models.functions import Concat
@@ -66,37 +66,29 @@ class LogoutUserView(LoginRequiredMixin, View):
         return redirect('main_page')
 
 
-class UserEditView(LoginRequiredMixin, UpdateView):
+class UserEditView(UpdateView):
     model = CustomUser
     form_class = UserEditForm
     template_name = 'users/edit.html'
     success_url = reverse_lazy('users:users')
-    
+
     def get_object(self, queryset=None):
         user = super().get_object(queryset)
         if self.request.user.pk != user.pk:
             messages.error(
-                self.request, 
+                self.request,
                 'У вас нет прав для изменения другого пользователя'
-                )
+            )
             return None
         return user
     
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if self.object is None:
-            return redirect(self.success_url)
-        return super().get(request, *args, **kwargs)
-
     def form_valid(self, form):
         response = super().form_valid(form)
+        if self.request.user.pk == self.object.pk:
+            update_session_auth_hash(self.request, self.object)
         messages.success(self.request, 'Пользователь успешно изменен')
         return response
-
-    def form_invalid(self, form):
-        messages.error(self.request, 'Ошибка при изменении пользователя')
-        return super().form_invalid(form)
-
+    
 
 class UserDeleteView(LoginRequiredMixin, DeleteView):
     model = CustomUser
