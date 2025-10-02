@@ -15,32 +15,22 @@ class TaskView(LoginRequiredMixin, ListView):
     context_object_name = 'tasks'
 
     def get_queryset(self):
-        queryset = Task.objects.select_related(
-            'status',
-            'author',
-            'executor'
-        ).order_by('time_create')
-        
+        queryset = super().get_queryset()
         status = self.request.GET.get('status')
         executor = self.request.GET.get('executor')
         label = self.request.GET.get('label')
         self_tasks = self.request.GET.get('self_tasks')
-        
-        if status and status != '':
-            queryset = queryset.filter(status_id=int(status))
-        
-        if executor is not None:
-            if executor == '':
-                queryset = queryset.filter(executor__isnull=True)
-            else:
-                queryset = queryset.filter(executor_id=int(executor))
-        
-        if label and label != '':
-            queryset = queryset.filter(labels__id=label).distinct()
-        
-        if self_tasks and self_tasks.lower() in ['true', 'on', '1', 'yes']:
+
+        if status:
+            queryset = queryset.filter(status=status)
+        if executor:
+            queryset = queryset.filter(executor=executor)
+        if label:
+            queryset = queryset.filter(labels=label)
+
+        if self_tasks:
             queryset = queryset.filter(author=self.request.user)
-        
+
         return queryset
 
     def get_context_data(self, **kwargs):
